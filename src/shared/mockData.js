@@ -1,11 +1,21 @@
 //유저 더미데이터
 
 export const userData = [
-  { idx: '0', userIdea: 'andatne1104@naver.com', userPw: 'sudal123' },
-  { idx: '1', userIdea: 'naver123@gmail.com', userPw: 'su32231' },
-  { idx: '2', userIdea: 'nauro1104@daum.com', userPw: 'dele123123321@' },
-  { idx: '3', userIdea: 'nauro1204@naver.com ', userPw: 'd44443321@#' },
-  { idx: '4', userIdea: 'nauro12204@naver.com', userPw: 'd3321@#' }
+  {
+    idx: '0',
+    userNickName: 'iron1',
+    userIdea: 'andatne1104@naver.com',
+    userPw: 'sudal123',
+    islogin: false,
+    review: [
+      { idx: 0, content: 'dfdfddfd', like: 0 },
+      { idx: 1, content: 'sdfdfdsfds', like: 2 }
+    ]
+  },
+  { idx: '1', userNickName: 'iron2', userIdea: 'naver123@gmail.com', userPw: 'su32231', islogin: false },
+  { idx: '2', userNickName: 'iron3', userIdea: 'nauro1104@daum.com', userPw: 'dele123123321@', islogin: false },
+  { idx: '3', userNickName: 'iron4', userIdea: 'nauro1204@naver.com ', userPw: 'd44443321@#', islogin: false },
+  { idx: '4', userNickName: 'iron5', userIdea: 'nauro12204@naver.com', userPw: 'd3321@#', islogin: false }
 ];
 
 export const bookData = [
