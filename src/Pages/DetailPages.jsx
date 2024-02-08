@@ -29,16 +29,16 @@ function DetailPages() {
           <DetailCard key={book.itemId}>
             <DetailCardBody>
               <DetailImg src={book.coverLargeUrl} alt="" />
-              <DetailImgInfo>
-                <DetailImgInfoHero>
+              <div>
+                <div>
                   <DetailCardImgInfoPtag>{book.author}</DetailCardImgInfoPtag>
                   <DetailCardImgInfoPtag>{book.title}</DetailCardImgInfoPtag>
                   <br />
                   <DetailCardImgInfoPtag>{book.publisher}</DetailCardImgInfoPtag>
                   <DetailCardImgInfoPtag>{book.description}</DetailCardImgInfoPtag>
                   <br />
-                </DetailImgInfoHero>
-              </DetailImgInfo>
+                </div>
+              </div>
             </DetailCardBody>
           </DetailCard>
         ))}
