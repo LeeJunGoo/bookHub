@@ -1,12 +1,32 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { bookData } from '../shared/mockData';
+import { bookData, userData } from '../shared/mockData';
 
 function DetailPages() {
   const [bookHubData, setBookHubData] = useState(bookData);
 
+  // 사용자 게시글 입력 데이터
+  const [userPostViewData, setUserPostViewData] = useState([]);
+
+  const [postTitle, setPostTitle] = useState('');
+  const [postText, setPostText] = useState('');
+
   const { id } = useParams();
-  // console.log(typeof id);
+  //console.log(typeof id);
+
+  // const onSubmitButtonClick = (event) =>{
+  //    event.preventDefault();
+
+  //    {userData.map((data)=>{
+
+  //    // set함수에 저장합시다.
+  //     setUserPostViewData((prev) => [...prev ,obj ])
+
+  //    // 인풋 리셋
+  //     setPostTitle("")
+  //     setPostText("")
+  // }
+
   return (
     <>
       {/* 
@@ -32,6 +52,27 @@ function DetailPages() {
           </div>
         ))}
       {/* 사용자 게시글 부분  */}
+      <form>
+        <input
+          type="text"
+          value={postTitle}
+          onChange={(event) => {
+            setPostTitle(event.target.value);
+          }}
+          placeholder="제목"
+        />
+        <textarea
+          type="text"
+          value={postText}
+          onChange={(event) => {
+            setPostText(event.target.value);
+          }}
+          placeholder="내용"
+        />
+        <button type="submit"></button>
+      </form>
+
+      <></>
     </>
   );
 }
