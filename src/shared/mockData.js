@@ -12,10 +12,42 @@ export const userData = [
       { idx: 1, content: 'sdfdfdsfds', like: 2 }
     ]
   },
-  { idx: '1', userNickName: 'iron2', userIdea: 'naver123@gmail.com', userPw: 'su32231', isLoggedIn: false },
-  { idx: '2', userNickName: 'iron3', userIdea: 'nauro1104@daum.com', userPw: 'dele123123321@', isLoggedIn: false },
-  { idx: '3', userNickName: 'iron4', userIdea: 'nauro1204@naver.com ', userPw: 'd44443321@#', isLoggedIn: false },
-  { idx: '4', userNickName: 'iron5', userIdea: 'nauro12204@naver.com', userPw: 'd3321@#', isLoggedIn: false }
+  {
+    idx: '1',
+    profile: '',
+    userNickName: 'iron2',
+    userEmail: 'naver123@gmail.com',
+    userPw: 'su32231',
+    isLoggedIn: true,
+    review: []
+  },
+  {
+    idx: '2',
+    profile: '',
+    userNickName: 'iron3',
+    userEmail: 'nauro1104@daum.com',
+    userPw: 'dele123123321@',
+    isLoggedIn: false,
+    review: []
+  },
+  {
+    idx: '3',
+    profile: '',
+    userNickName: 'iron4',
+    userEmail: 'nauro1204@naver.com ',
+    userPw: 'd44443321@#',
+    isLoggedIn: false,
+    review: []
+  },
+  {
+    idx: '4',
+    profile: '',
+    userNickName: 'iron5',
+    userEmail: 'nauro12204@naver.com',
+    userPw: 'd3321@#',
+    isLoggedIn: false,
+    review: []
+  }
 ];
 
 export const bookData = [
