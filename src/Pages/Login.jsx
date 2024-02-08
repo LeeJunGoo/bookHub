@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 
+import { bookData } from "../shared/mockData";
+
+console.log(bookData)
 
 function Login() {
 
