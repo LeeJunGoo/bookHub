@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { bookData, userData } from '../shared/mockData';
-
+import styled from 'styled-components';
 function DetailPages() {
   const [bookHubData, setBookHubData] = useState(bookData);
 
