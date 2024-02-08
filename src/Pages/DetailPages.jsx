@@ -69,14 +69,16 @@ function DetailPages() {
       {/* 댓글 다는 창 */}
 
       {reviewIsNowData.map((data) => (
-        <div key={data.idx}>
+        <DetailPostRiViewBorder key={data.idx}>
           {data.review.map((d) => (
             <>
-              <p>{d.reviewUser}</p>
-              <p>{d.content}</p>
+              <DetailPostRiView>
+                <p>{d.reviewUser}</p>
+                <p>{d.content}</p>
+              </DetailPostRiView>
             </>
           ))}
-        </div>
+        </DetailPostRiViewBorder>
       ))}
     </>
   );
@@ -99,10 +101,6 @@ const DetailCardBody = styled.div`
   align-items: center;
   padding-left: 10px;
 `;
-
-const DetailImgInfo = styled.div``;
-
-const DetailImgInfoHero = styled.div``;
 
 const DetailCardImgInfoPtag = styled.p`
   font-weight: bolder;
@@ -130,3 +128,15 @@ const DetailPostSubmitButton = styled.button`
 `;
 
 // 댓글 스타일 해야됨
+const DetailPostRiView = styled.div`
+  padding: 5px;
+  box-shadow: 1px 1px 1px 1px gray;
+  width: 400px;
+  height: 50px;
+  margin: 4px;
+`;
+
+const DetailPostRiViewBorder = styled.div`
+  margin: 50px;
+  display: flex;
+`;
