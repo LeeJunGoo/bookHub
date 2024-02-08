@@ -4,7 +4,7 @@ export const userData = [
   {
     idx: '0',
     userNickName: 'iron1',
-    userIdea: 'andatne1104@naver.com',
+    userEmail: 'andatne1104@naver.com',
     userPw: 'sudal123',
     isLoggedIn: false,
     review: [
