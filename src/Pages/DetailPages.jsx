@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { bookData, userData } from '../shared/mockData';
-import styled from 'styled-components';
 
 function DetailPages() {
+  const [bookHubData, setBookHubData] = useState(bookData);
+
   // 사용자 게시글 입력 데이터
-  const [userPostViewData, setUserPostViewData] = useState(userData);
+  const [userPostViewData, setUserPostViewData] = useState([]);
 
   const [postTitle, setPostTitle] = useState('');
   const [postText, setPostText] = useState('');
@@ -13,15 +14,25 @@ function DetailPages() {
   const { id } = useParams();
   //console.log(typeof id);
 
-  const reviewIsNowData = userPostViewData.filter((user) => user.isLoggedIn === false && user.review);
-  // console.log(reviewIsNowData);
+  // const onSubmitButtonClick = (event) =>{
+  //    event.preventDefault();
+
+  //    {userData.map((data)=>{
+
+  //    // set함수에 저장합시다.
+  //     setUserPostViewData((prev) => [...prev ,obj ])
+
+  //    // 인풋 리셋
+  //     setPostTitle("")
+  //     setPostText("")
+  // }
 
   return (
     <>
       {/* 
-        id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
-        data.itemId값은 mockData에서 받아온값인데 숫자였음
-        그래서 형변환 메서드 Number() 로 숫자 형변환 해줌
+         id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
+         data.itemId값은 mockData에서 받아온값인데 숫자였음
+         그래서 형변환 메서드 Number() 로 숫자 형변환 해줌
     */}
       {bookData
         .filter((data) => data.itemId === Number(id))
@@ -42,42 +53,28 @@ function DetailPages() {
             </DetailCardBody>
           </DetailCard>
         ))}
-
-      {/* 사용자 게시글 입력  */}
-      <DetailPostInputForm>
-        <DetailPosInputFormInput
+      {/* 사용자 게시글 부분  */}
+      <form>
+        <input
           type="text"
           value={postTitle}
           onChange={(event) => {
             setPostTitle(event.target.value);
           }}
           placeholder="제목"
-        />{' '}
-        <br />
-        <DetailPosInputFormText
+        />
+        <textarea
           type="text"
           value={postText}
           onChange={(event) => {
             setPostText(event.target.value);
           }}
           placeholder="내용"
-        />{' '}
-        <br />
-        <DetailPostSubmitButton type="submit">추가하기</DetailPostSubmitButton>
-      </DetailPostInputForm>
+        />
+        <button type="submit"></button>
+      </form>
 
-      {/* 댓글 다는 창 */}
-
-      {reviewIsNowData.map((data) => (
-        <div key={data.idx}>
-          {data.review.map((d) => (
-            <>
-              <p>{d.reviewUser}</p>
-              <p>{d.content}</p>
-            </>
-          ))}
-        </div>
-      ))}
+      <></>
     </>
   );
 }
