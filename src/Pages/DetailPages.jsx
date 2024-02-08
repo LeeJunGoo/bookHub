@@ -19,9 +19,9 @@ function DetailPages() {
   return (
     <>
       {/* 
-         id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
-         data.itemId값은 mockData에서 받아온값인데 숫자였음
-         그래서 형변환 메서드 Number() 로 숫자 형변환 해줌
+        id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
+        data.itemId값은 mockData에서 받아온값인데 숫자였음
+        그래서 형변환 메서드 Number() 로 숫자 형변환 해줌
     */}
       {bookData
         .filter((data) => data.itemId === Number(id))
