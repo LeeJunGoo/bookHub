@@ -2,15 +2,19 @@
 
 export const userData = [
   {
-    idx: '0',
+    uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
     userNickName: 'iron1',
     userEmail: 'andatne1104@naver.com',
-    userPw: 'sudal123',
+    userPwd: 'sudal123',
     isLoggedIn: false,
-
     review: [
-      { idx: 0, reviewUser: 'iron1', content: 'dfdfddfd', like: 0 },
-      { idx: 1, reviewUser: 'iron1', content: 'sdfdfdsfds', like: 2 }
+      //idx : 각각의 책의 정보
+      //content : 리뷰 내용
+      // like : 리뷰에 남긴 좋아요? 댓글 개수?
+      { idx: 0, content: 'dfdfddfd', like: 3, itemId: 356791451, date: '2024-02-08' },
+      { idx: 1, content: 'sdfdfdsfds', like: 2, itemId: 356860848, date: '2024-02-07' },
+      { idx: 2, content: 'sdfdfdsfds', like: 1, itemId: 356838150, date: '2024-02-06' },
+      { idx: 3, content: 'sdfdfdsfds', like: 3, itemId: 356790670, date: '2024-02-09' }
     ]
   },
   {
@@ -18,7 +22,7 @@ export const userData = [
     profile: '',
     userNickName: 'iron2',
     userEmail: 'naver123@gmail.com',
-    userPw: 'su32231',
+    userPwd: 'su32231',
     isLoggedIn: true,
     review: [
       { idx: 2, reviewUser: 'iron2', content: 'dfdfddfd', like: 0 },
@@ -30,7 +34,7 @@ export const userData = [
     profile: '',
     userNickName: 'iron3',
     userEmail: 'nauro1104@daum.com',
-    userPw: 'dele123123321@',
+    userPwd: 'dele123123321@',
     isLoggedIn: false,
     review: [
       { idx: 4, reviewUser: 'iron3', content: 'dfdfddfd', like: 0 },
@@ -42,7 +46,7 @@ export const userData = [
     profile: '',
     userNickName: 'iron4',
     userEmail: 'nauro1204@naver.com ',
-    userPw: 'd44443321@#',
+    userPwd: 'd44443321@#',
     isLoggedIn: false,
     review: [
       { idx: 6, reviewUser: 'iron4', content: 'dfdfddfd', like: 0 },
@@ -54,7 +58,7 @@ export const userData = [
     profile: '',
     userNickName: 'iron5',
     userEmail: 'nauro12204@naver.com',
-    userPw: 'd3321@#',
+    userPwd: 'd3321@#',
     isLoggedIn: false,
     review: [
       { idx: 8, reviewUser: 'iron5', content: 'dfdfddfd', like: 0 },
