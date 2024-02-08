@@ -65,7 +65,7 @@ function DetailPages() {
           <div key={data.idx}>
             <b>{data.userNickName}</b>
 
-            <p>{data.content}</p>
+            {data.review.map(())}
           </div>
         </>
       ))}
