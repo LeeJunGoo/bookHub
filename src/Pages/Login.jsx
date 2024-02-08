@@ -2,15 +2,25 @@ import { useNavigate } from "react-router";
 import { userData } from "../shared/mockData";
 import styled from "styled-components";
 import { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 
-
-console.log(userData)
 
 function Login() {
 
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState('');
   const [userPwd, setUserPwd] = useState('');
+
+
+  const auth = getAuth();
+  signInWithEmailAndPassword(auth, 'andatne1104@naver.com', 'sudal123')
+    .then((userCredential) => {
+      const user = userCredential.user
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message
+    })
 
 
   const loggedIn = () => {
