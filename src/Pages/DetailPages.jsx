@@ -11,7 +11,8 @@ function DetailPages() {
     <>
       {/* 
          id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
-         그래서 형변환 메서드 Number() 사용        
+         data.itemId값은 mockData에서 받아온값인데 숫자였음
+         그래서 형변환 메서드 Number() 로 숫자 형변환 해줌
     */}
       {bookHubData
         .filter((data) => data.itemId === Number(id))
@@ -30,6 +31,7 @@ function DetailPages() {
             </div>
           </div>
         ))}
+      {/* 사용자 게시글 부분  */}
     </>
   );
 }

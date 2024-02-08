@@ -10,7 +10,7 @@ function Home() {
 
   return (
     <>
-      <div>Home</div>
+      <h1>Home</h1>
 
       <section>
         {bookData.map((book) => (
