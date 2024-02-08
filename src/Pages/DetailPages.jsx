@@ -40,16 +40,16 @@ function DetailPages() {
           <DetailCard key={book.itemId}>
             <DetailCardBody>
               <DetailImg src={book.coverLargeUrl} alt="" />
-              <DetailImgInfo>
-                <DetailImgInfoHero>
+              <div>
+                <div>
                   <DetailCardImgInfoPtag>{book.author}</DetailCardImgInfoPtag>
                   <DetailCardImgInfoPtag>{book.title}</DetailCardImgInfoPtag>
                   <br />
                   <DetailCardImgInfoPtag>{book.publisher}</DetailCardImgInfoPtag>
                   <DetailCardImgInfoPtag>{book.description}</DetailCardImgInfoPtag>
                   <br />
-                </DetailImgInfoHero>
-              </DetailImgInfo>
+                </div>
+              </div>
             </DetailCardBody>
           </DetailCard>
         ))}
@@ -70,11 +70,31 @@ function DetailPages() {
             setPostText(event.target.value);
           }}
           placeholder="내용"
+
+        />{' '}
+        <br />
+        <DetailPostSubmitButton type="submit">추가하기</DetailPostSubmitButton>
+      </DetailPostInputForm>
+
+      {/* 댓글 다는 창 */}
+
+      {reviewIsNowData.map((data) => (
+        <DetailPostRiViewBorder key={data.idx}>
+          {data.review.map((d) => (
+            <>
+              <DetailPostRiView>
+                <p>{d.reviewUser}</p>
+                <p>{d.content}</p>
+              </DetailPostRiView>
+            </>
+          ))}
+        </DetailPostRiViewBorder>
+      ))}
         />
         <button type="submit"></button>
       </form>
-
       <></>
+
     </>
   );
 }
@@ -96,10 +116,6 @@ const DetailCardBody = styled.div`
   align-items: center;
   padding-left: 10px;
 `;
-
-const DetailImgInfo = styled.div``;
-
-const DetailImgInfoHero = styled.div``;
 
 const DetailCardImgInfoPtag = styled.p`
   font-weight: bolder;
@@ -127,3 +143,15 @@ const DetailPostSubmitButton = styled.button`
 `;
 
 // 댓글 스타일 해야됨
+const DetailPostRiView = styled.div`
+  padding: 5px;
+  box-shadow: 1px 1px 1px 1px gray;
+  width: 400px;
+  height: 50px;
+  margin: 4px;
+`;
+
+const DetailPostRiViewBorder = styled.div`
+  margin: 50px;
+  display: flex;
+`;
