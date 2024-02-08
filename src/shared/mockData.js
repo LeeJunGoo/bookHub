@@ -1,11 +1,11 @@
 //유저 더미데이터
 
 export const userData = [
-  { idx: '0', userIdea: 'andatne1104@naver.com', userPw: 'sudal123' },
-  { idx: '1', userIdea: 'naver123@gmail.com', userPw: 'su32231' },
-  { idx: '2', userIdea: 'nauro1104@daum.com', userPw: 'dele123123321@' },
-  { idx: '3', userIdea: 'nauro1204@naver.com ', userPw: 'd44443321@#' },
-  { idx: '4', userIdea: 'nauro12204@naver.com', userPw: 'd3321@#' }
+  { idx: '0', userNickName: 'iron1', userEmail: 'andatne1104@naver.com', userPwd: 'sudal123' },
+  { idx: '1', userNickName: 'iron2', userEmail: 'naver123@gmail.com', userPwd: 'su32231' },
+  { idx: '2', userNickName: 'iron3', userEmail: 'nauro1104@daum.com', userPwd: 'dele123123321@' },
+  { idx: '3', userNickName: 'iron4', userEmail: 'nauro1204@naver.com ', userPwd: 'd44443321@#' },
+  { idx: '4', userNickName: 'iron5', userEmail: 'nauro12204@naver.com', userPwd: 'd3321@#' }
 ];
 
 export const bookData = [
