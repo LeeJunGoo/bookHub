@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { bookData, userData } from '../shared/mockData';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import List from '../components/List';
 
 //임시 로그인 정보
 const fakeId = userData[0].idx;
@@ -50,41 +51,29 @@ function Home() {
           <button>로그인</button>
         </div>
       </header>
-
       <Test>
-        {!loginCheck
-          ? bookData.map((book) => (
-              <div key={book.itemId}>
-                <img src={book.coverSmallUrl} alt="대체이미지" />
-                <p>{book.title}</p>
-                <div>
-                  <span>{book.publisher}</span>
-                  <button
-                    onClick={() => {
-                      goToButtonClick(book.itemId);
-                    }}
-                  >
-                    button
-                  </button>
-                </div>
+        {loginCheck ? (
+          <>
+            <List />
+          </>
+        ) : (
+          reviewBook.map((book) => (
+            <div key={book.itemId}>
+              <img src={book.coverSmallUrl} alt="대체이미지" />
+              <p>{book.title}</p>
+              <div>
+                <span>{book.publisher}</span>
+                <button
+                  onClick={() => {
+                    goToButtonClick(book.itemId);
+                  }}
+                >
+                  button
+                </button>
               </div>
-            ))
-          : reviewBook.map((book) => (
-              <div key={book.itemId}>
-                <img src={book.coverSmallUrl} alt="대체이미지" />
-                <p>{book.title}</p>
-                <div>
-                  <span>{book.publisher}</span>
-                  <button
-                    onClick={() => {
-                      goToButtonClick(book.itemId);
-                    }}
-                  >
-                    button
-                  </button>
-                </div>
-              </div>
-            ))}
+            </div>
+          ))
+        )}
       </Test>
 
       <footer>
