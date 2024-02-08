@@ -1,3 +1,13 @@
+//유저 더미데이터
+
+export const userData = [
+  { idx: '0', userIdea: 'andatne1104@naver.com', userPw: 'sudal123' },
+  { idx: '1', userIdea: 'naver123@gmail.com', userPw: 'su32231' },
+  { idx: '2', userIdea: 'nauro1104@daum.com', userPw: 'dele123123321@' },
+  { idx: '3', userIdea: 'nauro1204@naver.com ', userPw: 'd44443321@#' },
+  { idx: '4', userIdea: 'nauro12204@naver.com', userPw: 'd3321@#' }
+];
+
 export const bookData = [
   {
     title: '베스트셀러',
@@ -1009,12 +1019,3 @@ export const bookData = [
 ];
 
 //1009줄까지가 베스트셀러 정보입니다.
-
-//유저 더미데이터
-export const userData = [
-  { idx: '0', userIdea: 'andatne1104@naver.com', userPw: 'sudal123' },
-  { idx: '1', userIdea: 'naver123@gmail.com', userPw: 'su32231' },
-  { idx: '2', userIdea: 'nauro1104@daum.com', userPw: 'dele123123321@' },
-  { idx: '3', userIdea: 'nauro1204@naver.com ', userPw: 'd44443321@#' },
-  { idx: '4', userIdea: 'nauro12204@naver.com', userPw: 'd3321@#' }
-];
