@@ -1,6 +1,7 @@
 import React from 'react';
 import { bookData } from '../shared/mockData';
 import { useNavigate } from 'react-router-dom';
+
 function Home() {
   const naviGate = useNavigate();
 
