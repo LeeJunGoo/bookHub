@@ -3,10 +3,8 @@ import { useParams } from 'react-router-dom';
 import { bookData, userData } from '../shared/mockData';
 
 function DetailPages() {
-  const [bookHubData, setBookHubData] = useState(bookData);
-
   // 사용자 게시글 입력 데이터
-  const [userPostViewData, setUserPostViewData] = useState([]);
+  const [userPostViewData, setUserPostViewData] = useState(userData);
 
   const [postTitle, setPostTitle] = useState('');
   const [postText, setPostText] = useState('');
@@ -14,19 +12,9 @@ function DetailPages() {
   const { id } = useParams();
   //console.log(typeof id);
 
-  // const onSubmitButtonClick = (event) =>{
-  //    event.preventDefault();
-
-  //    {userData.map((data)=>{
-
-  //    // set함수에 저장합시다.
-  //     setUserPostViewData((prev) => [...prev ,obj ])
-
-  //    // 인풋 리셋
-  //     setPostTitle("")
-  //     setPostText("")
-  // }
-
+  const reviewIsNowData = userData.filter((user) => user.islogin === false && user.review);
+  console.log(reviewIsNowData);
+  // console.log(reviewIsNowdata);
   return (
     <>
       {/* 
@@ -34,7 +22,7 @@ function DetailPages() {
          data.itemId값은 mockData에서 받아온값인데 숫자였음
          그래서 형변환 메서드 Number() 로 숫자 형변환 해줌
     */}
-      {bookHubData
+      {bookData
         .filter((data) => data.itemId === Number(id))
         .map((book) => (
           <div key={book.itemId}>
@@ -72,7 +60,15 @@ function DetailPages() {
         <button type="submit"></button>
       </form>
 
-      <></>
+      {reviewIsNowData.map((data) => (
+        <>
+          <div key={data.idx}>
+            <b>{data.userNickName}</b>
+
+            <p>{data.content}</p>
+          </div>
+        </>
+      ))}
     </>
   );
 }
