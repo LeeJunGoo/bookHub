@@ -8,8 +8,8 @@ export const userData = [
     userPwd: 'sudal123',
     isLoggedIn: false,
     review: [
-      { idx: 0, content: 'dfdfddfd', like: 0 },
-      { idx: 1, content: 'sdfdfdsfds', like: 2 }
+      { idx: 0, reviewUser: 'iron1', content: 'dfdfddfd', like: 0 },
+      { idx: 1, reviewUser: 'iron1', content: 'sdfdfdsfds', like: 2 }
     ]
   },
   {
@@ -19,7 +19,10 @@ export const userData = [
     userEmail: 'naver123@gmail.com',
     userPwd: 'su32231',
     isLoggedIn: true,
-    review: []
+    review: [
+      { idx: 2, reviewUser: 'iron2', content: 'dfdfddfd', like: 0 },
+      { idx: 3, reviewUser: 'iron2', content: 'sdfdfdsfds', like: 2 }
+    ]
   },
   {
     idx: '2',
@@ -28,7 +31,10 @@ export const userData = [
     userEmail: 'nauro1104@daum.com',
     userPwd: 'dele123123321@',
     isLoggedIn: false,
-    review: []
+    review: [
+      { idx: 4, reviewUser: 'iron3', content: 'dfdfddfd', like: 0 },
+      { idx: 5, reviewUser: 'iron3', content: 'sdfdfdsfds', like: 2 }
+    ]
   },
   {
     idx: '3',
@@ -37,7 +43,10 @@ export const userData = [
     userEmail: 'nauro1204@naver.com ',
     userPwd: 'd44443321@#',
     isLoggedIn: false,
-    review: []
+    review: [
+      { idx: 6, reviewUser: 'iron4', content: 'dfdfddfd', like: 0 },
+      { idx: 7, reviewUser: 'iron4', content: 'sdfdfdsfds', like: 2 }
+    ]
   },
   {
     idx: '4',
@@ -46,7 +55,10 @@ export const userData = [
     userEmail: 'nauro12204@naver.com',
     userPwd: 'd3321@#',
     isLoggedIn: false,
-    review: []
+    review: [
+      { idx: 8, reviewUser: 'iron5', content: 'dfdfddfd', like: 0 },
+      { idx: 9, reviewUser: 'iron5', content: 'sdfdfdsfds', like: 2 }
+    ]
   }
 ];
 
