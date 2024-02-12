@@ -2,8 +2,6 @@ import React from 'react';
 import { bookData } from '../shared/mockData.js';
 import styled from 'styled-components';
 
-
-
 function List() {
   return (
     <section>
@@ -51,7 +49,6 @@ const ListWrapper = styled.li`
 const BookCoverAndRanking = styled.div``;
 
 const BookCover = styled.div``;
-
 
 const Ranking = styled.div``;
 
