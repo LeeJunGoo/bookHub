@@ -10,8 +10,8 @@ function DetailPages() {
   return (
     <>
       {/* 
-         id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
-         그래서 형변환 메서드 Number() 사용        
+        id값을 typeof 통해서 데이터타입 찍어보니 String 이더라
+        그래서 형변환 메서드 Number() 사용        
     */}
       {bookHubData
         .filter((data) => data.itemId === Number(id))

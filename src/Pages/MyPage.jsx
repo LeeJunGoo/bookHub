@@ -1,10 +1,17 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
+import { useState } from 'react';
 
 function MyPage() {
 
-  const navigate = useNavigate();
 
+  const { uid } = useParams();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+
+  const navigate = useNavigate();
 
   const goToLogin = () => {
     navigate('/login')
@@ -12,7 +19,9 @@ function MyPage() {
 
   return (
     <div>MyPage
+      <section>
 
+      </section>
       <button onClick={goToLogin}> 로그아웃 </button>
     </div>
   )
