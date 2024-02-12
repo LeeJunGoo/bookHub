@@ -61,49 +61,13 @@ export const userData = [
     review: []
   },
   {
-    uid: '1',
+    uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx',
     profile: '',
     userNickName: 'iron2',
     userEmail: 'naver123@gmail.com',
     userPwd: 'su32231',
     isLoggedIn: true,
     review: []
-  },
-  {
-    uid: '2',
-    profile: '',
-    userNickName: 'iron3',
-    userEmail: 'nauro1104@daum.com',
-    userPwd: 'dele123123321@',
-    isLoggedIn: false,
-    review: [
-      { idx: 4, reviewUser: 'iron3', content: 'dfdfddfd', like: 0 },
-      { idx: 5, reviewUser: 'iron3', content: 'sdfdfdsfds', like: 2 }
-    ]
-  },
-  {
-    uid: '3',
-    profile: '',
-    userNickName: 'iron4',
-    userEmail: 'nauro1204@naver.com ',
-    userPwd: 'd44443321@#',
-    isLoggedIn: false,
-    review: [
-      { idx: 6, reviewUser: 'iron4', content: 'dfdfddfd', like: 0 },
-      { idx: 7, reviewUser: 'iron4', content: 'sdfdfdsfds', like: 2 }
-    ]
-  },
-  {
-    uid: '4',
-    profile: '',
-    userNickName: 'iron5',
-    userEmail: 'nauro12204@naver.com',
-    userPwd: 'd3321@#',
-    isLoggedIn: false,
-    review: [
-      { idx: 8, reviewUser: 'iron5', content: 'dfdfddfd', like: 0 },
-      { idx: 9, reviewUser: 'iron5', content: 'sdfdfdsfds', like: 2 }
-    ]
   }
 ];
 

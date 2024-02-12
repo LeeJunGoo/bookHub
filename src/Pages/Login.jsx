@@ -7,6 +7,11 @@ import { bookData } from "../shared/mockData";
 
 console.log(bookData)
 
+
+// id : gang@dev.com
+// pwd : 123123
+
+
 function Login() {
 
   const navigate = useNavigate();
@@ -21,8 +26,8 @@ function Login() {
       .then((userCredential) => {
         const user = userCredential.user
         console.log(userCredential)
-        console.log(`로그인이 완료됐습니다 id: ${email}, pwd: ${password}`)
-        navigate(`/myPage/id`)
+        console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
+        navigate(`/mypage/${user.uid}`)
       })
 
       .catch((error) => {
@@ -33,6 +38,8 @@ function Login() {
       })
 
   }
+
+
 
   const onUserEmailHandler = (e) => {
     setUserEmail(e.target.value)
@@ -47,10 +54,15 @@ function Login() {
     navigate('/join')
   }
 
+  const goToHome = () => {
+    navigate('/')
+  }
+
   return (
     <>
       <div>
-        <StHeader>로그인</StHeader>
+        <StHeader>로그인
+        </StHeader>
         <StMain>
           <StUl>
             <li>
@@ -74,6 +86,7 @@ function Login() {
             </div>
           </StUl>
           <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
+          <StBtn onClick={goToHome}>홈으로 가기</StBtn>
         </StMain>
       </div>
     </>)

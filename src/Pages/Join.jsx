@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import styled from 'styled-components';
-import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { db } from '../firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 
 function Join() {
+
 
   const navigate = useNavigate();
   const auth = getAuth();
@@ -13,31 +16,30 @@ function Join() {
   const [password, setPassword] = useState('');
   const [nickName, setNickName] = useState('');
 
-  const newSign = (e) => {
+
+  const newSign = async (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(userCredential)
-        alert(`${user} 님 안녕하세요!`)
-      })
-      .catch((error) => {
-        const errorcode = error.code;
-        const errorMessage = error.message
-        alert(`${errorMessage}과 같은 오류가 발생하였습니다. 오류코드 ${errorcode}`)
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user;
+      await addDoc(collection(db, "users"), {
+        uid: user.uid,
+        userNickName: nickName,
+        userEmail: email,
+        userProfile: null,
+      });
 
-      })
 
-    navigate('/login')
+      alert(`${nickName} 님 안녕하세요!`)
+      navigate('/login')
+
+    } catch (error) {
+      const errorcode = error.code;
+      const errorMessage = error.message
+      alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`)
+      console.log('오류코드', errorcode)
+    }
   }
-
-  // const addUsersData = (e) => {
-  //   newSign (e)
-  //   email, nickName
-  //   set
-  // }
-
-
 
   const onEmailHandler = (e) => {
     console.log('이메일', e.target.value)
