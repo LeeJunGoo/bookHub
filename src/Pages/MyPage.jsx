@@ -6,10 +6,7 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
 
 function MyPage() {
-  const { id } = useParams();
   const auth = getAuth();
-
-  console.log(id);
 
   const navigate = useNavigate();
 

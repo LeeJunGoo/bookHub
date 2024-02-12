@@ -10,8 +10,6 @@ console.log(bookData);
 // id : gang@dev.com
 // pwd : 123123
 
-console.log(userData);
-
 function Login() {
   const navigate = useNavigate();
 
@@ -27,7 +25,7 @@ function Login() {
         const user = userCredential.user;
         console.log(userCredential);
         console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`);
-        navigate(`/mypage/${user.uid}`);
+        navigate(`/mypage/`);
       })
 
       .catch((error) => {
@@ -60,17 +58,17 @@ function Login() {
       <div>
         <StHeader>로그인</StHeader>
         <StMain>
-          <ul>
+          <StUl>
             <li>
               <label>이메일</label>
-              <input type="text" placeholder="이메일을 입력해주세요."></input>
+              <input type="text" onClick={onUserEmailHandler} placeholder="이메일을 입력해주세요."></input>
             </li>
             <li>
               <label>패스워드</label>
-              <input type="password" placeholder="패스워드를 입력해주세요."></input>
+              <input type="password" onClick={onUserPwdHandler} placeholder="패스워드를 입력해주세요."></input>
             </li>
-            <button>로그인!</button>
-          </ul>
+            <button onClick={(e) => loggedIn(e)}>로그인!</button>
+          </StUl>
           <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
           <StBtn onClick={goToHome}>홈으로 가기</StBtn>
         </StMain>
@@ -101,4 +99,14 @@ const StHeader = styled.header`
 const StBtn = styled.button`
   display: flex;
   justify-content: center;
+`;
+
+const StUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 300px;
+  height: 200px;
+  border: 1px solid black;
 `;
