@@ -9,40 +9,39 @@ function List() {
   return (
     <section>
       {bookData.map((book) => (
-        <>
-          <div
-            key={book.itemId}
-            onClick={() => {
-              navi(`detail/${book.itemId}`);
-            }}
-          >
-            <ListWrapper>
-              <BookCoverAndRanking>
-                <BookCover>
-                  <img src={book.coverLargeUrl} alt="커버이미지"></img>
-                </BookCover>
-                <Ranking>{book.rank}</Ranking>
-              </BookCoverAndRanking>
-              <Genre>
-                <p>{book.categoryName}</p>
-              </Genre>
-              <BookNameAndAuthur>
-                <BookName>
-                  <p>{book.title}</p>
-                </BookName>
-                <Author>
-                  <p>{book.author}</p>
-                </Author>
-              </BookNameAndAuthur>
-              <Rate>
-                <p>{book.customerReviewRank}</p>
-              </Rate>
-              <Outline>
-                <p>{book.description}</p>
-              </Outline>
-            </ListWrapper>
-          </div>
-        </>
+        <div
+          key={book.itemId}
+          onClick={() => {
+            navi(`detail/${book.itemId}`);
+          }}
+        >
+          <ListWrapper>
+            <BookCoverAndRanking>
+              <BookCover>
+                <img src={book.coverLargeUrl} alt="커버이미지"></img>
+              </BookCover>
+              <Ranking>{book.rank}</Ranking>
+            </BookCoverAndRanking>
+            <Genre>
+              <p>{book.categoryName}</p>
+            </Genre>
+            <BookNameAndAuthur>
+              <BookName>
+                <p>{book.title}</p>
+              </BookName>
+              <Author>
+                <p>{book.author}</p>
+              </Author>
+            </BookNameAndAuthur>
+            <Rate>
+              <p>{book.customerReviewRank}</p>
+            </Rate>
+            <Outline>
+              <p>{book.description}</p>
+            </Outline>
+          </ListWrapper>
+        </div>
+
       ))}
     </section>
   );

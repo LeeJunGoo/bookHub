@@ -2,8 +2,9 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
-
 import { bookData } from "../shared/mockData";
+import { useDispatch } from "react-redux";
+import { login } from "../shared/redux/modules/userDataController";
 
 console.log(bookData)
 
@@ -11,31 +12,40 @@ console.log(bookData)
 // id : gang@dev.com
 // pwd : 123123
 
-
 function Login() {
+
 
   const navigate = useNavigate();
   const auth = getAuth();
+  const dispatch = useDispatch();
 
   const [email, setUserEmail] = useState('');
   const [password, setUserPwd] = useState('');
 
   const loggedIn = async (e) => {
     e.preventDefault();
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user
-        console.log(userCredential)
-        console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
-        navigate(`/mypage/`)
-      })
+    try {
 
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message
-        alert(`${errorMessage} 의 오류가 발생했습니다. 에러코드: ${errorCode}`)
-        navigate('/login')
-      })
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user
+      console.log(userCredential)
+      console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
+
+      dispatch(login({
+        email: user.email,
+        uid: user.uid,
+
+      }))
+
+      navigate(`/`)
+
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message
+      alert(`${errorMessage} 의 오류가 발생했습니다. 에러코드: ${errorCode}`)
+
+      navigate('/login')
+    }
 
   }
 
@@ -70,7 +80,7 @@ function Login() {
                 type="text"
                 placeholder="이메일"
                 value={email}
-                onChange={(e) => onUserEmailHandler(e)}
+                onChange={onUserEmailHandler}
               ></input>
             </li>
             <li>
@@ -78,7 +88,7 @@ function Login() {
                 type="password"
                 placeholder="비밀번호"
                 value={password}
-                onChange={(e) => onUserPwdHandler(e)}
+                onChange={onUserPwdHandler}
               ></input>
             </li>
             <div>

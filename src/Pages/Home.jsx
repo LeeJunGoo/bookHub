@@ -89,7 +89,7 @@ function Home() {
     if (findUserData) {
 
       //로그인 되었을 경우 마이페이지로 이동
-      naviGate(`/Mypage/${findUserData.uid}`);
+      naviGate(`/Mypage`);
     } else {
       //비로그인일 경우 로그인 페이지로 이동
       if (window.confirm('흥흥!! 로그인이 안 됐어 바부야~ 로그인 할꺼지?')) {
