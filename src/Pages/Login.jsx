@@ -3,14 +3,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 
-import { bookData } from "../shared/mockData";
-
-console.log(bookData)
-
-
 // id : gang@dev.com
 // pwd : 123123
-
 
 function Login() {
 
@@ -38,8 +32,6 @@ function Login() {
       })
 
   }
-
-
 
   const onUserEmailHandler = (e) => {
     setUserEmail(e.target.value)
@@ -92,7 +84,6 @@ function Login() {
     </>)
 }
 
-
 export default Login;
 
 const StMain = styled.main`
@@ -121,8 +112,6 @@ const StHeader = styled.header`
   height: 15vh;
   min-width: 400px;
 `
-
-
 
 const StBtn = styled.button`
   display: flex;

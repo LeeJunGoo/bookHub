@@ -90,7 +90,6 @@ function Home() {
       }
     }
   };
-
   // 검색 기능 관련 메소드
   const TitleSearchEventHandler = (e) => {
     setTitleSearch(e.target.value);

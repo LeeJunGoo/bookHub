@@ -30,16 +30,15 @@ function MyPage() {
     });
 
     return () => unsubscribe();
-  }, [navigate])
-
-
+  }, [])
 
   const fetchUserData = async (userId) => {
     const userDocRef = doc(db, 'users', userId);
     const docSnap = await getDoc(userDocRef);
     if (docSnap.exists()) {
       const userData = docSnap.data();
-      setImageUrl(userData.profileImageUrl || await fetchDefaultImage());
+      setUserDetails({ userNickName: userData.nickName, userEmail: userData.email })
+      setImageUrl(userData.profileImageUrl || (await fetchDefaultImage()));
     } else {
       console.log('사용자 문서가 없습니다. 기본 값을 사용합니다.');
       const defaultImageUrl = await fetchDefaultImage();
@@ -47,7 +46,6 @@ function MyPage() {
 
     }
   };
-
 
   const fetchDefaultImage = async () => {
     const defaultImageRef = ref(storage, 'profile.png');
@@ -74,7 +72,7 @@ function MyPage() {
   const uploadImage = async () => {
     if (!selectedFile) {
       alert('이미지를 선택해주세요');
-      return
+      return;
     }
 
     const timestamp = new Date().getTime();
