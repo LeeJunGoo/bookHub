@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components';
@@ -5,11 +6,10 @@ import { useState } from 'react';
 import { db } from '../firebase';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
-// import { }
-
-
 
 function MyPage() {
+  const { id } = useParams();
+  const auth = getAuth();
 
   const auth = getAuth();
 
@@ -64,11 +64,8 @@ function MyPage() {
 export default MyPage
 
 
-
-
 const StUl = styled.ul`
   display: flex;
   width: 100%;
-
-  
 `
+  
