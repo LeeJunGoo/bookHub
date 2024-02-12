@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import styled from 'styled-components';
-import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from '../firebase';
-import { getFirestore, collection, addDoc, query } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 
 function Join() {
+
 
   const navigate = useNavigate();
   const auth = getAuth();
