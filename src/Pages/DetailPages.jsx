@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { bookData, userData } from '../shared/mockData';
 import styled from 'styled-components';
+import { addDoc, collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../firebase';
+
 function DetailPages() {
+  const navigate = useNavigate();
+
   const [bookHubData, setBookHubData] = useState(bookData);
 
   // 사용자 게시글 입력 데이터
@@ -12,20 +17,43 @@ function DetailPages() {
   const [postText, setPostText] = useState('');
 
   const { id } = useParams();
-  //console.log(typeof id);
 
-  // const onSubmitButtonClick = (event) =>{
-  //    event.preventDefault();
+  // 파이어베이스 addDoc 이용
+  const addReview = async (event, userNickName) => {
+    event.preventDefault();
 
-  //    {userData.map((data)=>{
+    userData.map(async (user) => {
+      if (user.isLoggedIn === true && user.userNickName === userNickName) {
+        // 입력폼에서 title , text 저장
+        const 객체 = {
+          createdAt: Date.now(),
+          title: postTitle,
+          text: postText,
+          id: crypto.randomUUID()
+        };
 
-  //    // set함수에 저장합시다.
-  //     setUserPostViewData((prev) => [...prev ,obj ])
+        console.log(객체);
 
-  //    // 인풋 리셋
-  //     setPostTitle("")
-  //     setPostText("")
-  // }
+        setUserPostViewData((prev) => {
+          return [...userPostViewData, 객체];
+        });
+
+        console.log(userPostViewData);
+        setPostText('');
+        setPostTitle('');
+
+        // firestore에  컬렉션 참조
+        const collectionRef = collection(db, 'review');
+
+        await addDoc(collectionRef, 객체);
+      } else {
+        window.alert('로그인해주세요');
+
+        // 로그인으로 이동하기
+        navigate(`login`);
+      }
+    });
+  };
 
   return (
     <>
@@ -54,7 +82,7 @@ function DetailPages() {
           </DetailCard>
         ))}
       {/* 사용자 게시글 부분  */}
-      <form>
+      <form onSubmit={addReview}>
         <input
           type="text"
           value={postTitle}
@@ -70,31 +98,12 @@ function DetailPages() {
             setPostText(event.target.value);
           }}
           placeholder="내용"
-
         />{' '}
         <br />
         <DetailPostSubmitButton type="submit">추가하기</DetailPostSubmitButton>
-      </DetailPostInputForm>
+      </form>
 
       {/* 댓글 다는 창 */}
-
-      {reviewIsNowData.map((data) => (
-        <DetailPostRiViewBorder key={data.idx}>
-          {data.review.map((d) => (
-            <>
-              <DetailPostRiView>
-                <p>{d.reviewUser}</p>
-                <p>{d.content}</p>
-              </DetailPostRiView>
-            </>
-          ))}
-        </DetailPostRiViewBorder>
-      ))}
-        />
-        <button type="submit"></button>
-      </form>
-      <></>
-
     </>
   );
 }

@@ -1,13 +1,21 @@
 import React from 'react';
 import { bookData } from '../shared/mockData.js';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 function List() {
+  const navi = useNavigate();
+
   return (
     <section>
       {bookData.map((book) => (
         <>
-          <div key={book.itemId}>
+          <div
+            key={book.itemId}
+            onClick={() => {
+              navi(`detail/${book.itemId}`);
+            }}
+          >
             <ListWrapper>
               <BookCoverAndRanking>
                 <BookCover>

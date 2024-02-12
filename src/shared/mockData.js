@@ -1,5 +1,9 @@
 //유저 더미데이터
 
+// 책 아이디에 등록
+
+// 리뷰를 등록했을때 랜덤으로 부여되는 uid.....
+
 export const userData = [
   {
     uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',

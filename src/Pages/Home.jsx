@@ -15,7 +15,7 @@ function Home() {
   };
 
   //리 랜더링될 때마다 false값이 부여되어 책의 전체가 계속 보인다. 해결방법) 못찾음 ㅠㅠ
-  const [loginCheck, setLoginCheck] = useState(false);
+  const [loginCheck, setLoginCheck] = useState(true);
 
   //로그인 여부 확인
   const loginData = userData.find((user) => (user.idx === fakeId ? true : false));
@@ -48,7 +48,13 @@ function Home() {
         <div>HOME</div>
         <div>
           <button>마이페이지</button>
-          <button>로그인</button>
+          <button
+            onClick={() => {
+              naviGate(`login`);
+            }}
+          >
+            로그인
+          </button>
         </div>
       </header>
       <Test>
