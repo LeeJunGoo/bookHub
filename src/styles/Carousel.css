@@ -1,6 +1,6 @@
 .swiper-button-prev,
 .swiper-button-next {
-  background-color: blue;
+  background-color: #fff;
   opacity: 0.6;
   height: 50px;
   width: 50px;
@@ -12,4 +12,8 @@
 .swiper-button-next:after {
   font-size: 1.1rem !important;
   font-weight: 600 !important;
+}
+
+.swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal {
+  margin-top: 40px;
 }

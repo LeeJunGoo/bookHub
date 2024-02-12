@@ -4,25 +4,26 @@ import { bookData, userData, reviewData } from '../shared/mockData';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import List from '../components/List';
+//swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import '../styles/Carousel.css';
-//swiper 패키지 설치
 
 //임시 로그인 정보
 // const fakeId = 'XOianB6sCXZyfl7qF29Ck6PBRNx';
-const fakeId = '';
-// const fakeId = 'XOianB6sCXZyfl7qF29Ck6PBRNx2';
+// const fakeId = '';
+const fakeId = 'XOianB6sCXZyfl7qF29Ck6PBRNx2';
 
 function Home() {
   const naviGate = useNavigate();
 
   const [review, setReview] = useState([]); // 베스트 셀러 리스트 및 작성한 리뷰 책에 대한 리스트
   const [title, setTitle] = useState(''); // "베스트 셀러" or "내가 작성한 책의 리뷰"
-  const [TitleSearch, setTitleSearch] = useState(''); //검색 기능
+  const [TitleSearch, setTitleSearch] = useState(''); //검색창에 입력한 책의 제목
+  const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
 
   //로그인 정보
   const findUserData = userData.find((user) => (user.uid === fakeId ? true : false));
@@ -98,13 +99,29 @@ function Home() {
     }
   };
 
-  // 검색 기능 관련 메소드
-  const TitleSearchEventHandler = (e) => {
+  //검색 창의 onChange 메소드
+  const searchOnChangeEventHandler = (e) => {
     setTitleSearch(e.target.value);
   };
 
-  const onSubmitEventHandler = () => {
-    console.log(TitleSearch.trim());
+  //검색 버튼
+  const onSubmitEventHandler = (e) => {
+    e.preventDefault();
+
+    if (TitleSearch !== '') {
+      //검색 창에 입력한 문자열이 mock데이터의 책의 제목에 포함되어있는 리스트
+      const searchData = bookData.filter((item) => {
+        return item.title.trim().includes(TitleSearch.trim());
+      });
+
+      if (searchData.length === 0) {
+        alert('검색한 결과가 없습니다.');
+      }
+
+      setFilteredResults(searchData);
+    } else {
+      alert('검색을 해주세요');
+    }
   };
 
   return (
@@ -116,16 +133,18 @@ function Home() {
           <button onClick={loginButtonEventHandler}>{findUserData ? '로그아웃' : '로그인'}</button>
           <button onClick={myPageButtonEventHandler}>마이페이지</button>
         </HeaderButtonDiv>
+
         <form onSubmit={onSubmitEventHandler}>
-          <input value={TitleSearch} onChange={TitleSearchEventHandler} maxLength={30}></input>
-          <button type="submit">검색</button>
+          <input value={TitleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
+          <button type="onSubmit">검색</button>
         </form>
       </Header>
+
       <main>
         <StSection>
           <StP>{title}</StP>
           <StSwiper
-            slidesPerView={4} //각 슬라이드의 표시 수를 지정
+            slidesPerView={3} //각 슬라이드의 표시 수를 지정
             spaceBetween={5} //각 슬라이드 사이의 간격
             loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
             pagination={{
@@ -148,8 +167,11 @@ function Home() {
             ))}
           </StSwiper>
         </StSection>
-        <List />
+        <section>
+          {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
+        </section>
       </main>
+
       <StFooter>
         <p>2024년 02월 07일~ 14일</p>
         <p>© bookHub</p>
