@@ -26,8 +26,13 @@ function MyPage() {
     })
   }
 
+  const goToHome = () => {
+    navigate('/')
+  }
+
   return (
     <div>MyPage
+      <button onClick={goToHome}>홈버튼</button>
       <section>
         <div>
           <StUl>
