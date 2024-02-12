@@ -7,6 +7,11 @@ import { bookData } from "../shared/mockData";
 
 console.log(bookData)
 
+
+// id : gang@dev.com 
+// pwd : 123123
+
+
 function Login() {
 
   const navigate = useNavigate();
