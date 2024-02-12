@@ -1,27 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import styled from 'styled-components';
-import { auth } from '../firebase';
-import { createUserWithEmailAndPassword } from '@firebase/auth';
-
-
+import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
 
 
 function Join() {
 
   const navigate = useNavigate();
+  const auth = getAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickName, setNickName] = useState('');
 
+  const newSign = (e) => {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(userCredential)
+        alert(`${user} 님 안녕하세요!`)
+      })
+      .catch((error) => {
+        const errorcode = error.code;
+        const errorMessage = error.message
+        alert(`${errorMessage}과 같은 오류가 발생하였습니다. 오류코드 ${errorcode}`)
 
+      })
 
-  const newSign = () => {
-    createUserWithEmailAndPassword(auth, "andatne1104@naver.com", 'sudal123')
     navigate('/login')
   }
 
+  // const addUsersData = (e) => {
+  //   newSign (e)
+  //   email, nickName
+  //   set
+  // }
 
 
 
@@ -55,6 +69,7 @@ function Join() {
             <input
               type='email'
               placeholder='이메일'
+              value={email}
               onChange={onEmailHandler}
             ></input>
           </li>
@@ -63,6 +78,7 @@ function Join() {
             <input
               type='password'
               placeholder='비밀번호'
+              value={password}
               onChange={onPasswordHandler}
             ></input>
           </li>
@@ -71,6 +87,7 @@ function Join() {
             <input
               type='text'
               placeholder='닉네임'
+              value={nickName}
               onChange={onNickNameHandler}
             ></input>
           </li>

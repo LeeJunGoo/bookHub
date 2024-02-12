@@ -50,7 +50,7 @@ function List() {
 export default List;
 
 const ListWrapper = styled.li`
-  background-color: red;
+  background-color: #eecbcb;
   display: flex;
 `;
 

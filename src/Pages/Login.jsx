@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { userData } from "../shared/mockData";
 import styled from "styled-components";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
@@ -11,23 +10,28 @@ console.log(bookData)
 function Login() {
 
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState('');
-  const [userPwd, setUserPwd] = useState('');
-
-
   const auth = getAuth();
-  signInWithEmailAndPassword(auth, 'andatne1104@naver.com', 'sudal123')
-    .then((userCredential) => {
-      const user = userCredential.user
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message
-    })
 
+  const [email, setUserEmail] = useState('');
+  const [password, setUserPwd] = useState('');
 
-  const loggedIn = () => {
-    navigate('/myPage/:id')
+  const loggedIn = async (e) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user
+        console.log(userCredential)
+        console.log(`로그인이 완료됐습니다 id: ${email}, pwd: ${password}`)
+        navigate(`/myPage/id`)
+      })
+
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message
+        navigate('/login')
+        alert(`${errorMessage} 의 오류가 발생했습니다. 에러코드: ${errorCode}`)
+      })
+
   }
 
   const onUserEmailHandler = (e) => {
@@ -39,15 +43,9 @@ function Login() {
     setUserPwd(e.target.value)
   }
 
-
   const goToJoinPage = () => {
     navigate('/join')
   }
-
-
-
-
-
 
   return (
     <>
@@ -59,7 +57,7 @@ function Login() {
               <input
                 type="text"
                 placeholder="이메일"
-                value={userEmail}
+                value={email}
                 onChange={(e) => onUserEmailHandler(e)}
               ></input>
             </li>
@@ -67,12 +65,12 @@ function Login() {
               <input
                 type="password"
                 placeholder="비밀번호"
-                value={userPwd}
+                value={password}
                 onChange={(e) => onUserPwdHandler(e)}
               ></input>
             </li>
             <div>
-              <button onClick={loggedIn}>로그인!</button>
+              <button onClick={(e) => loggedIn(e)}>로그인!</button>
             </div>
           </StUl>
           <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
@@ -81,9 +79,8 @@ function Login() {
     </>)
 }
 
+
 export default Login;
-
-
 
 const StMain = styled.main`
   display: flex;
