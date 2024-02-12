@@ -9,6 +9,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
+import '../styles/Carousel.css';
 //swiper 패키지 설치
 
 //임시 로그인 정보
@@ -121,33 +122,31 @@ function Home() {
         </form>
       </Header>
       <main>
-        <StSwiper
-          slidesPerView={4} //각 슬라이드의 표시 수를 지정
-          spaceBetween={10} //각 슬라이드 사이의 간격
-          loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
-          pagination={{
-            clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
-          }}
-          navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
-          modules={[Pagination, Navigation]}
-        >
-          {review.map((book) => (
-            <StSwiperSlide key={book.itemId}>
-              <StyledLink to={`/detail/${book.itemId}`}>
-                <img src={book.coverSmallUrl} alt="대체이미지" />
-                <p>{book.title}</p>
-              </StyledLink>
-
-              <p>
-                {book.publisher}/{book.author}
-              </p>
-            </StSwiperSlide>
-          ))}
-        </StSwiper>
         <StSection>
           <StP>{title}</StP>
+          <StSwiper
+            slidesPerView={4} //각 슬라이드의 표시 수를 지정
+            spaceBetween={5} //각 슬라이드 사이의 간격
+            loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+            pagination={{
+              clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
+            }}
+            navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
+            modules={[Pagination, Navigation]}
+          >
+            {review.map((book) => (
+              <StSwiperSlide key={book.itemId}>
+                <StyledLink to={`/detail/${book.itemId}`}>
+                  <img src={book.coverSmallUrl} alt="대체이미지" />
+                  <p>{book.title}</p>
+                </StyledLink>
 
-          <StUl></StUl>
+                <p>
+                  {book.publisher}/{book.author}
+                </p>
+              </StSwiperSlide>
+            ))}
+          </StSwiper>
         </StSection>
         <List />
       </main>
@@ -215,11 +214,16 @@ const HeaderButtonDiv = styled.div`
 `;
 
 const StSwiper = styled(Swiper)`
-  width: 800px;
-  height: 200px;
+  width: 1000px;
+  margin-top: 60px;
 `;
 
-const StSwiperSlide = styled(SwiperSlide)``;
+const StSwiperSlide = styled(SwiperSlide)`
+  text-align: center;
+  p {
+    margin-top: 10px;
+  }
+`;
 
 const StSection = styled.section`
   width: 100%;
@@ -228,22 +232,6 @@ const StSection = styled.section`
 
 const StP = styled.p`
   font-size: 25px;
-`;
-
-const StUl = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 50px;
-  margin-top: 60px;
-`;
-
-const StLi = styled.li`
-  width: 150px;
-  text-align: center;
-  p {
-    margin-top: 10px;
-  }
 `;
 
 const StyledLink = styled(Link)`
