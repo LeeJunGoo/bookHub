@@ -1,5 +1,5 @@
 import { userData } from '../../mockData';
-
+console.log('유저데이터 디폴트값', userData[0]);
 const LOGIN_USER = 'user/LOGIN_USER';
 const JOIN_USER = 'user/JOIN_USER';
 const AUTH_USER = 'user/AUTH_USER';

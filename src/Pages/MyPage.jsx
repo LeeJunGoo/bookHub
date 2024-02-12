@@ -5,11 +5,11 @@ import { useState } from 'react';
 function MyPage() {
 
 
-  const { uid } = useParams();
+  const { id } = useParams();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
+  console.log(id)
 
   const navigate = useNavigate();
 

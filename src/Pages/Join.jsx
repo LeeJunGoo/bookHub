@@ -13,31 +13,42 @@ function Join() {
   const [password, setPassword] = useState('');
   const [nickName, setNickName] = useState('');
 
-  const newSign = (e) => {
+  const newSign = async (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
+
+    const createUser = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+
         const user = userCredential.user;
+        if (userCredential) {
+          const signUp = {
+            uid: user.uid,
+            userNickName: null,
+            userEmail: null,
+            userProfile: null,
+            userPwd: null,
+          }
+        }
+
         console.log(userCredential)
-        alert(`${user} 님 안녕하세요!`)
+        alert(`${user.uid} 님 안녕하세요!`)
+
+
+
+
       })
       .catch((error) => {
         const errorcode = error.code;
         const errorMessage = error.message
-        alert(`${errorMessage}과 같은 오류가 발생하였습니다. 오류코드 ${errorcode}`)
+        alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`)
+        console.log('오류코드', errorcode)
 
       })
 
     navigate('/login')
+
+
   }
-
-  // const addUsersData = (e) => {
-  //   newSign (e)
-  //   email, nickName
-  //   set
-  // }
-
-
 
   const onEmailHandler = (e) => {
     console.log('이메일', e.target.value)
