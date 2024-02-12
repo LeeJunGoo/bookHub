@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -11,6 +10,14 @@ const firebaseConfig = {
   storageBucket: 'bookhub-fbb82.appspot.com',
   messagingSenderId: '881370622172',
   appId: '1:881370622172:web:913fb62c971237adbdec19'
+
+  // const firebaseConfig = {
+  //   apiKey: process.env.REACT_APP_API_KEY,
+  //   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  //   projectId: process.env.REACT_APP_PROJECT_ID,
+  //   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  //   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  //   appId: process.env.REACT_APP_APP_ID
 };
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
