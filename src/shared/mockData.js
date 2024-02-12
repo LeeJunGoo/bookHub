@@ -6,7 +6,7 @@ export const reviewData = [
   // bookId: bookData의 itemId
   {
     idx: 0,
-    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    reviewUser: 'iron1',
     content: 'dfdfddfd',
     like: 1,
     bookId: 356791451,
@@ -14,7 +14,7 @@ export const reviewData = [
   },
   {
     idx: 1,
-    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    reviewUser: 'iron2',
     content: 'sdfdfdsfds',
     like: 1,
     bookId: 356841038,
@@ -22,7 +22,7 @@ export const reviewData = [
   },
   {
     idx: 2,
-    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    reviewUser: 'iron3',
     content: 'sdfdfdsfds',
     like: 1,
     bookId: 356838150,
@@ -30,7 +30,7 @@ export const reviewData = [
   },
   {
     idx: 3,
-    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    reviewUser: 'iron3',
     content: 'sdfdfdsfds',
     like: 1,
     bookId: 356790670,
@@ -38,7 +38,7 @@ export const reviewData = [
   },
   {
     idx: 4,
-    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRSD3',
+    reviewUser: 'iron4',
     content: 'sdfdfdsfds',
     like: 3,
     bookId: 356855173,
@@ -46,14 +46,19 @@ export const reviewData = [
   }
 ];
 
-//유저 더미데이터
+// 책 아이디에 등록
+
+// 리뷰를 등록했을때 랜덤으로 부여되는 uid.....
+
 export const userData = [
   {
-    uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    uid: '0',
+    profile: '',
     userNickName: 'iron1',
     userEmail: 'andatne1104@naver.com',
     userPwd: 'sudal123',
-    isLoggedIn: false
+    isLoggedIn: false,
+    review: []
   },
   {
     uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx',
