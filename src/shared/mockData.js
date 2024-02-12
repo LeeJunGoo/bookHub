@@ -58,7 +58,7 @@ export const userData = [
     userEmail: 'andatne1104@naver.com',
     userPwd: 'sudal123',
     isLoggedIn: false,
-    review: []
+    reviews: []
   },
   {
     uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx',
@@ -67,7 +67,7 @@ export const userData = [
     userEmail: 'naver123@gmail.com',
     userPwd: 'su32231',
     isLoggedIn: true,
-    review: []
+    reviews: []
   }
 ];
 

@@ -27,7 +27,7 @@ function Login() {
         const user = userCredential.user
         console.log(userCredential)
         console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
-        navigate(`/mypage/`)
+        navigate(`/`)
       })
 
       .catch((error) => {
