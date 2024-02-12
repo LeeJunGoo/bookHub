@@ -27,14 +27,14 @@ function Login() {
         const user = userCredential.user
         console.log(userCredential)
         console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
-        navigate(`/mypage/${user.uid}`)
+        navigate(`/mypage/`)
       })
 
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message
-        navigate('/login')
         alert(`${errorMessage} 의 오류가 발생했습니다. 에러코드: ${errorCode}`)
+        navigate('/login')
       })
 
   }
