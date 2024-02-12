@@ -1,5 +1,4 @@
 //유저 더미데이터
-
 export const userData = [
   {
     uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
@@ -13,7 +12,7 @@ export const userData = [
     ]
   },
   {
-    idx: '1',
+    uid: '1',
     profile: '',
     userNickName: 'iron2',
     userEmail: 'naver123@gmail.com',
@@ -25,7 +24,7 @@ export const userData = [
     ]
   },
   {
-    idx: '2',
+    uid: '2',
     profile: '',
     userNickName: 'iron3',
     userEmail: 'nauro1104@daum.com',
@@ -37,7 +36,7 @@ export const userData = [
     ]
   },
   {
-    idx: '3',
+    uid: '3',
     profile: '',
     userNickName: 'iron4',
     userEmail: 'nauro1204@naver.com ',
@@ -49,7 +48,7 @@ export const userData = [
     ]
   },
   {
-    idx: '4',
+    uid: '4',
     profile: '',
     userNickName: 'iron5',
     userEmail: 'nauro12204@naver.com',
@@ -94,7 +93,11 @@ export const bookData = [
     link: 'http://book.interpark.com/blog/integration/product/itemDetail.rdo?prdNo=356791451&refererType=8305',
     mobileLink: 'http://m.book.interpark.com/view.html?PRD_NO=356791451&SHOP_NO=0000400000',
     additionalLink: 'http://book.interpark.com/gate/ippgw.jsp?goods_no=356791451&biz_cd=',
-    reviewCount: 2,
+    reviewCount: [
+      { idx: 0, content: 'dsdsadd', likes: 3, data: '2024-02-08' },
+      { idx: 1, content: 'dsdsadd', likes: 3, data: '2024-02-08' },
+      { idx: 2, content: 'dsdsadd', likes: 3, data: '2024-02-08' }
+    ],
     rank: 1
   },
   {

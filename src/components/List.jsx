@@ -1,14 +1,13 @@
 import React from 'react';
 import { bookData } from '../shared/mockData.js';
-import { bookData2 } from '../shared/bookData2.json';
 import styled from 'styled-components';
 
 
 
-function bookList({ bookData2 }) {
+function List() {
   return (
     <section>
-      {bookData2.map((book) => (
+      {bookData.map((book) => (
         <>
           <div key={book.itemId}>
             <ListWrapper>
@@ -42,10 +41,10 @@ function bookList({ bookData2 }) {
     </section>
   );
 }
-export default bookList;
+export default List;
 
 const ListWrapper = styled.li`
-  background-color: red;
+  background-color: #eecbcb;
   display: flex;
 `;
 
