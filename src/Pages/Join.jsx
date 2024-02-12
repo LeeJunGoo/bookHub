@@ -18,10 +18,14 @@ function Join() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        console.log(userCredential)
+        alert(`${user} 님 안녕하세요!`)
       })
       .catch((error) => {
         const errorcode = error.code;
         const errorMessage = error.message
+        alert(`${errorMessage}과 같은 오류가 발생하였습니다. 오류코드 ${errorcode}`)
+
       })
 
     navigate('/login')

@@ -1,7 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
+import { useState } from 'react';
 
 function MyPage() {
+
+
+  const { uid } = useParams();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
 
   const navigate = useNavigate();
 
