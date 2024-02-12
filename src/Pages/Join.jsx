@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
-
 function Join() {
-
-
   const navigate = useNavigate();
   const auth = getAuth();
 
@@ -16,48 +13,44 @@ function Join() {
   const [password, setPassword] = useState('');
   const [nickName, setNickName] = useState('');
 
-
   const newSign = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      await addDoc(collection(db, "users"), {
+      await addDoc(collection(db, 'users'), {
         uid: user.uid,
         userNickName: nickName,
         userEmail: email,
-        userProfile: null,
+        userProfile: null
       });
 
-
-      alert(`${nickName} 님 안녕하세요!`)
-      navigate('/login')
-
+      alert(`${nickName} 님 안녕하세요!`);
+      navigate('/login');
     } catch (error) {
       const errorcode = error.code;
-      const errorMessage = error.message
-      alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`)
-      console.log('오류코드', errorcode)
+      const errorMessage = error.message;
+      alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`);
+      console.log('오류코드', errorcode);
     }
-  }
+  };
 
   const onEmailHandler = (e) => {
-    console.log('이메일', e.target.value)
-    setEmail(e.target.value)
-  }
+    console.log('이메일', e.target.value);
+    setEmail(e.target.value);
+  };
 
   const onNickNameHandler = (e) => {
-    setNickName(e.target.value)
-  }
+    setNickName(e.target.value);
+  };
 
   const onPasswordHandler = (e) => {
-    setPassword(e.target.value)
-  }
+    setPassword(e.target.value);
+  };
 
   const goToHome = () => {
-    navigate('/')
-  }
-
+    navigate('/');
+  };
 
   return (
     <>
@@ -68,30 +61,15 @@ function Join() {
         <StUl>
           <li>
             <label>이메일</label>
-            <input
-              type='email'
-              placeholder='이메일'
-              value={email}
-              onChange={onEmailHandler}
-            ></input>
+            <input type="email" placeholder="이메일" value={email} onChange={onEmailHandler}></input>
           </li>
           <li>
             <label>패스워드</label>
-            <input
-              type='password'
-              placeholder='비밀번호'
-              value={password}
-              onChange={onPasswordHandler}
-            ></input>
+            <input type="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
           </li>
           <li>
             <label>닉네임</label>
-            <input
-              type='text'
-              placeholder='닉네임'
-              value={nickName}
-              onChange={onNickNameHandler}
-            ></input>
+            <input type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></input>
           </li>
           <div>
             <button onClick={newSign}>회원가입하기</button>
@@ -108,18 +86,15 @@ function Join() {
         <ol></ol>
       </StSection>
     </>
-  )
+  );
 }
 
-export default Join
-
-
+export default Join;
 
 const StH2 = styled.h2`
   display: flex;
   justify-content: center;
-  
-`
+`;
 
 const StSection = styled.section`
   display: flex;
@@ -128,7 +103,7 @@ const StSection = styled.section`
   align-items: center;
   width: 100vw;
   min-height: 400px;
-`
+`;
 
 const StUl = styled.ul`
   display: flex;
@@ -138,9 +113,9 @@ const StUl = styled.ul`
   width: 300px;
   height: 400px;
   border: 1px solid black;
-`
+`;
 
 const StDiv = styled.div`
   display: flex;
   gap: 15px;
-`
+`;
