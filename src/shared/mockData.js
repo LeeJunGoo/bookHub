@@ -1,28 +1,69 @@
-//유저 더미데이터
+//리뷰 데이터
+export const reviewData = [
+  //reviewUser: userData의 UID
+  // like : 좋아요 개수
+  // date: 리뷰 작성 날짜
+  // bookId: bookData의 itemId
+  {
+    idx: 0,
+    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    content: 'dfdfddfd',
+    like: 1,
+    bookId: 356791451,
+    date: '2024-02-08'
+  },
+  {
+    idx: 1,
+    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    content: 'sdfdfdsfds',
+    like: 1,
+    bookId: 356841038,
+    date: '2024-02-07'
+  },
+  {
+    idx: 2,
+    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    content: 'sdfdfdsfds',
+    like: 1,
+    bookId: 356838150,
+    date: '2024-02-06'
+  },
+  {
+    idx: 3,
+    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
+    content: 'sdfdfdsfds',
+    like: 1,
+    bookId: 356790670,
+    date: '2024-02-02'
+  },
+  {
+    idx: 4,
+    reviewUser: 'XOianB6sCXZyfl7qF29Ck6PBRSD3',
+    content: 'sdfdfdsfds',
+    like: 3,
+    bookId: 356855173,
+    date: '2024-02-01'
+  }
+];
 
+//유저 더미데이터
 export const userData = [
   {
     uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx2',
     userNickName: 'iron1',
     userEmail: 'andatne1104@naver.com',
     userPwd: 'sudal123',
-    isLoggedIn: false,
-    review: [
-      { idx: 0, reviewUser: 'iron1', content: 'dfdfddfd', like: 0 },
-      { idx: 1, reviewUser: 'iron1', content: 'sdfdfdsfds', like: 2 }
-    ]
+    isLoggedIn: false
   },
   {
     idx: '1',
+    uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx',
     profile: '',
     userNickName: 'iron2',
     userEmail: 'naver123@gmail.com',
     userPwd: 'su32231',
     isLoggedIn: true,
-    review: [
-      { idx: 2, reviewUser: 'iron2', content: 'dfdfddfd', like: 0 },
-      { idx: 3, reviewUser: 'iron2', content: 'sdfdfdsfds', like: 2 }
-    ]
+    review: []
   },
   {
     idx: '2',
@@ -206,15 +247,13 @@ export const bookData = [
   },
   {
     itemId: 356811279,
-    title: `남에게 보여주려고 인생을 낭비하지 마라",
-    description: "“얄팍한 행복 대신 단단한 외로움을 선택하라!”
+    title: '남에게 보여주려고 인생을 낭비하지 마라',
+    description: `얄팍한 행복 대신 단단한 외로움을 선택하라!
     니체, 톨스토이, 아인슈타인에게 영감을 준 쇼펜하우어의 삶과 지혜에 대한 격언
-    
     * “나는 쇼펜하우어를 읽으며 여태껏 한 번도 몰랐던 강력한 기쁨을 만끽했다.” _톨스토이
     * “쇼펜하우어는 모든 희망을 잃고도 진리를 추구한 유일한 인물이다.” _니체
     * “이 책이 지금의 명성을 얻은 데는 분명한 이유가 있다. 우아하고 매우 실용적이다.” _로버트 짐머
-    
-    철학자들의 철학자로 불리는 쇼펜하우어에게는 늘 비관론자, 비평가, 아웃사이더 등의 꼬리표가 따라다녔다. 하지만 그는 누구보다 인간적인 시선으로 삶의 진리를 추구하던 사람이었다. 1851년 출간된 이 책에서 그는 냉소적이지만 누구보다 현실적인 행복의 의미를 풀어냈고, 200년이 지난 지금까지 많은 사람에게 읽히며...`,
+    철학자들의 철학자로 불리는 쇼펜하우어에게는 늘 비관론자, 비평가, 아웃사이더 등의 꼬리표가 따라다녔다. 하지만 그는 누구보다 인간적인 시선으로 삶의 진리를 추구하던 사람이었다. 1851년 출간된 이 책에서 그는 냉소적이지만 누구보다 현실적인 행복의 의미를 풀어냈고, 200년이 지난 지금까지 많은 사람에게 읽히며... `,
     pubDate: '20231030',
     priceStandard: 17500,
     priceSales: 15750,
