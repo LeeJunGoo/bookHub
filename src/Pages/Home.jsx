@@ -89,6 +89,7 @@ function Home() {
   //마이페이지 버튼 핸들러
   const myPageButtonEventHandler = () => {
     if (findUserData) {
+
       //로그인 되었을 경우 마이페이지로 이동
       naviGate(`/Mypage/${findUserData.uid}`);
     } else {
