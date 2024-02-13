@@ -67,12 +67,9 @@ function DetailPages() {
         const existingReviews = userDocSnapshot.data().reviews || [];
         const updatedReviews = [...existingReviews, reviewData];
         await updateDoc(userDocRef, { reviews: updatedReviews });
-        console.log('리뷰가 성공적으로 사용자 데이터에 추가되었습니다.');
       } else {
-        console.error('해당 사용자의 데이터를 찾을 수 없습니다.');
       }
     } catch (error) {
-      console.error('리뷰를 추가하는 중 에러 발생:', error);
     }
   };
 

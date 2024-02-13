@@ -55,7 +55,7 @@ const StUl = styled.ul`
 `
 
 
-const ListWrapper = styled.li `
+const ListWrapper = styled.li`
   width: 18%;
   min-width: 220px;
   gap: 20px;
@@ -73,7 +73,7 @@ const Stp = styled.p`
   height: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
+  line-height: 1.3;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
