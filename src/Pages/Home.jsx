@@ -69,6 +69,7 @@ function Home() {
     setLoading(false);
     return () => unsubscribe();
   }, []);
+
   //로그인 및 로그아웃 버튼 핸들러
   const logoutButtonEventHandler = () => {
     signOut(auth)
@@ -96,7 +97,6 @@ function Home() {
     setTitleSearch(e.target.value);
   };
 
-  console.log(titleSearch);
   //검색 버튼
   const onSubmitEventHandler = (e) => {
     e.preventDefault();
@@ -123,10 +123,15 @@ function Home() {
     </div>
   }
 
+  const homeBtn = () => {
+    navigate('/')
+  }
+
+
   return (
     <>
       <Header>
-        <HeaderTitle>BookHub</HeaderTitle>
+        <HeaderTitle onClick={homeBtn}>BookHub</HeaderTitle>
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -171,9 +176,9 @@ function Home() {
             ))}
           </StSwiper>
         </StSection>
-        <section>
+        <StSection2>
           {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
-        </section>
+        </StSection2>
       </main>
 
       <StFooter>
@@ -216,6 +221,7 @@ function Home() {
 export default Home;
 
 const Header = styled.header`
+  
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -224,10 +230,19 @@ const Header = styled.header`
   margin-bottom: 100px;
 `;
 
-const HeaderTitle = styled.h1`
-  padding: 40px 0px 0px 40px;
+const HeaderTitle = styled.button`
+  font-family: 'TTHakgyoansimSamulhamR';
+  padding: 30px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+
+  &:hover{
+    background-color: #6ea477;
+    transition: 0.5s;
+  }
 `;
 
 const HeaderButtonDiv = styled.div`
@@ -255,6 +270,13 @@ const StSection = styled.section`
   width: 100%;
   padding: 50px;
 `;
+
+const StSection2 = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 const StP = styled.p`
   font-size: 25px;
