@@ -1,21 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function List({ bookData }) {
-  const navi = useNavigate();
-
   return (
     <ul>
       {bookData.map((book) => (
         <ListWrapper key={book.itemId}>
-          onClick=
-          {() => {
-            navi(`detail/${book.itemId}`);
-          }}
           <BookCoverAndRanking>
             <BookCover>
-              <img src={book.coverLargeUrl} alt="커버이미지"></img>
+              <Link to={`/detail/${book.itemId}`}>
+                <img src={book.coverLargeUrl} alt="커버이미지"></img>
+              </Link>
             </BookCover>
             <Ranking>{book.rank}</Ranking>
           </BookCoverAndRanking>

@@ -25,7 +25,7 @@ function Home() {
   const [review, setReview] = useState([]); // 베스트 셀러 리스트 및 작성한 리뷰 책에 대한 리스트
   const [title, setTitle] = useState(''); // "베스트 셀러" or "내가 작성한 책의 리뷰"
 
-  const [TitleSearch, setTitleSearch] = useState(''); //검색창에 입력한 책의 제목
+  const [titleSearch, setTitleSearch] = useState(''); //검색창에 입력한 책의 제목
   const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
 
   const [currentUser, setCurrentUser] = useState(null);
@@ -103,14 +103,15 @@ function Home() {
     setTitleSearch(e.target.value);
   };
 
+  console.log(titleSearch);
   //검색 버튼
   const onSubmitEventHandler = (e) => {
     e.preventDefault();
 
-    if (TitleSearch !== '') {
+    if (titleSearch !== '') {
       //검색 창에 입력한 문자열이 mock데이터의 책의 제목에 포함되어있는 리스트
       const searchData = bookData.filter((item) => {
-        return item.title.trim().includes(TitleSearch.trim());
+        return item.title.trim().includes(titleSearch.trim());
       });
 
       if (searchData.length === 0) {
@@ -139,7 +140,7 @@ function Home() {
         </HeaderButtonDiv>
 
         <form onSubmit={onSubmitEventHandler}>
-          <input value={TitleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
+          <input value={titleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
           <button type="onSubmit">검색</button>
         </form>
       </Header>
