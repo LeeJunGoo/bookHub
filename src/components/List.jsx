@@ -1,14 +1,12 @@
 import React from 'react';
-import { bookData } from '../shared/mockData.js';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function List() {
-  const navi = useNavigate();
-
+function List({ bookData }) {
   return (
-    <section>
+    <ul>
       {bookData.map((book) => (
+<<<<<<< HEAD
         <div
           key={book.itemId}
           onClick={() => {
@@ -42,14 +40,43 @@ function List() {
           </ListWrapper>
         </div>
 
+=======
+        <ListWrapper key={book.itemId}>
+          <BookCoverAndRanking>
+            <BookCover>
+              <Link to={`/detail/${book.itemId}`}>
+                <img src={book.coverLargeUrl} alt="커버이미지"></img>
+              </Link>
+            </BookCover>
+            <Ranking>{book.rank}</Ranking>
+          </BookCoverAndRanking>
+          <Genre>
+            <p>{book.categoryName}</p>
+          </Genre>
+          <BookNameAndAuthur>
+            <BookName>
+              <p>{book.title}</p>
+            </BookName>
+            <Author>
+              <p>{book.author}</p>
+            </Author>
+          </BookNameAndAuthur>
+          <Rate>
+            <p>{book.customerReviewRank}</p>
+          </Rate>
+          <Outline>
+            <p>{book.description}</p>
+          </Outline>
+        </ListWrapper>
+>>>>>>> 6f91c98865760e93e85aa875c43d6e6092c634c3
       ))}
-    </section>
+    </ul>
   );
 }
 export default List;
 
 const ListWrapper = styled.li`
-  background-color: #eecbcb;
+  background-color: red;
   display: flex;
 `;
 

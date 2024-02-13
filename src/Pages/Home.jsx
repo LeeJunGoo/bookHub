@@ -1,157 +1,181 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { bookData, userData, reviewData } from '../shared/mockData';
+import { bookData } from '../shared/mockData';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import List from '../components/List';
+//swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
+
+import '../styles/Carousel.css';
+
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../firebase';
 //swiper 패키지 설치
 
-//임시 로그인 정보
-// const fakeId = 'XOianB6sCXZyfl7qF29Ck6PBRNx';
-const fakeId = '';
-// const fakeId = 'XOianB6sCXZyfl7qF29Ck6PBRNx2';
-
 function Home() {
-  const naviGate = useNavigate();
-
+  const navigate = useNavigate();
+  const auth = getAuth();
   const [review, setReview] = useState([]); // 베스트 셀러 리스트 및 작성한 리뷰 책에 대한 리스트
   const [title, setTitle] = useState(''); // "베스트 셀러" or "내가 작성한 책의 리뷰"
-  const [TitleSearch, setTitleSearch] = useState(''); //검색 기능
 
-  //로그인 정보
-  const findUserData = userData.find((user) => (user.uid === fakeId ? true : false));
+  const [titleSearch, setTitleSearch] = useState(''); //검색창에 입력한 책의 제목
+  const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
 
-  //useEffect() 밖에 선언할 시 문장의 순서 및 무한 로딩 문제가 발생한다.
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    //로그인 여부에 다른 실행 메소드
-    findUserData ? loginData() : beLoginData();
-  }, [findUserData]);
-
-  //
-  const loginData = () => {
-    //1. 현재 로그인된 아이디의 리뷰 정보 찾기
-    const ReviewData = reviewData.filter((review) => (findUserData.uid === review.reviewUser ? true : false));
-
-    //작성한 리뷰가 있는지 여부 확인
-    if (ReviewData.length !== 0) {
-      //2. 정렬: 리뷰의 좋아요 개수 및 날짜순
-      const orderData = ReviewData.sort((a, b) => {
-        // 좋아요 개수가 같을 경우
-        // if (a.like === b.like) {
-        //   //날짜를 기준으로 정렬
-
-        // } else {
-        //   return b.like - a.like;
-        // }
-
-        return new Date(a.date) - new Date(b.date);
-      });
-
-      //3. 작성한 리뷰에 대한 책의 정보를 review 배열에 저장
-      setReview(
-        orderData.map((item) => {
-          return bookData.find((bookItem) => (bookItem.itemId === item.bookId ? true : false));
-        })
-      );
-      setTitle('내가 남긴 리뷰의 책');
-      console.log('리뷰 데이터 존재 시 정상 작동');
-    } else {
-      //로그인은 하였지만 리뷰를 작성하지 않았을 경우
-      setReview(bookData.filter((item) => item.rank <= 10));
-      setTitle('베스트 셀러');
-      console.log('리뷰 데이터 없을 경우 정상 작동');
-    }
-  };
-
-  const beLoginData = () => {
-    setReview(bookData.filter((item) => item.rank <= 10));
-    setTitle('베스트 셀러');
-    console.log('비로그인 시 정상 작동');
-  };
-
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        const fetchReviewData = async () => {
+          if (user) {
+            const q = query(collection(db, 'users'), where('uid', '==', user.uid))
+            try {
+              const querySnapshot = await getDocs(q);
+              if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data();
+                const reviews = userData.reviews || [];
+                if (reviews.length > 0) {
+                  const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+                  setReview(orderData);
+                  setTitle('내가 남긴 리뷰의 책');
+                } else {
+                  setReview(bookData.filter(item => item.rank <= 10));
+                  setTitle('리뷰가 없는 경우');
+                  console.log('데이터가 없어요.')
+                }
+              }
+            } catch (error) {
+              console.error('데이터를 불러오는 데 실패했습니다.', error);
+            }
+          } else {
+            setReview(bookData.filter(item => item.rank <= 10));
+            setTitle('비로그인상태 베스트셀러');
+            console.log('비로그인 처리시 출력')
+          }
+        };
+        fetchReviewData();
+      } else {
+        setCurrentUser(null);
+      }
+    })
+    setLoading(false);
+    return () => unsubscribe();
+  }, []);
   //로그인 및 로그아웃 버튼 핸들러
-  const loginButtonEventHandler = () => {
-    if (findUserData) {
-      //로그아웃 이벤트 핸들러
-    } else {
-      //로그인 이벤트 핸들러
-      naviGate(`/Login`);
-    }
+  const logoutButtonEventHandler = () => {
+    signOut(auth)
+      .then(() => {
+        console.log('로그아웃 성공');
+        navigate('/login');
+      })
+      .catch((error) => {
+        console.error('로그아웃 에러', error);
+      });
   };
 
-  //마이페이지 버튼 핸들러
   const myPageButtonEventHandler = () => {
-    if (findUserData) {
-
-      //로그인 되었을 경우 마이페이지로 이동
-      naviGate(`/Mypage`);
+    if (currentUser) {
+      navigate(`/Mypage`);
     } else {
-      //비로그인일 경우 로그인 페이지로 이동
       if (window.confirm('흥흥!! 로그인이 안 됐어 바부야~ 로그인 할꺼지?')) {
-        naviGate(`/Login`);
+        navigate(`/Login`);
       }
     }
   };
-
   // 검색 기능 관련 메소드
-  const TitleSearchEventHandler = (e) => {
+  const titleSearchEventHandler = (e) => {
+    e.preventDefault();
     setTitleSearch(e.target.value);
   };
 
-  const onSubmitEventHandler = () => {
-    console.log(TitleSearch.trim());
+  console.log(titleSearch);
+  //검색 버튼
+  const onSubmitEventHandler = (e) => {
+    e.preventDefault();
+
+    if (titleSearch !== '') {
+      //검색 창에 입력한 문자열이 mock데이터의 책의 제목에 포함되어있는 리스트
+      const searchData = bookData.filter((item) => {
+        return item.title.trim().includes(titleSearch.trim());
+      });
+
+      if (searchData.length === 0) {
+        alert('검색한 결과가 없습니다.');
+      }
+
+      setFilteredResults(searchData);
+    } else {
+      alert('검색을 해주세요');
+    }
   };
+
+  if (loading) {
+    return <div>현재 상태는 로딩중일지도
+      {console.log('로딩중입니다')}
+    </div>
+  }
 
   return (
     <>
       <Header>
         <HeaderTitle>BookHub</HeaderTitle>
-
         <HeaderButtonDiv>
-          <button onClick={loginButtonEventHandler}>{findUserData ? '로그아웃' : '로그인'}</button>
-          <button onClick={myPageButtonEventHandler}>마이페이지</button>
+          {currentUser ? (
+            <div>
+              <button onClick={logoutButtonEventHandler}>로그아웃</button>
+              <button onClick={myPageButtonEventHandler}>마이페이지</button>
+            </div>
+          ) : (
+            <button onClick={() => navigate('/login')}>로그인</button>
+          )}
         </HeaderButtonDiv>
+
         <form onSubmit={onSubmitEventHandler}>
-          <input value={TitleSearch} onChange={TitleSearchEventHandler} maxLength={30}></input>
-          <button type="submit">검색</button>
+          <input value={titleSearch} onChange={titleSearchEventHandler} maxLength={30}></input>
+          <button type="onSubmit">검색</button>
         </form>
       </Header>
-      <main>
-        <StSwiper
-          slidesPerView={4} //각 슬라이드의 표시 수를 지정
-          spaceBetween={10} //각 슬라이드 사이의 간격
-          loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
-          pagination={{
-            clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
-          }}
-          navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
-          modules={[Pagination, Navigation]}
-        >
-          {review.map((book) => (
-            <StSwiperSlide key={book.itemId}>
-              <StyledLink to={`/detail/${book.itemId}`}>
-                <img src={book.coverSmallUrl} alt="대체이미지" />
-                <p>{book.title}</p>
-              </StyledLink>
 
-              <p>
-                {book.publisher}/{book.author}
-              </p>
-            </StSwiperSlide>
-          ))}
-        </StSwiper>
+      <main>
         <StSection>
           <StP>{title}</StP>
+          <StSwiper
+            slidesPerView={3} //각 슬라이드의 표시 수를 지정
+            spaceBetween={5} //각 슬라이드 사이의 간격
+            loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+            pagination={{
+              clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
+            }}
+            navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
+            modules={[Pagination, Navigation]}
+          >
+            {review.map((book) => (
+              <StSwiperSlide key={book.itemId}>
+                <StyledLink to={`/detail/${book.itemId}`}>
+                  <img src={book.coverSmallUrl} alt="대체이미지" />
+                  <p>{book.title}</p>
+                </StyledLink>
 
-          <StUl></StUl>
+                <p>
+                  {book.publisher}/{book.author}
+                </p>
+              </StSwiperSlide>
+            ))}
+          </StSwiper>
         </StSection>
-        <List />
+        <section>
+          {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
+        </section>
       </main>
+
       <StFooter>
         <p>2024년 02월 07일~ 14일</p>
         <p>© bookHub</p>
@@ -216,11 +240,16 @@ const HeaderButtonDiv = styled.div`
 `;
 
 const StSwiper = styled(Swiper)`
-  width: 800px;
-  height: 200px;
+  width: 1000px;
+  margin-top: 60px;
 `;
 
-const StSwiperSlide = styled(SwiperSlide)``;
+const StSwiperSlide = styled(SwiperSlide)`
+  text-align: center;
+  p {
+    margin-top: 10px;
+  }
+`;
 
 const StSection = styled.section`
   width: 100%;
@@ -229,22 +258,6 @@ const StSection = styled.section`
 
 const StP = styled.p`
   font-size: 25px;
-`;
-
-const StUl = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 50px;
-  margin-top: 60px;
-`;
-
-const StLi = styled.li`
-  width: 150px;
-  text-align: center;
-  p {
-    margin-top: 10px;
-  }
 `;
 
 const StyledLink = styled(Link)`
@@ -265,6 +278,8 @@ const StFooter = styled.footer`
   text-align: center;
   color: white;
   font-size: 14px;
+
+
 `;
 
 const StFooterUl = styled.ul`

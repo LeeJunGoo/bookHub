@@ -48,7 +48,6 @@ function Join() {
 
 
   const onEmailHandler = (e) => {
-    console.log('이메일', e.target.value);
     setEmail(e.target.value);
   };
 
