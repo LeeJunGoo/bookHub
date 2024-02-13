@@ -45,7 +45,35 @@ function DetailPages() {
       return;
     }
 
-    // Rest of your code for adding review
+    const reviewData = {
+      createdAt: Date.now(),
+      title: postTitle,
+      text: postText,
+      id: Math.random().toString(36).substr(2, 9), // 랜덤 ID 생성
+      like: 0,
+      itemId: id
+    };
+
+    setUserPostViewData((prev) => [...prev, reviewData]);
+    setPostText('');
+    setPostTitle('');
+
+    const userId = 'EgTwNS1c2OKdbGQMGF5t';
+    const userDocRef = doc(db, 'users', userId);
+
+    try {
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const existingReviews = userDocSnapshot.data().reviews || [];
+        const updatedReviews = [...existingReviews, reviewData];
+        await updateDoc(userDocRef, { reviews: updatedReviews });
+        console.log('리뷰가 성공적으로 사용자 데이터에 추가되었습니다.');
+      } else {
+        console.error('해당 사용자의 데이터를 찾을 수 없습니다.');
+      }
+    } catch (error) {
+      console.error('리뷰를 추가하는 중 에러 발생:', error);
+    }
   };
 
   const deleteReview = async (collectionName, documentId, reviewIdToDelete) => {
