@@ -1,17 +1,18 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDjWIZ1lO_wYGer2Yrr82bprC2HQQGbMTk',
-  authDomain: 'bookhub-fbb82.firebaseapp.com',
-  projectId: 'bookhub-fbb82',
-  storageBucket: 'bookhub-fbb82.appspot.com',
-  messagingSenderId: '881370622172',
-  appId: '1:881370622172:web:913fb62c971237adbdec19'
+  apiKey: 'AIzaSyA2EX8iS-pKkX9K4cDzZb9zbfRC7mXcAfw',
+  authDomain: 'reactproj-3ea63.firebaseapp.com',
+  projectId: 'reactproj-3ea63',
+  storageBucket: 'reactproj-3ea63.appspot.com',
+  messagingSenderId: '907491810608',
+  appId: '1:907491810608:web:eafc33ce716c47a00ebcf5',
+  measurementId: 'G-NBPCPYFH27'
 };
+
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);

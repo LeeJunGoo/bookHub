@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function List({ bookData }) {
   return (
-    <ul>
+    <StUl>
       {bookData.map((book) => (
         <ListWrapper key={book.itemId}>
           <BookCoverAndRanking>
@@ -13,7 +13,6 @@ function List({ bookData }) {
                 <img src={book.coverLargeUrl} alt="커버이미지"></img>
               </Link>
             </BookCover>
-            <Ranking>{book.rank}</Ranking>
           </BookCoverAndRanking>
           <Genre>
             <p>{book.categoryName}</p>
@@ -30,40 +29,63 @@ function List({ bookData }) {
             <p>{book.customerReviewRank}</p>
           </Rate>
           <Outline>
-            <p>{book.description}</p>
+            <Stp>{book.description}</Stp>
           </Outline>
         </ListWrapper>
       ))}
-    </ul>
+    </StUl>
   );
 }
 
 export default List;
 
-const ListWrapper = styled.li`
-  font-family: 'RIDIBatang';
 
 
+const StUl = styled.ul`
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 80%;
+`
+
+
+const ListWrapper = styled.li`
+  width: 20%;
+  background-color: #e3caca;
+  display: flex;
+  flex-direction: column;
+  font-family: 'RIDIBatang';
 `;
+
+
+const Stp = styled.p`
+  width: 200px;
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+`
+
 
 const BookCoverAndRanking = styled.div``;
 
 const BookCover = styled.div``;
 
-const Ranking = styled.div``;
-
 const Genre = styled.div``;
 
-const BookNameAndAuthur = styled.div`
+const BookNameAndAuthur = styled.div``;
 
-
-
-`;
 const BookName = styled.div``;
 
 const Author = styled.div``;
 
 const Rate = styled.div``;
 
-const Outline = styled.div``;
+const Outline = styled.div`
+  width: 200px;
+  height: 60px;
+`;

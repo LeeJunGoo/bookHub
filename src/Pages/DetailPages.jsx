@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { updateDoc, doc, query, getDocs, collection, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import {
+  updateDoc,
+  doc,
+  query,
+  getDocs,
+  collection,
+  getDoc,
+  deleteDoc,
+  where,
+  Firestore,
+  FieldValue,
+  deleteField
+} from 'firebase/firestore';
+import { db, auth } from '../firebase';
 import { bookData } from '../shared/mockData';
 
 function DetailPages() {
@@ -10,6 +22,7 @@ function DetailPages() {
   const [userPostViewData, setUserPostViewData] = useState([]);
   const [postTitle, setPostTitle] = useState('');
   const [postText, setPostText] = useState('');
+
   const { id } = useParams();
 
   const addReview = async (event) => {
@@ -23,10 +36,13 @@ function DetailPages() {
         createdAt: Date.now(),
         title: postTitle,
         text: postText,
-        id: crypto.randomUUID()
+        id: crypto.randomUUID(),
+        like: 0,
+        itemId: id
       };
 
       setUserPostViewData((prev) => [...prev, reviewData]);
+
       setPostText('');
       setPostTitle('');
 
@@ -59,7 +75,7 @@ function DetailPages() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const q = query(collection(db, 'review'));
+        const q = query(collection(db, 'users'));
         const querySnapshot = await getDocs(q);
         const initialReviews = [];
 
@@ -76,6 +92,44 @@ function DetailPages() {
     fetchData();
   }, []);
 
+  //   (collectionName, documentId, reviewIdToDelete) =   (컬렉션 이름 , 가져와야하는 문서 Id  , 삭제될  리뷰 아이디 )
+  const deleteButtonClick = async (collectionName, documentId, reviewIdToDelete) => {
+    try {
+      // 참조할 문서 가져오기
+      const docRef = doc(db, collectionName, documentId);
+
+      // 문서의 정보와 메서드를 getDoc로 가져와서 저장
+      const docSnapshot = await getDoc(docRef);
+
+      // 정보와 메서드가 존재하지 않는다면
+      if (!docSnapshot.exists()) {
+        // 에러를 출력하고 종료
+        console.error('문서를 찾을 수 없습니다.');
+        return;
+      }
+
+      // 문서의 정보와 메서드를 가지고 있는  스냅샷의  data 를 객체로  저장
+      const documentData = docSnapshot.data();
+
+      //   documentDat 에 reviews 가 존재한다면
+      if (documentData.reviews) {
+        // 삭제할 리뷰 데이터를  필터링해서 제외한 배열 저장
+        const updatedReviews = documentData.reviews.filter((review) => review.id !== reviewIdToDelete);
+
+        // 120번째 배열로 reviews 를 업데이트
+        await updateDoc(docRef, { reviews: updatedReviews });
+
+        // 자동  새로고침 후  반영
+        navigate(`/detail/${id}`);
+
+        console.log('리뷰가 성공적으로 삭제되었습니다.');
+      } else {
+        console.error('리뷰 데이터를 찾을 수 없습니다.');
+      }
+    } catch (error) {
+      console.error('리뷰 삭제 중 오류:', error);
+    }
+  };
   return (
     <>
       {bookHubData
@@ -91,45 +145,47 @@ function DetailPages() {
               <p>{book.description}</p>
               <p>{book.author}</p>
               <p>{book.publisher}</p>
-              <p></p>
             </div>
           </div>
         ))}
 
-      <section>
-        <b>남이 작성한 리뷰임</b>
-        {userPostViewData.length === 0 ? (
-          <h1>데이터가 없네요</h1>
-        ) : (
-          <>
-            {userPostViewData
-              .filter((post) => post.bookId === Number(id))
-              .map((data) => (
-                <div key={data.id}>
-                  <p>{data.content}</p>
-                </div>
-              ))}
-          </>
-        )}
-      </section>
+      {/* 
+      reviews데이터가 존재하는 데이터만 가져오기 -> 
+      reviews데이터가 없는  데이터는 의미 없다. */}
+      {userPostViewData.map(
+        (userData) =>
+          userData.reviews &&
+          userData.reviews.map((reviewData) => (
+            <div key={reviewData.id}>
+              <p>{reviewData.title}</p>
+              <p>{reviewData.text}</p>
+              <button onClick={() => deleteButtonClick('users', userData.id, reviewData.id)}>삭제</button>
+            </div>
+          ))
+      )}
 
-      {/* 사용자 리뷰 작성 폼 */}
-      <form onSubmit={addReview}>
-        <input
-          type="text"
-          value={postTitle}
-          onChange={(event) => setPostTitle(event.target.value)}
-          placeholder="제목"
-        />
-        <textarea
-          type="text"
-          value={postText}
-          onChange={(event) => setPostText(event.target.value)}
-          placeholder="내용"
-        />
-        <br />
-        <button type="submit">추가하기</button>
-      </form>
+      {userPostViewData.map((data) =>
+        !data.isLoggedIn ? (
+          <form onSubmit={addReview}>
+            <input
+              type="text"
+              value={postTitle}
+              onChange={(event) => setPostTitle(event.target.value)}
+              placeholder="제목"
+            />
+            <textarea
+              type="text"
+              value={postText}
+              onChange={(event) => setPostText(event.target.value)}
+              placeholder="내용"
+            />
+            <br />
+            <button type="submit">추가하기</button>
+          </form>
+        ) : (
+          <></>
+        )
+      )}
     </>
   );
 }
