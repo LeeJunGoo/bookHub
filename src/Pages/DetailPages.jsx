@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
 import {
   query,
   getDocs,
@@ -13,29 +12,21 @@ import {
   deleteDoc,
   addDoc
 } from 'firebase/firestore';
-
 import { db, auth } from '../firebase';
 import { bookData } from '../shared/mockData';
-
 function DetailPages() {
   const navi = useNavigate();
-
   // form내의 제목 내용을 저장하는 state
   const [reviewText, setReviewText] = useState(''); // 리뷰 내용
   const [reviewTitle, setReviewTitle] = useState(''); // 제목
-
   // 리뷰데이터를 저장하는 state
   const [reviewData, setReviewData] = useState([]);
-
   const [bookHubData, setBookHubData] = useState(bookData);
-
   // useParams 를 통해  id 가져오기
   const { id } = useParams();
   // console.log('id', id);
-
   // login  여부를 가리는  state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,7 +37,6 @@ function DetailPages() {
         const initialReviews = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         console.log(initialReviews);
         setReviewData(initialReviews);
-
         auth.onAuthStateChanged((user) => {
           console.log(user);
           if (user) {
@@ -61,20 +51,16 @@ function DetailPages() {
     };
     fetchData();
   }, []);
-
   console.log(reviewData);
-
   // 리뷰를 추가하는 함수
   const addReView = async (event) => {
     event.preventDefault();
-
     // 리뷰 데이터는 로그인한 경우에만 추가할 수 있음
     const user = auth.currentUser;
     if (!user) {
       window.alert('로그인해주세요.');
       return;
     }
-
     try {
       const 리뷰데이터 = {
         createdAt: Date.now(),
@@ -85,12 +71,9 @@ function DetailPages() {
         userId: user.uid,
         uid: user.uid
       };
-
       const reviewRef = await addDoc(collection(db, 'reviews'), 리뷰데이터);
       console.log('리뷰가 저장되었습니다. Document ID:', reviewRef.id);
-
       setReviewData((prevState) => [...prevState, 리뷰데이터]);
-
       setReviewText('');
       setReviewTitle('');
     } catch (error) {
@@ -98,9 +81,7 @@ function DetailPages() {
       window.alert('리뷰를 추가하는 동안 오류가 발생했습니다.');
     }
   };
-
   console.log(reviewData);
-
   // 삭제 함수 구현
   const deleteReview = async (reviewId) => {
     try {
@@ -113,7 +94,6 @@ function DetailPages() {
       window.alert('리뷰를 삭제하는 동안 오류가 발생했습니다.');
     }
   };
-
   // 삭제 버튼 클릭 시 해당 리뷰를 삭제하는 함수
   const handleDeleteReview = async (reviewId) => {
     if (window.confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
@@ -122,7 +102,6 @@ function DetailPages() {
       navi('/');
     }
   };
-
   return (
     <>
       {/* 도서 관련 */}
@@ -140,9 +119,7 @@ function DetailPages() {
             </div>
           </div>
         ))}
-
       {/* 입력 폼  */}
-
       {isLoggedIn === true ? (
         <form
           onSubmit={(event) => {
@@ -166,9 +143,7 @@ function DetailPages() {
       ) : (
         <></>
       )}
-
       {/* 도서별 게시물 렌더링 */}
-
       {isLoggedIn === true ? (
         <>
           {reviewData
@@ -202,5 +177,4 @@ function DetailPages() {
     </>
   );
 }
-
 export default DetailPages;
