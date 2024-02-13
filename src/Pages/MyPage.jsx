@@ -54,8 +54,6 @@ function MyPage() {
     return () => unSubscribe();
   }, [])
 
-
-
   const onChangeProfileImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -81,7 +79,6 @@ function MyPage() {
       await uploadBytes(storageRef, selectedFile);
       const downloadURL = await getDownloadURL(storageRef);
 
-      // const userDocRef = doc(db, 'users', auth.currentUser.uid);
       const q = query(collection(db, 'users'), where('uid', '==', auth.currentUser.uid))
       const querySnapshot = await getDocs(q);
       const userDocRef = querySnapshot.docs[0].ref
