@@ -39,8 +39,6 @@ function List({ bookData }) {
 
 export default List;
 
-
-
 const StUl = styled.ul`
   display: flex;
   flex-direction: row;
@@ -48,12 +46,12 @@ const StUl = styled.ul`
   justify-content: center;
   width: 80%;
   gap: 20px;
+
   font-family: 'RIDIBatang';
   margin: auto;
   
   padding: 10%;
   
-
 `
 
 
@@ -70,7 +68,6 @@ const ListWrapper = styled.li `
 
 `;
 
-
 const Stp = styled.p`
   width: 200px;
   height: 60px;
@@ -82,10 +79,6 @@ const Stp = styled.p`
   -webkit-line-clamp: 3;
   justify-content: center;
   margin: auto;
-
-
-
-
 
 `;
 
