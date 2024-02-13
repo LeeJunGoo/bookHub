@@ -10,34 +10,30 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, collection } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 //swiper 패키지 설치
 
 function Home() {
   const navigate = useNavigate();
   const auth = getAuth();
-
   const [review, setReview] = useState([]); // 베스트 셀러 리스트 및 작성한 리뷰 책에 대한 리스트
   const [title, setTitle] = useState(''); // "베스트 셀러" or "내가 작성한 책의 리뷰"
   const [TitleSearch, setTitleSearch] = useState(''); //검색 기능
   const [currentUser, setCurrentUser] = useState(null);
-
-  const [isRender, setIsRender] = useState(false);
-
-  console.log(currentUser)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
         const fetchReviewData = async () => {
-          if (currentUser) {
-            const userDocRef = doc(collection(db, "users"), currentUser.uid);
+          if (user) {
+            const q = query(collection(db, 'users'), where('uid', '==', user.uid))
             try {
-              const docSnap = await getDoc(userDocRef);
-              if (docSnap.exists()) {
-                const userData = docSnap.data();
+              const querySnapshot = await getDocs(q);
+              if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data();
                 const reviews = userData.reviews || [];
                 if (reviews.length > 0) {
                   const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -59,22 +55,13 @@ function Home() {
           }
         };
         fetchReviewData();
-
       } else {
         setCurrentUser(null);
       }
-      // 하기 컴포넌트 ui 부분을 렌더링할지를 결정!!!
-      setIsRender(true);
     })
+    setLoading(false);
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    console.log(currentUser)
-
-
-
-  }, [currentUser]);
 
   //로그인 및 로그아웃 버튼 핸들러
   const logoutButtonEventHandler = () => {
@@ -89,7 +76,7 @@ function Home() {
   const myPageButtonEventHandler = () => {
     if (currentUser) {
 
-      navigate(`/Mypage/`);
+      navigate(`/Mypage`);
     } else {
       if (window.confirm('흥흥!! 로그인이 안 됐어 바부야~ 로그인 할꺼지?')) {
         navigate(`/Login`);
@@ -106,92 +93,93 @@ function Home() {
     console.log(TitleSearch.trim());
   };
 
+  if (loading) {
+    return <div>현재 상태는 로딩중일지도
+      {console.log('로딩중입니다')}
+    </div>
+  }
+
   return (
     <>
-      {
-        !isRender ? "" : (<>
-          <Header>
-            <HeaderTitle>BookHub</HeaderTitle>
-            <HeaderButtonDiv>
-              {currentUser ? (
-                <div>
-                  <button onClick={logoutButtonEventHandler}>로그아웃</button>
-                  <button onClick={myPageButtonEventHandler}>마이페이지</button>
-                </div>
-              ) : (
-                <button onClick={() => navigate('/login')}>로그인</button>
-              )}
-            </HeaderButtonDiv>
-            <form onSubmit={onSubmitEventHandler}>
-              <input value={TitleSearch} onChange={TitleSearchEventHandler} maxLength={30}></input>
-              <button type="submit">검색</button>
-            </form>
-          </Header>
-          <main>
-            <StSwiper
-              slidesPerView={4} //각 슬라이드의 표시 수를 지정
-              spaceBetween={10} //각 슬라이드 사이의 간격
-              loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
-              pagination={{
-                clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
-              }}
-              navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
-              modules={[Pagination, Navigation]}
-            >
-              {review.map((book) => (
-                <StSwiperSlide key={book.itemId}>
-                  <StyledLink to={`/detail/${book.itemId}`}>
-                    <img src={book.coverSmallUrl} alt="대체이미지" />
-                    <p>{book.title}</p>
-                  </StyledLink>
-                  <p>
-                    {book.publisher}/{book.author}
-                  </p>
-                </StSwiperSlide>
-              ))}
-            </StSwiper>
-            <StSection>
-              <StP>{title}</StP>
-              <StUl></StUl>
-            </StSection>
-            <List />
-          </main>
-          <StFooter>
-            <p>2024년 02월 07일~ 14일</p>
-            <p>© bookHub</p>
-            <address>
-              <StFooterUl>
-                <li>
-                  <StyledLink to={'https://github.com/psisdn08'}>
-                    <p>김형</p>
-                  </StyledLink>
-                </li>
-                <li>
-                  <StyledLink to={'https://github.com/yuriyun88'}>
-                    <p>정윤아</p>
-                  </StyledLink>
-                </li>
-                <li>
-                  <StyledLink to={'https://github.com/Andante23'}>
-                    <p>안단테</p>
-                  </StyledLink>
-                </li>
-                <li>
-                  <StyledLink to={`https://github.com/LeeJunGoo`}>
-                    <p>이준구</p>
-                  </StyledLink>
-                </li>
-                <li>
-                  <StyledLink to={`https://github.com/gidalim`}>
-                    <p>박강토</p>
-                  </StyledLink>
-                </li>
-              </StFooterUl>
-            </address>
-          </StFooter>
-        </>)
-      }
-
+      <Header>
+        <HeaderTitle>BookHub</HeaderTitle>
+        <HeaderButtonDiv>
+          {currentUser ? (
+            <div>
+              <button onClick={logoutButtonEventHandler}>로그아웃</button>
+              <button onClick={myPageButtonEventHandler}>마이페이지</button>
+            </div>
+          ) : (
+            <button onClick={() => navigate('/login')}>로그인</button>
+          )}
+        </HeaderButtonDiv>
+        <form onSubmit={onSubmitEventHandler}>
+          <input value={TitleSearch} onChange={TitleSearchEventHandler} maxLength={30}></input>
+          <button type="submit">검색</button>
+        </form>
+      </Header>
+      <main>
+        <StSwiper
+          slidesPerView={4} //각 슬라이드의 표시 수를 지정
+          spaceBetween={10} //각 슬라이드 사이의 간격
+          loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+          pagination={{
+            clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
+          }}
+          navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
+          modules={[Pagination, Navigation]}
+        >
+          {review.map((book) => (
+            <StSwiperSlide key={book.itemId}>
+              <StyledLink to={`/detail/${book.itemId}`}>
+                <img src={book.coverSmallUrl} alt="대체이미지" />
+                <p>{book.title}</p>
+              </StyledLink>
+              <p>
+                {book.publisher}/{book.author}
+              </p>
+            </StSwiperSlide>
+          ))}
+        </StSwiper>
+        <StSection>
+          <StP>{title}</StP>
+          <StUl></StUl>
+        </StSection>
+        <List />
+      </main>
+      <StFooter>
+        <p>2024년 02월 07일~ 14일</p>
+        <p>© bookHub</p>
+        <address>
+          <StFooterUl>
+            <li>
+              <StyledLink to={'https://github.com/psisdn08'}>
+                <p>김형</p>
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink to={'https://github.com/yuriyun88'}>
+                <p>정윤아</p>
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink to={'https://github.com/Andante23'}>
+                <p>안단테</p>
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink to={`https://github.com/LeeJunGoo`}>
+                <p>이준구</p>
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink to={`https://github.com/gidalim`}>
+                <p>박강토</p>
+              </StyledLink>
+            </li>
+          </StFooterUl>
+        </address>
+      </StFooter>
     </>
   );
 }

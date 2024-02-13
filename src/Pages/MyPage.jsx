@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router'
 import styled from 'styled-components';
 import { useEffect, useState, useRef } from 'react';
 import { db } from '../firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
@@ -22,42 +22,39 @@ function MyPage() {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
+        async function fetchDefaultImage() {
+          const defaultImageRef = ref(storage, 'profile.png');
+          try {
+            return await getDownloadURL(defaultImageRef);
+          } catch (error) {
+            console.error('이미지를 가져오지 못했어요.', error)
+            return '';
+          }
+        }
+        const fetchUserData = async (userId) => {
+          const q = query(collection(db, 'users'), where('uid', '==', userId))
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data();
+            setUserDetails({ userNickName: userData.userNickName, userEmail: userData.userEmail })
+            setImageUrl(userData.profileImageUrl || (await fetchDefaultImage()));
+          } else {
+            console.log('사용자 문서가 없습니다. 기본 값을 사용합니다.');
+            const defaultImageUrl = await fetchDefaultImage();
+            setImageUrl(defaultImageUrl);
+          }
+        };
         fetchUserData(currentUser.uid);
-        console.log('데이터를 받아오는데 성공했을지도?', currentUser)
       } else {
         navigate('/login')
       }
-      setLoading(false)
     });
+    setLoading(false)
 
     return () => unSubscribe();
   }, [])
 
 
-  async function fetchDefaultImage() {
-    const defaultImageRef = ref(storage, 'profile.png');
-    try {
-      return await getDownloadURL(defaultImageRef);
-    } catch (error) {
-      console.error('이미지를 가져오지 못했어요.', error)
-      return '';
-    }
-  }
-
-  const fetchUserData = async (userId) => {
-    const userDocRef = doc(db, 'users', userId);
-    const docSnap = await getDoc(userDocRef);
-    if (docSnap.exists()) {
-      const userData = docSnap.data();
-      setUserDetails({ userNickName: userData.nickName, userEmail: userData.email })
-      setImageUrl(userData.profileImageUrl || (await fetchDefaultImage()));
-    } else {
-      console.log('사용자 문서가 없습니다. 기본 값을 사용합니다.');
-      const defaultImageUrl = await fetchDefaultImage();
-      setImageUrl(defaultImageUrl);
-
-    }
-  };
 
   const onChangeProfileImage = (e) => {
     const file = e.target.files[0];
@@ -80,15 +77,18 @@ function MyPage() {
     const timestamp = new Date().getTime();
     const originalFileName = `profileImg/${auth.currentUser.uid}/${timestamp}.jpg`
     const storageRef = ref(storage, originalFileName);
-
     try {
       await uploadBytes(storageRef, selectedFile);
-      const downloadURL = await getDownloadURL(storage.ref);
+      const downloadURL = await getDownloadURL(storageRef);
 
-      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      // const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      const q = query(collection(db, 'users'), where('uid', '==', auth.currentUser.uid))
+      const querySnapshot = await getDocs(q);
+      const userDocRef = querySnapshot.docs[0].ref
       await updateDoc(userDocRef, {
         profileImageUrl: downloadURL,
       });
+
       alert('이미지 업로드에 성공하였습니다!')
       setImageUrl(downloadURL);
       setSelectedFile(null)
@@ -177,6 +177,7 @@ const StMain = styled.main`
   align-items: center;
   width: 100%;
   height: 800px;
+  padding: 50px;
 `
 
 const StSection = styled.section`
