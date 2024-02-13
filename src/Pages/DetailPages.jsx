@@ -13,6 +13,8 @@ function DetailPages() {
   // 리뷰데이터를 저장하는 state
   const [reviewData, setReviewData] = useState([]);
 
+  const [bookHubData, setBookHubData] = useState(bookData);
+
   // useParams 를 통해  id 가져오기
   const { id } = useParams();
   // console.log('id', id);
