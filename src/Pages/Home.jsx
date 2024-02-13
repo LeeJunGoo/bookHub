@@ -246,6 +246,7 @@ const HeaderTitle = styled.button`
 
   &:hover{
     background-color: #6ea477;
+    transition: 0.5s;
   }
 `;
 
