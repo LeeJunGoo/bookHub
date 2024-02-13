@@ -165,7 +165,7 @@ function DetailPages() {
       )}
 
       {userPostViewData.map((data) =>
-        data.isLoggedIn === true ? (
+        !data.isLoggedIn ? (
           <form onSubmit={addReview}>
             <input
               type="text"
