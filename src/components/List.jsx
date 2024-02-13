@@ -46,11 +46,14 @@ const StUl = styled.ul`
   flex-wrap: wrap;
   justify-content: center;
   width: 80%;
+  gap: 20px;
 `
 
 
 const ListWrapper = styled.li`
-  width: 20%;
+  width: 18%;
+  min-width: 355px;
+  gap: 20px;
   background-color: #e3caca;
   display: flex;
   flex-direction: column;
