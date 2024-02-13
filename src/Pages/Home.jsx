@@ -33,10 +33,8 @@ function Home() {
         setCurrentUser(null);
       }
     })
-
     return () => unsubscribe();
-  }, [auth]);
-
+  }, []);
 
   useEffect(() => {
     console.log(currentUser)
@@ -56,6 +54,7 @@ function Home() {
             } else {
               setReview(bookData.filter(item => item.rank <= 10));
               setTitle('리뷰가 없는 경우');
+              console.log('데이터가 없어요.')
             }
           }
         } catch (error) {
@@ -103,7 +102,6 @@ function Home() {
     <>
       <Header>
         <HeaderTitle>BookHub</HeaderTitle>
-
         <HeaderButtonDiv>
           {currentUser ? (
             <div>

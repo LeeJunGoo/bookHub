@@ -8,7 +8,6 @@ import { getStorage, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
 function MyPage() {
 
-
   const navigate = useNavigate();
   const fileInputRef = useRef();
   const storage = getStorage();
@@ -18,19 +17,32 @@ function MyPage() {
   const [imageUrl, setImageUrl] = useState('')
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         fetchUserData(currentUser.uid);
+        console.log('데이터를 받아오는데 성공했을지도?', currentUser)
       } else {
         navigate('/login')
       }
+      setLoading(false)
     });
 
-    return () => unsubscribe();
+    return () => unSubscribe();
   }, [])
+
+
+  async function fetchDefaultImage() {
+    const defaultImageRef = ref(storage, 'profile.png');
+    try {
+      return await getDownloadURL(defaultImageRef);
+    } catch (error) {
+      console.error('이미지를 가져오지 못했어요.', error)
+      return '';
+    }
+  }
 
   const fetchUserData = async (userId) => {
     const userDocRef = doc(db, 'users', userId);
@@ -46,16 +58,6 @@ function MyPage() {
 
     }
   };
-
-  const fetchDefaultImage = async () => {
-    const defaultImageRef = ref(storage, 'profile.png');
-    try {
-      return await getDownloadURL(defaultImageRef);
-    } catch (error) {
-      console.error('이미지를 가져오지 못했어요.', error)
-      return '';
-    }
-  }
 
   const onChangeProfileImage = (e) => {
     const file = e.target.files[0];
@@ -87,7 +89,6 @@ function MyPage() {
       await updateDoc(userDocRef, {
         profileImageUrl: downloadURL,
       });
-
       alert('이미지 업로드에 성공하였습니다!')
       setImageUrl(downloadURL);
       setSelectedFile(null)
@@ -109,6 +110,12 @@ function MyPage() {
 
   const goToHome = () => {
     navigate('/')
+  }
+
+  if (loading) {
+    return <div>현재 상태는 로딩중일지도
+      {console.log('로딩중입니다')}
+    </div>
   }
 
   return (

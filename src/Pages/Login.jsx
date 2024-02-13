@@ -38,7 +38,6 @@ function Login() {
   }
 
   const onUserPwdHandler = (e) => {
-    console.log(e)
     setUserPwd(e.target.value)
   }
 
