@@ -19,6 +19,7 @@ function Login() {
   const [password, setUserPwd] = useState('');
 
   const loggedIn = async (e) => {
+    console.log(email, password);
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -62,11 +63,21 @@ function Login() {
           <StUl>
             <li>
               <label>이메일</label>
-              <input type="text" onClick={onUserEmailHandler} placeholder="이메일을 입력해주세요."></input>
+              <input
+                type="email"
+                value={email}
+                onChange={onUserEmailHandler}
+                placeholder="이메일을 입력해주세요."
+              ></input>
             </li>
             <li>
               <label>패스워드</label>
-              <input type="password" onClick={onUserPwdHandler} placeholder="패스워드를 입력해주세요."></input>
+              <input
+                type="password"
+                value={password}
+                onChange={onUserPwdHandler}
+                placeholder="패스워드를 입력해주세요."
+              ></input>
             </li>
             <button onClick={(e) => loggedIn(e)}>로그인!</button>
           </StUl>
