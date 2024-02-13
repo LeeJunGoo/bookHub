@@ -14,14 +14,13 @@ import { Pagination, Navigation } from 'swiper/modules';
 import '../styles/Carousel.css';
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, collection } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 //swiper 패키지 설치
 
 function Home() {
   const navigate = useNavigate();
   const auth = getAuth();
-
   const [review, setReview] = useState([]); // 베스트 셀러 리스트 및 작성한 리뷰 책에 대한 리스트
   const [title, setTitle] = useState(''); // "베스트 셀러" or "내가 작성한 책의 리뷰"
 
@@ -29,52 +28,47 @@ function Home() {
   const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
 
   const [currentUser, setCurrentUser] = useState(null);
-
-  console.log(currentUser);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
+        const fetchReviewData = async () => {
+          if (user) {
+            const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+            try {
+              const querySnapshot = await getDocs(q);
+              if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data();
+                const reviews = userData.reviews || [];
+                if (reviews.length > 0) {
+                  const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+                  setReview(orderData);
+                  setTitle('내가 남긴 리뷰의 책');
+                } else {
+                  setReview(bookData.filter((item) => item.rank <= 10));
+                  setTitle('리뷰가 없는 경우');
+                  console.log('데이터가 없어요.');
+                }
+              }
+            } catch (error) {
+              console.error('데이터를 불러오는 데 실패했습니다.', error);
+            }
+          } else {
+            setReview(bookData.filter((item) => item.rank <= 10));
+            setTitle('비로그인상태 베스트셀러');
+            console.log('비로그인 처리시 출력');
+          }
+        };
+        fetchReviewData();
       } else {
         setCurrentUser(null);
       }
     });
+    setLoading(false);
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    console.log(currentUser);
-    const fetchReviewData = async () => {
-      if (currentUser) {
-        const userDocRef = doc(collection(db, 'users'), currentUser.uid);
-
-        try {
-          const docSnap = await getDoc(userDocRef);
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-            const reviews = userData.reviews || [];
-            if (reviews.length > 0) {
-              const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
-              setReview(orderData);
-              setTitle('내가 남긴 리뷰의 책');
-            } else {
-              setReview(bookData.filter((item) => item.rank <= 10));
-              setTitle('리뷰가 없는 경우');
-              console.log('데이터가 없어요.');
-            }
-          }
-        } catch (error) {
-          console.error('데이터를 불러오는 데 실패했습니다.', error);
-        }
-      } else {
-        setReview(bookData.filter((item) => item.rank <= 10));
-        setTitle('비로그인상태 베스트셀러');
-      }
-    };
-
-    fetchReviewData();
-  }, [currentUser]);
 
   //로그인 및 로그아웃 버튼 핸들러
   const logoutButtonEventHandler = () => {
@@ -90,16 +84,15 @@ function Home() {
 
   const myPageButtonEventHandler = () => {
     if (currentUser) {
-      navigate(`/Mypage/`);
+      navigate(`/Mypage`);
     } else {
       if (window.confirm('흥흥!! 로그인이 안 됐어 바부야~ 로그인 할꺼지?')) {
         navigate(`/Login`);
       }
     }
   };
-
-  //검색 창의 onChange 메소드
-  const searchOnChangeEventHandler = (e) => {
+  // 검색 기능 관련 메소드
+  const titleSearchEventHandler = (e) => {
     setTitleSearch(e.target.value);
   };
 
@@ -123,10 +116,23 @@ function Home() {
     }
   };
 
+  if (loading) {
+    return (
+      <div>
+        현재 상태는 로딩중일지도
+        {console.log('로딩중입니다')}
+      </div>
+    );
+  }
+
+  const homeBtn = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <Header>
-        <HeaderTitle onClick={() => window.location.reload()}>BookHub</HeaderTitle>
+        <HeaderTitle onClick={homeBtn}>BookHub</HeaderTitle>
 
         <HeaderButtonDiv>
           {currentUser ? (
@@ -140,7 +146,7 @@ function Home() {
         </HeaderButtonDiv>
 
         <HeaderForm onSubmit={onSubmitEventHandler}>
-          <input value={titleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
+          <input value={titleSearch} onChange={titleSearchEventHandler} maxLength={30}></input>
           <button type="onSubmit">검색</button>
         </HeaderForm>
       </Header>
@@ -172,9 +178,9 @@ function Home() {
             ))}
           </StSwiper>
         </StSection>
-        <section>
+        <StSection2>
           {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
-        </section>
+        </StSection2>
       </main>
 
       <StFooter>
@@ -225,12 +231,18 @@ const Header = styled.header`
   gap: 60px;
 `;
 
-const HeaderTitle = styled.h1`
-  padding-top: 50px;
+const HeaderTitle = styled.button`
+  font-family: 'TTHakgyoansimSamulhamR';
+  padding: 30px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
 
   &:hover {
+    background-color: #6ea477;
+    transition: 0.5s;
   }
 `;
 
@@ -279,6 +291,13 @@ const StSection = styled.section`
 
   p {
   }
+`;
+
+const StSection2 = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StP = styled.p`
