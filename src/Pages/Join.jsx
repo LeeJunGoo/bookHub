@@ -62,6 +62,9 @@ function Join() {
   const goToHome = () => {
     navigate('/');
   };
+  const goToLogin = () => {
+    navigate('/login')
+  }
 
   return (
     <>
@@ -87,11 +90,9 @@ function Join() {
           </div>
           <StDiv>
             <span>
-              <button>깃허브 가입</button>
+              <button onClick={goToLogin}>로그인 하기</button>
             </span>
-            <span>
-              <button>구글 가입</button>
-            </span>
+
           </StDiv>
         </StUl>
         <ol></ol>
