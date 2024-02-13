@@ -22,7 +22,6 @@ function Join() {
         uid: user.uid,
         userNickName: nickName,
         userEmail: email,
-        userProfile: null
       });
 
       alert(`${nickName} 님 안녕하세요!`);
