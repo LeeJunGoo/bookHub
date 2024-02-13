@@ -162,12 +162,16 @@ function Home() {
               <StSwiperSlide key={book.itemId}>
                 <StyledLink to={`/detail/${book.itemId}`}>
                   <img src={book.coverSmallUrl} alt="대체이미지" />
-                  <p>{book.title}</p>
+                  <p>{book.title}<br/>
+                  </p>
                 </StyledLink>
+                <StyledAuthor>
+                {book.publisher}/{book.author}
 
                 <p>
-                  {book.publisher}/{book.author}
                 </p>
+                </StyledAuthor>
+              
               </StSwiperSlide>
             ))}
           </StSwiper>
@@ -217,18 +221,29 @@ function Home() {
 export default Home;
 
 const Header = styled.header`
+  font-family: 'TTHakgyoansimSamulhamR';
+
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
   margin-bottom: 100px;
+  text-align: center;
+
+
 `;
 
 const HeaderTitle = styled.h1`
+  font-family: 'TTHakgyoansimSamulhamR';
+
   padding: 40px 0px 0px 40px;
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin : auto;
+
+
+
 `;
 
 const HeaderButtonDiv = styled.div`
@@ -238,27 +253,51 @@ const HeaderButtonDiv = styled.div`
   justify-content: end;
   margin-right: 20px;
   gap: 5px;
+  font-family: 'TTHakgyoansimSamulhamR';
+  text-align: center;
+  margin: auto;
+
+
+
 `;
 
 const StSwiper = styled(Swiper)`
   width: 1000px;
-  margin-top: 60px;
+  margin-top: 30px;
+  background-color: #1dd1a1;
+
+
+
+
 `;
 
 const StSwiperSlide = styled(SwiperSlide)`
   text-align: center;
   p {
     margin-top: 10px;
+    margin-bottom: 10px;
   }
+  background-color: #1dd1a1;
+  padding-bottom: 20px;
+  
+
+
 `;
 
 const StSection = styled.section`
-  width: 100%;
+  width: 85%;
   padding: 50px;
+  background-color: #1dd1a1;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin: auto;
+  
+
 `;
 
 const StP = styled.p`
   font-size: 25px;
+
+
 `;
 
 const StyledLink = styled(Link)`
@@ -270,7 +309,33 @@ const StyledLink = styled(Link)`
       text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
     }
   }
+  margin: 0px 0px 50px 0px;
+  text-align: center;
+  padding-bottom: 20px;
+
+
+
+
 `;
+
+const StyledAuthor = styled(Link)`
+  color: black;
+  text-decoration: none;
+
+  p {
+    &:hover {
+      text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
+    }
+  }
+  margin: 0px 0px 50px 0px;
+  text-align: center;
+  padding-bottom: 20px;
+
+
+
+
+`;
+
 
 const StFooter = styled.footer`
   width: 100%;
