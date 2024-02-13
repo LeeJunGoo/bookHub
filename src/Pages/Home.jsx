@@ -14,7 +14,7 @@ import '../styles/Carousel.css';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, collection } from 'firebase/firestore';
+import { doc, getDoc, collection, query, getDocs, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
 function Home() {
@@ -26,7 +26,7 @@ function Home() {
 
   const [titleSearch, setTitleSearch] = useState(''); //검색창에 입력한 책의 제목
   const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
-
+  const [loading, setLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState(null);
 
   console.log(currentUser);
@@ -210,16 +210,16 @@ function Home() {
               <StSwiperSlide key={book.itemId}>
                 <StyledLink to={`/detail/${book.itemId}`}>
                   <img src={book.coverSmallUrl} alt="대체이미지" />
-                  <p>{book.title}<br/>
+                  <p>{book.title}<br />
                   </p>
                 </StyledLink>
                 <StyledAuthor>
-                {book.publisher}/{book.author}
+                  {book.publisher}/{book.author}
 
-                <p>
-                </p>
+                  <p>
+                  </p>
                 </StyledAuthor>
-              
+
               </StSwiperSlide>
             ))}
           </StSwiper>
