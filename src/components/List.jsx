@@ -33,7 +33,7 @@ function bookList({ bookData2 }) {
                 <p>{book.customerReviewRank}</p>
               </Rate>
               <Outline>
-                <p>{book.description}</p>
+                <span>{book.description}</span>
               </Outline>
             </ListWrapper>
           </div>
