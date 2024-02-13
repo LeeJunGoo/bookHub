@@ -9,9 +9,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { Pagination, Navigation } from 'swiper/modules';
-
+import 'swiper/css/autoplay';
 import '../styles/Carousel.css';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore';
@@ -125,14 +125,10 @@ function Home() {
     );
   }
 
-  const homeBtn = () => {
-    navigate('/');
-  };
-
   return (
     <>
       <Header>
-        <HeaderTitle onClick={homeBtn}>BookHub</HeaderTitle>
+        <HeaderTitle onClick={() => window.location.reload()}>BookHub</HeaderTitle>
 
         <HeaderButtonDiv>
           {currentUser ? (
@@ -158,11 +154,12 @@ function Home() {
             slidesPerView={3} //각 슬라이드의 표시 수를 지정
             spaceBetween={5} //각 슬라이드 사이의 간격
             loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+            autoplay={{ delay: 2000, disableOnInteraction: false }}
             pagination={{
               clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
             }}
             navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
-            modules={[Pagination, Navigation]}
+            modules={[Pagination, Navigation, Autoplay]}
           >
             {review.map((book) => (
               <StSwiperSlide key={book.itemId}>
@@ -272,7 +269,8 @@ const HeaderForm = styled.form`
 `;
 
 const StSwiper = styled(Swiper)`
-  width: 100%;
+  width: 55%;
+  text-align: center;
   margin-top: 60px;
 `;
 
@@ -286,10 +284,12 @@ const StSwiperSlide = styled(SwiperSlide)`
 const StSection = styled.section`
   width: 100%;
   display: flex;
-  flex-flow: wrap;
-  padding: 50px;
+  flex-direction: column;
+  box-shadow: 1px 0 1px #333;
+  margin-bottom: 100px;
 
   p {
+    padding: 20px;
   }
 `;
 
