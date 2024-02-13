@@ -89,6 +89,7 @@ textarea{
 
 body {
   box-sizing: border-box;
+  background-color: #f2f6e7;
 }
 
 

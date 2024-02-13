@@ -33,18 +33,15 @@ function Login() {
   useEffect(() => {
     getRedirectResult(auth)
       .then(async (result) => {
-        console.log('result가 존재하는지', result)
         if (result) {
           const user = result.user;
           const providerId = result.providerId;
           const userRef = doc(db, 'users', user.uid)
           const docSnap = await getDoc(userRef)
 
-          console.log('docSnap.exists 가 진짜 존재하는지', docSnap.exists())
           if (docSnap.exists()) {
             await updateDoc(userRef, {
               lastLogin: new Date(),
-
             });
           } else {
             let etc = '';
@@ -69,6 +66,7 @@ function Login() {
         const errorMessage = error.message;
         alert(`${errorMessage} 의 에러가 발생했습니다. 에러코드: ${errorCode}`)
       });
+    setIsLoading(false)
   }, [])
 
 
@@ -83,28 +81,19 @@ function Login() {
           userEmail: user.email,
           etc: 'Github 으로 로그인 한 회원입니다.'
         });
-        setIsLoading(false)
         alert(`깃허브를 통해 찾아주셔서 반갑습니다!`)
         navigate('/')
-
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
-        const userEmail = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        alert(`${errorMessage} 의 에러가 발생했습니다. 에러코드: ${errorCode}`)
-        console.log(` 작성된 email은 ${userEmail}, credentail은 ${credential}`)
-        // ...
       })
-
   }
 
 
   const loggedIn = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         alert(`환영합니다!`)
         navigate(`/`)
       })
@@ -132,6 +121,11 @@ function Login() {
 
   const goToHome = () => {
     navigate('/')
+  }
+
+  if (isLoading) {
+    return <div>현재 상태는 로딩중일지도
+    </div>
   }
 
   return (
