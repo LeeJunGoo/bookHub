@@ -14,7 +14,7 @@ import '../styles/Carousel.css';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { collection, getDocs, query, where, getDoc, doc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, getDocs, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
 function Home() {
@@ -26,10 +26,9 @@ function Home() {
 
   const [titleSearch, setTitleSearch] = useState(''); //검색창에 입력한 책의 제목
   const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState(null);
 
-  console.log(currentUser);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -51,7 +50,6 @@ function Home() {
                 } else {
                   setReview(bookData.filter((item) => item.rank <= 10));
                   setTitle('리뷰가 없는 경우');
-                  console.log('데이터가 없어요.');
                 }
               }
             } catch (error) {
@@ -60,7 +58,6 @@ function Home() {
           } else {
             setReview(bookData.filter((item) => item.rank <= 10));
             setTitle('비로그인상태 베스트셀러');
-            console.log('비로그인 처리시 출력');
           }
         };
         fetchReviewData();
@@ -73,7 +70,6 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    console.log(currentUser);
     const fetchReviewData = async () => {
       if (currentUser) {
         const userDocRef = doc(collection(db, 'users'), currentUser.uid);
@@ -90,7 +86,6 @@ function Home() {
             } else {
               setReview(bookData.filter((item) => item.rank <= 10));
               setTitle('리뷰가 없는 경우');
-              console.log('데이터가 없어요.');
             }
           }
         } catch (error) {
@@ -109,7 +104,6 @@ function Home() {
   const logoutButtonEventHandler = () => {
     signOut(auth)
       .then(() => {
-        console.log('로그아웃 성공');
         navigate('/login');
       })
       .catch((error) => {
@@ -133,7 +127,6 @@ function Home() {
     setTitleSearch(e.target.value);
   };
 
-  console.log(titleSearch);
   //검색 버튼
   const onSubmitEventHandler = (e) => {
     e.preventDefault();
@@ -168,6 +161,7 @@ function Home() {
     <>
       <Header>
         <HeaderTitle onClick={() => window.location.reload()}>BookHub</HeaderTitle>
+
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -178,8 +172,6 @@ function Home() {
             <button onClick={() => navigate('/login')}>로그인</button>
           )}
         </HeaderButtonDiv>
-        <HeaderTitle>BookHub</HeaderTitle>
-
 
         <HeaderForm onSubmit={onSubmitEventHandler}>
           <input
@@ -210,23 +202,17 @@ function Home() {
               <StSwiperSlide key={book.itemId}>
                 <StyledLink to={`/detail/${book.itemId}`}>
                   <img src={book.coverSmallUrl} alt="대체이미지" />
-                  <p>{book.title}<br />
-                  </p>
+                  <p>{book.title}</p>
                 </StyledLink>
-                <StyledAuthor>
+
+                <p>
                   {book.publisher}/{book.author}
-
-                  <p>
-                  </p>
-                </StyledAuthor>
-
+                </p>
               </StSwiperSlide>
             ))}
           </StSwiper>
         </StSection>
-        <section>
-          {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
-        </section>
+        {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
       </main>
 
       <StFooter>
@@ -268,21 +254,15 @@ function Home() {
 
 export default Home;
 const Header = styled.header`
-
-  font-family: 'TTHakgyoansimSamulhamR';
-
-
   width: 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: 100px;
   align-items: center;
   gap: 20px;
-  text-align: center;
-
 `;
 
-const HeaderTitle = styled.h1`
+const HeaderTitle = styled.button`
   font-family: 'TTHakgyoansimSamulhamR';
   margin: 40px;
   padding: 20px;
@@ -290,6 +270,7 @@ const HeaderTitle = styled.h1`
   background-color: transparent;
   border: transparent;
   font-size: 40px;
+  line-height:1.2;
 
   &:hover {
     background-color: #6ea477;
@@ -304,7 +285,7 @@ const HeaderButtonDiv = styled.div`
   justify-content: end;
   margin-right: 30px;
   button {
-    font-family: TTHakgyoansimSamulhamR;
+    font-family: 'TTHakgyoansimSamulhamR';
     background-color: transparent;
     border: transparent;
     margin-right: 10px;
@@ -321,7 +302,6 @@ const HeaderForm = styled.form`
   display: flex;
   justify-content: center;
   gap: 5px;
-
 
   input {
     width: 35%;
@@ -342,24 +322,16 @@ const StSwiper = styled(Swiper)`
   width: 1200px;
   height: 250px;
   padding: 50px 30px;
-
 `;
 
 const StSwiperSlide = styled(SwiperSlide)`
   text-align: center;
   p {
     margin-top: 10px;
-    margin-bottom: 5px;
   }
-  background-color: #1dd1a1;
-  padding-bottom: 20px;
-  
-
-
 `;
 
 const StSection = styled.section`
-
   width: 100%;
   height: 100%;
   display: flex;
@@ -368,17 +340,9 @@ const StSection = styled.section`
   margin-bottom: 100px;
 `;
 
-const StSection2 = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
 const StP = styled.p`
   font-size: 25px;
-
-
 `;
 
 const StyledLink = styled(Link)`
@@ -390,35 +354,7 @@ const StyledLink = styled(Link)`
       text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
     }
   }
-  margin: 0px 0px 0px 0px;
-  text-align: center;
-  padding-bottom: 20px;
-
-
-
-
 `;
-
-const StyledAuthor = styled(Link)`
-  color: #222f3e;
-  text-decoration: none;
-  font-size: small;
-
-  p {
-    &:hover {
-      text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
-    }
-  }
-  margin: 0px 0px 0px 0px;
-  text-align: center;
-  padding-bottom: 20px;
-  ;
-
-
-
-
-`;
-
 
 const StFooter = styled.footer`
   width: 100%;

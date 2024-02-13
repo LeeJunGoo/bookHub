@@ -40,7 +40,6 @@ function Join() {
       const errorcode = error.code;
       const errorMessage = error.message;
       alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`);
-      console.log('오류코드', errorcode);
     }
   };
 
