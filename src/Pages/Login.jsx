@@ -1,7 +1,16 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword, getRedirectResult, signInWithRedirect, GoogleAuthProvider } from "@firebase/auth";
+import { useState, useEffect } from "react";
+import { addDoc, collection, getDoc, doc, setDoc, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  getRedirectResult,
+  signInWithRedirect,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+} from "@firebase/auth";
 
 // id : gang@dev.com
 // pwd : 123123
@@ -10,53 +19,17 @@ function Login() {
 
   const navigate = useNavigate();
   const auth = getAuth();
-  // const provider = new GoogleAuthProvider();
-
-
-
-  // const getGoogleAccount = () => {
-
-  //   signInWithRedirect(auth, provider);
-  // }
 
   const [email, setUserEmail] = useState('');
   const [password, setUserPwd] = useState('');
-
-  // getRedirectResult(auth)
-  //   .then((result) => {
-  //     // This gives you a Google Access Token. You can use it to access Google APIs.
-  //     const credential = GoogleAuthProvider.credentialFromResult(result);
-  //     const token = credential.accessToken;
-
-  //     // The signed-in user info.
-  //     const user = result.user;
-  //     // IdP data available using getAdditionalUserInfo(result)
-  //     // ...
-  //   }).catch((error) => {
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     // The email of the user's account used.
-  //     const email = error.customData.email;
-  //     // The AuthCredential type that was used.
-  //     const credential = GoogleAuthProvider.credentialFromError(error);
-  //     alert(`${errorMessage} 의 에러가 발생했습니다. 에러코드: ${errorCode}`)
-  //     console.log(` 작성된 email은 ${email}, credentail은 ${credential}`)
-  //     // ...
-  //   });
-
-
-
-
-
-
-
 
   const loggedIn = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
-        console.log('안녕하세요', user)
+        console.log(userCredential)
+        console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
         navigate(`/`)
       })
 
@@ -111,8 +84,6 @@ function Login() {
             <div>
               <StBtn onClick={(e) => loggedIn(e)}>로그인!</StBtn>
             </div>
-            <div>구글 로그인</div>
-            <div>깃허브 로그인</div>
           </StUl>
           <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
           <StBtn onClick={goToHome}>홈으로 가기</StBtn>
@@ -174,9 +145,5 @@ const StHeader = styled.header`
 const StBtn = styled.button`
   display: flex;
   justify-content:center;
-  background-color: #d5ceff;
-  border: 1px solid #452ec4;
-  border-radius: 10px;
-  color: #4730cc;
 
 `

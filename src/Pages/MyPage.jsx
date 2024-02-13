@@ -132,7 +132,7 @@ function MyPage() {
             {userDetails ? (
               <StDiv3>
                 <span>
-                  닉네임 :{userDetails.userNickName}
+                  닉네임 : {userDetails.userNickName}
                 </span>
                 <span>
                   이메일 : {userDetails.userEmail}
@@ -251,5 +251,6 @@ const StImg = styled.img`
   width: 120px; 
   height: 120px;
   object-fit: cover;
+  border-radius: 50%;
   
 `
