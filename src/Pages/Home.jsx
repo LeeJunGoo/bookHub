@@ -127,7 +127,6 @@ function Home() {
   return (
     <>
       <Header>
-        <HeaderTitle>BookHub</HeaderTitle>
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -138,6 +137,7 @@ function Home() {
             <button onClick={() => navigate('/login')}>로그인</button>
           )}
         </HeaderButtonDiv>
+        <HeaderTitle>BookHub</HeaderTitle>
 
         <form onSubmit={onSubmitEventHandler}>
           <input value={titleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
@@ -275,7 +275,7 @@ const StSwiperSlide = styled(SwiperSlide)`
   text-align: center;
   p {
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   background-color: #1dd1a1;
   padding-bottom: 20px;
@@ -309,7 +309,7 @@ const StyledLink = styled(Link)`
       text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
     }
   }
-  margin: 0px 0px 50px 0px;
+  margin: 0px 0px 0px 0px;
   text-align: center;
   padding-bottom: 20px;
 
@@ -319,17 +319,19 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledAuthor = styled(Link)`
-  color: black;
+  color: #222f3e;
   text-decoration: none;
+  font-size: small;
 
   p {
     &:hover {
       text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
     }
   }
-  margin: 0px 0px 50px 0px;
+  margin: 0px 0px 0px 0px;
   text-align: center;
   padding-bottom: 20px;
+  ;
 
 
 

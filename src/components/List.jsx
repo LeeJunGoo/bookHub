@@ -66,7 +66,7 @@ const ListWrapper = styled.li `
   font-family: 'SOGANGUNIVERSITYTTF';
   margin: auto;
 
-  color : #222f3e
+  color : #222f3e;
 
 `;
 
