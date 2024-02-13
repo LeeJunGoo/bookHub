@@ -16,7 +16,6 @@ import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
-//swiper 패키지 설치
 
 function Home() {
   const navigate = useNavigate();
@@ -142,7 +141,12 @@ function Home() {
         </HeaderButtonDiv>
 
         <HeaderForm onSubmit={onSubmitEventHandler}>
-          <input value={titleSearch} onChange={titleSearchEventHandler} maxLength={30}></input>
+          <input
+            value={titleSearch}
+            onChange={titleSearchEventHandler}
+            maxLength={30}
+            placeholder=" 당신이 원하는 책을 찾아 드리겠습니다. 책의 제목을..."
+          ></input>
           <button type="onSubmit">검색</button>
         </HeaderForm>
       </Header>
@@ -218,24 +222,23 @@ function Home() {
 }
 
 export default Home;
-
 const Header = styled.header`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-bottom: 100px;
-  gap: 60px;
+  align-items: center;
+  gap: 20px;
 `;
 
 const HeaderTitle = styled.button`
   font-family: 'TTHakgyoansimSamulhamR';
-  padding: 30px;
+  margin: 40px;
+  padding: 20px;
   border-radius: 15px;
   background-color: transparent;
   border: transparent;
   font-size: 40px;
-  font-weight: 400;
 
   &:hover {
     background-color: #6ea477;
@@ -249,7 +252,17 @@ const HeaderButtonDiv = styled.div`
   flex-direction: row;
   justify-content: end;
   margin-right: 30px;
-  gap: 5px;
+  button {
+    font-family: TTHakgyoansimSamulhamR;
+    background-color: transparent;
+    border: transparent;
+    margin-right: 10px;
+    padding: 20px;
+    &:hover {
+      border-radius: 15px;
+      background-color: #6ea477;
+    }
+  }
 `;
 
 const HeaderForm = styled.form`
@@ -261,17 +274,22 @@ const HeaderForm = styled.form`
   input {
     width: 35%;
     height: 30px;
+    border: 2px solid black;
+    border-radius: 6px;
   }
 
   button {
     width: 50px;
+    border: 2px solid black;
+    border-radius: 6px;
   }
 `;
 
 const StSwiper = styled(Swiper)`
-  width: 55%;
-  text-align: center;
-  margin-top: 60px;
+  //width: 50% 줄 시에 swiper 작동 에러 발생
+  width: 1200px;
+  height: 250px;
+  padding: 50px 30px;
 `;
 
 const StSwiperSlide = styled(SwiperSlide)`
@@ -283,14 +301,11 @@ const StSwiperSlide = styled(SwiperSlide)`
 
 const StSection = styled.section`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   box-shadow: 1px 0 1px #333;
   margin-bottom: 100px;
-
-  p {
-    padding: 20px;
-  }
 `;
 
 const StSection2 = styled.section`
