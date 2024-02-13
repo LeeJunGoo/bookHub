@@ -95,11 +95,15 @@ function DetailPages() {
   //   (collectionName, documentId, reviewIdToDelete) =   (컬렉션 이름 , 가져와야하는 문서 Id  , 삭제될  리뷰 아이디 )
   const deleteButtonClick = async (collectionName, documentId, reviewIdToDelete) => {
     try {
+      // collection ->  doc -> field ->  reviews id  가 없는 데이터 를 반환
+
       // 참조할 문서 가져오기
       const docRef = doc(db, collectionName, documentId);
+      console.log(docRef);
 
       // 문서의 정보와 메서드를 getDoc로 가져와서 저장
       const docSnapshot = await getDoc(docRef);
+      console.log(docSnapshot);
 
       // 정보와 메서드가 존재하지 않는다면
       if (!docSnapshot.exists()) {
@@ -110,6 +114,7 @@ function DetailPages() {
 
       // 문서의 정보와 메서드를 가지고 있는  스냅샷의  data 를 객체로  저장
       const documentData = docSnapshot.data();
+      console.log(documentData);
 
       //   documentDat 에 reviews 가 존재한다면
       if (documentData.reviews) {
@@ -152,16 +157,36 @@ function DetailPages() {
       {/* 
       reviews데이터가 존재하는 데이터만 가져오기 -> 
       reviews데이터가 없는  데이터는 의미 없다. */}
-      {userPostViewData.map(
-        (userData) =>
-          userData.reviews &&
-          userData.reviews.map((reviewData) => (
-            <div key={reviewData.id}>
-              <p>{reviewData.title}</p>
-              <p>{reviewData.text}</p>
-              <button onClick={() => deleteButtonClick('users', userData.id, reviewData.id)}>삭제</button>
-            </div>
-          ))
+
+      {userPostViewData.map((data) =>
+        data.isLoggedIn === true ? (
+          <>
+            {userPostViewData.map(
+              (userData) =>
+                userData.reviews &&
+                userData.reviews.map((reviewData) => (
+                  <div key={reviewData.id}>
+                    <p>{reviewData.title}</p>
+                    <p>{reviewData.text}</p>
+                    <button onClick={() => deleteButtonClick('users', userData.id, reviewData.id)}>삭제</button>
+                  </div>
+                ))
+            )}
+          </>
+        ) : (
+          <>
+            {userPostViewData.map(
+              (userData) =>
+                userData.reviews &&
+                userData.reviews.map((reviewData) => (
+                  <div key={reviewData.id}>
+                    <p>{reviewData.title}</p>
+                    <p>{reviewData.text}</p>
+                  </div>
+                ))
+            )}
+          </>
+        )
       )}
 
       {userPostViewData.map((data) =>
