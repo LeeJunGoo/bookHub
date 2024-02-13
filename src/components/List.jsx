@@ -17,17 +17,14 @@ function List({ bookData }) {
           <Genre>
             <p>{book.categoryName}</p>
           </Genre>
-          <BookNameAndAuthur>
+          <BookNameAndAuthor>
             <BookName>
               <p>{book.title}</p>
             </BookName>
             <Author>
               <p>{book.author}</p>
             </Author>
-          </BookNameAndAuthur>
-          {/* <Rate>
-            <p>{book.customerReviewRank}</p>
-          </Rate> */}
+          </BookNameAndAuthor>
           <Outline>
             <Stp>{book.description}</Stp>
           </Outline>
@@ -102,7 +99,7 @@ const Genre = styled.div`
 
 `;
 
-const BookNameAndAuthur = styled.div`
+const BookNameAndAuthor = styled.div`
 
   margin: auto;
 

@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router'
 import styled from 'styled-components';
+import { bookData } from '../shared/mockData';
 import { useEffect, useState, useRef } from 'react';
 import { db } from '../firebase';
-import { QuerySnapshot, collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { collection, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
@@ -21,6 +22,7 @@ function MyPage() {
   const [nickName, setNickName] = useState('');
   const [email, setEmail] = useState('');
   const [userEditForm, setUserEditForm] = useState(false);
+  const [userReviews, setUserReviews] = useState([]);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -57,6 +59,33 @@ function MyPage() {
 
     return () => unSubscribe();
   }, [])
+
+
+  useEffect(() => {
+    const fetchUserReviews = async () => {
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+
+      const q = query(collection(db, 'reviews'), where('uid', '==', currentUser.uid))
+      const querySnapshot = await getDocs(q)
+      const reviews = [];
+      querySnapshot.forEach(doc => {
+        const review = doc.data();
+
+        reviews.push(review)
+      })
+
+      const reviewsWithBookInfo = reviews.map(review => {
+        const book = bookData.find(book => book.itemId === Number(review.itemId))
+        return { ...review, book };
+      })
+      console.log(reviewsWithBookInfo)
+      setUserReviews(reviewsWithBookInfo)
+    }
+    fetchUserReviews();
+  }, [auth.currentUser])
+
+
 
 
   const toggleEditForm = () => {
@@ -104,10 +133,8 @@ function MyPage() {
           alert('이미지 업로드에 성공하였습니다!')
 
         } else {
-          console.log('문서가 사라지는 오류')
+          alert('이미지가 존재하지 않아요')
         }
-        // setSelectedFile(null)
-        // setPreviewUrl(null)
       } catch (error) {
         console.error('이미지 업로드에 실패했어요', error)
       }
@@ -143,10 +170,10 @@ function MyPage() {
   const LoggedOut = () => {
     signOut(auth).then(() => {
       navigate('/login')
-      alert('로그아웃에 성공하였습니다.')
+      alert('로그아웃에 성공했어요!.')
 
     }).catch((error) => {
-      console.error('로그아웃에 실패함', error)
+      console.error('로그아웃에 실패했어요..', error)
     })
   }
 
@@ -207,11 +234,22 @@ function MyPage() {
             내가 작성한 리뷰
           </label>
           <StUl2>
-            <li>영화1</li>
-            <li>영화2</li>
-            <li>영화3</li>
-            <li>영화4</li>
-            <li>영화5</li>
+            {userReviews.map((review, index) => {
+              return (
+                <div key={index}>
+                  {review.book ? (
+                    <div>
+                      <img src={review.book.coverLargeUrl} alt='default_image' />
+                      <p>책 제목 : {review.book.title}</p>
+                    </div>
+                  ) : (
+                    <p>해당하는 책의 정보가 존재하지 않아요.</p>
+                  )}
+                  <li>리뷰 제목 : {review.title}</li>
+                  <li>리뷰 내용 : {review.text}</li>
+                </div>
+              )
+            })}
           </StUl2>
         </StDiv2>
       </StSection2>
