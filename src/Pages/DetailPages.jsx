@@ -97,13 +97,6 @@ function DetailPages() {
     });
   };
 
-  //       setReviewData((prev) => [...prev, 리뷰데이터]);
-  //       setReviewText('');
-  //       setReviewTitle('');
-  //     }
-  //   });
-  // };
-
   return (
     <>
       <form
