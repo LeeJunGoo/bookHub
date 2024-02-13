@@ -10,33 +10,33 @@ function Login() {
 
   const navigate = useNavigate();
   const auth = getAuth();
-  const provider = new GoogleAuthProvider();
-  signInWithRedirect(auth, provider);
+  // const provider = new GoogleAuthProvider();
+  // signInWithRedirect(auth, provider);
 
   const [email, setUserEmail] = useState('');
   const [password, setUserPwd] = useState('');
 
-  getRedirectResult(auth)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
+  // getRedirectResult(auth)
+  //   .then((result) => {
+  //     // This gives you a Google Access Token. You can use it to access Google APIs.
+  //     const credential = GoogleAuthProvider.credentialFromResult(result);
+  //     const token = credential.accessToken;
 
-      // The signed-in user info.
-      const user = result.user;
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const userEmail = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      alert(`${errorMessage} 의 에러가 발생했습니다. 에러코드: ${errorCode}`)
-      console.log(` 작성된 email은 ${userEmail}, credentail은 ${credential}`)
-      // ...
-    });
+  //     // The signed-in user info.
+  //     const user = result.user;
+  //     // IdP data available using getAdditionalUserInfo(result)
+  //     // ...
+  //   }).catch((error) => {
+  //     const errorCode = error.code;
+  //     const errorMessage = error.message;
+  //     // The email of the user's account used.
+  //     const userEmail = error.customData.email;
+  //     // The AuthCredential type that was used.
+  //     const credential = GoogleAuthProvider.credentialFromError(error);
+  //     alert(`${errorMessage} 의 에러가 발생했습니다. 에러코드: ${errorCode}`)
+  //     console.log(` 작성된 email은 ${userEmail}, credentail은 ${credential}`)
+  //     // ...
+  //   });
 
 
 
