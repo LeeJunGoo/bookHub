@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 
-import { bookData } from '../shared/mockData';
-
-console.log(bookData);
-
 // id : gang@dev.com
 // pwd : 123123
 
@@ -26,7 +22,7 @@ function Login() {
         const user = userCredential.user;
         console.log(userCredential);
         console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`);
-        navigate(`/mypage/`);
+        navigate(`/`);
       })
 
       .catch((error) => {
