@@ -85,16 +85,7 @@ function Join() {
           <div>
             <button onClick={newSign}>회원가입하기</button>
           </div>
-          <StDiv>
-            <span>
-              <button>깃허브 가입</button>
-            </span>
-            <span>
-              <button>구글 가입</button>
-            </span>
-          </StDiv>
         </StUl>
-        <ol></ol>
       </StSection>
     </>
   );
