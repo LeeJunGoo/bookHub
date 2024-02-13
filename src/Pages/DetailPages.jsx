@@ -1,137 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  updateDoc,
-  doc,
-  query,
-  getDocs,
-  collection,
-  getDoc,
-  deleteDoc,
-  where,
-  Firestore,
-  FieldValue,
-  deleteField
-} from 'firebase/firestore';
+import { doc, query, getDocs, collection, updateDoc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { bookData } from '../shared/mockData';
 
 function DetailPages() {
   const navigate = useNavigate();
-  const [bookHubData, setBookHubData] = useState(bookData);
+  const { id } = useParams();
+  const [bookHubData] = useState(bookData);
   const [userPostViewData, setUserPostViewData] = useState([]);
   const [postTitle, setPostTitle] = useState('');
   const [postText, setPostText] = useState('');
-
-  const { id } = useParams();
-
-  const addReview = async (event) => {
-    event.preventDefault();
-    // 사용자 로그인 여부 확인
-    // (실제로는 이 부분을 로그인 상태 확인 로직으로 변경해야 합니다.)
-    const isLoggedIn = true;
-
-    if (isLoggedIn) {
-      const reviewData = {
-        createdAt: Date.now(),
-        title: postTitle,
-        text: postText,
-        id: crypto.randomUUID(),
-        like: 0,
-        itemId: id
-      };
-
-      setUserPostViewData((prev) => [...prev, reviewData]);
-
-      setPostText('');
-      setPostTitle('');
-
-      // 현재 로그인된 사용자의 ID (예시로 고정된 값 사용)
-      const userId = 'EgTwNS1c2OKdbGQMGF5t';
-
-      // 해당 사용자의 데이터 가져오기
-      const userDocRef = doc(db, 'users', userId);
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        // 기존 리뷰 데이터 가져오기 (없으면 빈 배열로 초기화)
-        const existingReviews = userDocSnapshot.data().reviews || [];
-
-        // 새 리뷰 추가
-        const updatedReviews = [...existingReviews, reviewData];
-
-        // 사용자 데이터 업데이트
-        await updateDoc(userDocRef, { reviews: updatedReviews });
-        console.log('리뷰가 성공적으로 사용자 데이터에 추가되었습니다.');
-      } else {
-        console.error('해당 사용자의 데이터를 찾을 수 없습니다.');
-      }
-    } else {
-      window.alert('로그인해주세요');
-      navigate(`/login`);
-    }
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const q = query(collection(db, 'users'));
         const querySnapshot = await getDocs(q);
-        const initialReviews = [];
-
-        querySnapshot.forEach((doc) => {
-          initialReviews.push({ id: doc.id, ...doc.data() });
-        });
-
+        const initialReviews = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setUserPostViewData(initialReviews);
+
+        // Check if user is logged in
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            setIsLoggedIn(true);
+          } else {
+            setIsLoggedIn(false);
+          }
+        });
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        console.error('리뷰를 불러오는 중 에러 발생:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  //   (collectionName, documentId, reviewIdToDelete) =   (컬렉션 이름 , 가져와야하는 문서 Id  , 삭제될  리뷰 아이디 )
-  const deleteButtonClick = async (collectionName, documentId, reviewIdToDelete) => {
+  const addReview = async (event) => {
+    event.preventDefault();
+    if (!isLoggedIn) {
+      window.alert('로그인이 필요합니다.');
+      navigate(`/login`);
+      return;
+    }
+
+    const reviewData = {
+      createdAt: Date.now(),
+      title: postTitle,
+      text: postText,
+      id: Math.random().toString(36).substr(2, 9), // 랜덤 ID 생성
+      like: 0,
+      itemId: id
+    };
+
+    setUserPostViewData((prev) => [...prev, reviewData]);
+    setPostText('');
+    setPostTitle('');
+
+    const userId = 'EgTwNS1c2OKdbGQMGF5t';
+    const userDocRef = doc(db, 'users', userId);
+
     try {
-      // 참조할 문서 가져오기
-      const docRef = doc(db, collectionName, documentId);
-
-      // 문서의 정보와 메서드를 getDoc로 가져와서 저장
-      const docSnapshot = await getDoc(docRef);
-
-      // 정보와 메서드가 존재하지 않는다면
-      if (!docSnapshot.exists()) {
-        // 에러를 출력하고 종료
-        console.error('문서를 찾을 수 없습니다.');
-        return;
-      }
-
-      // 문서의 정보와 메서드를 가지고 있는  스냅샷의  data 를 객체로  저장
-      const documentData = docSnapshot.data();
-
-      //   documentDat 에 reviews 가 존재한다면
-      if (documentData.reviews) {
-        // 삭제할 리뷰 데이터를  필터링해서 제외한 배열 저장
-        const updatedReviews = documentData.reviews.filter((review) => review.id !== reviewIdToDelete);
-
-        // 120번째 배열로 reviews 를 업데이트
-        await updateDoc(docRef, { reviews: updatedReviews });
-
-        // 자동  새로고침 후  반영
-        navigate(`/detail/${id}`);
-
-        console.log('리뷰가 성공적으로 삭제되었습니다.');
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const existingReviews = userDocSnapshot.data().reviews || [];
+        const updatedReviews = [...existingReviews, reviewData];
+        await updateDoc(userDocRef, { reviews: updatedReviews });
+        console.log('리뷰가 성공적으로 사용자 데이터에 추가되었습니다.');
       } else {
-        console.error('리뷰 데이터를 찾을 수 없습니다.');
+        console.error('해당 사용자의 데이터를 찾을 수 없습니다.');
       }
     } catch (error) {
-      console.error('리뷰 삭제 중 오류:', error);
+      console.error('리뷰를 추가하는 중 에러 발생:', error);
     }
   };
+
+  const deleteReview = async (collectionName, documentId, reviewIdToDelete) => {
+    try {
+      // Rest of your code for deleting review
+    } catch (error) {
+      console.error('리뷰를 삭제하는 중 에러 발생:', error);
+    }
+  };
+
   return (
     <>
+      {/* Your book details display */}
+
       {bookHubData
         .filter((data) => data.itemId === Number(id))
         .map((book) => (
@@ -149,42 +105,44 @@ function DetailPages() {
           </div>
         ))}
 
-      {/* 
-      reviews데이터가 존재하는 데이터만 가져오기 -> 
-      reviews데이터가 없는  데이터는 의미 없다. */}
-      {userPostViewData.map(
-        (userData) =>
-          userData.reviews &&
+      {userPostViewData
+        .filter((userData) => userData.reviews && userData.reviews.some((review) => review.itemId === id))
+        .map((userData) =>
           userData.reviews.map((reviewData) => (
             <div key={reviewData.id}>
               <p>{reviewData.title}</p>
               <p>{reviewData.text}</p>
-              <button onClick={() => deleteButtonClick('users', userData.id, reviewData.id)}>삭제</button>
+
+              {/* Check isLoggedIn state */}
+              {isLoggedIn ? (
+                <button onClick={() => deleteReview('users', userData.id, reviewData.id)}>버튼</button>
+              ) : (
+                <button disabled>버튼</button>
+              )}
             </div>
           ))
-      )}
+        )}
 
-      {userPostViewData.map((data) =>
-        !data.isLoggedIn ? (
-          <form onSubmit={addReview}>
-            <input
-              type="text"
-              value={postTitle}
-              onChange={(event) => setPostTitle(event.target.value)}
-              placeholder="제목"
-            />
-            <textarea
-              type="text"
-              value={postText}
-              onChange={(event) => setPostText(event.target.value)}
-              placeholder="내용"
-            />
-            <br />
-            <button type="submit">추가하기</button>
-          </form>
-        ) : (
-          <></>
-        )
+      {/* Check isLoggedIn state for rendering form */}
+      {isLoggedIn ? (
+        <form onSubmit={addReview}>
+          <input
+            type="text"
+            value={postTitle}
+            onChange={(event) => setPostTitle(event.target.value)}
+            placeholder="제목"
+          />
+          <textarea
+            type="text"
+            value={postText}
+            onChange={(event) => setPostText(event.target.value)}
+            placeholder="내용"
+          />
+          <br />
+          <button type="submit">추가하기</button>
+        </form>
+      ) : (
+        <></>
       )}
     </>
   );
