@@ -103,11 +103,7 @@ export const bookData = [
     link: 'http://book.interpark.com/blog/integration/product/itemDetail.rdo?prdNo=356791451&refererType=8305',
     mobileLink: 'http://m.book.interpark.com/view.html?PRD_NO=356791451&SHOP_NO=0000400000',
     additionalLink: 'http://book.interpark.com/gate/ippgw.jsp?goods_no=356791451&biz_cd=',
-    reviewCount: [
-      { idx: 0, content: 'dsdsadd', likes: 3, data: '2024-02-08' },
-      { idx: 1, content: 'dsdsadd', likes: 3, data: '2024-02-08' },
-      { idx: 2, content: 'dsdsadd', likes: 3, data: '2024-02-08' }
-    ],
+    reviewCount: 2,
     rank: 1
   },
   {
