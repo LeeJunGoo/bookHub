@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useDispatch } from 'react-redux';
+import { join } from '../shared/redux/modules/userDataController';
+
 
 function Join() {
   const navigate = useNavigate();
   const auth = getAuth();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,8 +26,13 @@ function Join() {
         uid: user.uid,
         userNickName: nickName,
         userEmail: email,
-        userProfile: null
       });
+
+      dispatch(join({
+        uid: user.uid,
+        email,
+        nickName,
+      }))
 
       alert(`${nickName} 님 안녕하세요!`);
       navigate('/login');
@@ -34,6 +43,9 @@ function Join() {
       console.log('오류코드', errorcode);
     }
   };
+
+
+
 
   const onEmailHandler = (e) => {
     setEmail(e.target.value);
