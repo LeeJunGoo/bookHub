@@ -23,50 +23,57 @@ function Home() {
   const [TitleSearch, setTitleSearch] = useState(''); //검색 기능
   const [currentUser, setCurrentUser] = useState(null);
 
+  const [isRender, setIsRender] = useState(false);
+
   console.log(currentUser)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
+        const fetchReviewData = async () => {
+          if (currentUser) {
+            const userDocRef = doc(collection(db, "users"), currentUser.uid);
+            try {
+              const docSnap = await getDoc(userDocRef);
+              if (docSnap.exists()) {
+                const userData = docSnap.data();
+                const reviews = userData.reviews || [];
+                if (reviews.length > 0) {
+                  const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+                  setReview(orderData);
+                  setTitle('내가 남긴 리뷰의 책');
+                } else {
+                  setReview(bookData.filter(item => item.rank <= 10));
+                  setTitle('리뷰가 없는 경우');
+                  console.log('데이터가 없어요.')
+                }
+              }
+            } catch (error) {
+              console.error('데이터를 불러오는 데 실패했습니다.', error);
+            }
+          } else {
+            setReview(bookData.filter(item => item.rank <= 10));
+            setTitle('비로그인상태 베스트셀러');
+            console.log('비로그인 처리시 출력')
+          }
+        };
+        fetchReviewData();
+
       } else {
         setCurrentUser(null);
       }
+      // 하기 컴포넌트 ui 부분을 렌더링할지를 결정!!!
+      setIsRender(true);
     })
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     console.log(currentUser)
-    const fetchReviewData = async () => {
-      if (currentUser) {
-        const userDocRef = doc(collection(db, "users"), currentUser.uid);
 
-        try {
-          const docSnap = await getDoc(userDocRef);
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-            const reviews = userData.reviews || [];
-            if (reviews.length > 0) {
-              const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
-              setReview(orderData);
-              setTitle('내가 남긴 리뷰의 책');
-            } else {
-              setReview(bookData.filter(item => item.rank <= 10));
-              setTitle('리뷰가 없는 경우');
-              console.log('데이터가 없어요.')
-            }
-          }
-        } catch (error) {
-          console.error('데이터를 불러오는 데 실패했습니다.', error);
-        }
-      } else {
-        setReview(bookData.filter(item => item.rank <= 10));
-        setTitle('비로그인상태 베스트셀러');
-      }
-    };
 
-    fetchReviewData();
+
   }, [currentUser]);
 
   //로그인 및 로그아웃 버튼 핸들러
@@ -91,6 +98,7 @@ function Home() {
   };
   // 검색 기능 관련 메소드
   const TitleSearchEventHandler = (e) => {
+    e.preventDefault();
     setTitleSearch(e.target.value);
   };
 
@@ -100,85 +108,90 @@ function Home() {
 
   return (
     <>
-      <Header>
-        <HeaderTitle>BookHub</HeaderTitle>
-        <HeaderButtonDiv>
-          {currentUser ? (
-            <div>
-              <button onClick={logoutButtonEventHandler}>로그아웃</button>
-              <button onClick={myPageButtonEventHandler}>마이페이지</button>
-            </div>
-          ) : (
-            <button onClick={() => navigate('/login')}>로그인</button>
-          )}
-        </HeaderButtonDiv>
-        <form onSubmit={onSubmitEventHandler}>
-          <input value={TitleSearch} onChange={TitleSearchEventHandler} maxLength={30}></input>
-          <button type="submit">검색</button>
-        </form>
-      </Header>
-      <main>
-        <StSwiper
-          slidesPerView={4} //각 슬라이드의 표시 수를 지정
-          spaceBetween={10} //각 슬라이드 사이의 간격
-          loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
-          pagination={{
-            clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
-          }}
-          navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
-          modules={[Pagination, Navigation]}
-        >
-          {review.map((book) => (
-            <StSwiperSlide key={book.itemId}>
-              <StyledLink to={`/detail/${book.itemId}`}>
-                <img src={book.coverSmallUrl} alt="대체이미지" />
-                <p>{book.title}</p>
-              </StyledLink>
-              <p>
-                {book.publisher}/{book.author}
-              </p>
-            </StSwiperSlide>
-          ))}
-        </StSwiper>
-        <StSection>
-          <StP>{title}</StP>
-          <StUl></StUl>
-        </StSection>
-        <List />
-      </main>
-      <StFooter>
-        <p>2024년 02월 07일~ 14일</p>
-        <p>© bookHub</p>
-        <address>
-          <StFooterUl>
-            <li>
-              <StyledLink to={'https://github.com/psisdn08'}>
-                <p>김형</p>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={'https://github.com/yuriyun88'}>
-                <p>정윤아</p>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={'https://github.com/Andante23'}>
-                <p>안단테</p>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={`https://github.com/LeeJunGoo`}>
-                <p>이준구</p>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={`https://github.com/gidalim`}>
-                <p>박강토</p>
-              </StyledLink>
-            </li>
-          </StFooterUl>
-        </address>
-      </StFooter>
+      {
+        !isRender ? "" : (<>
+          <Header>
+            <HeaderTitle>BookHub</HeaderTitle>
+            <HeaderButtonDiv>
+              {currentUser ? (
+                <div>
+                  <button onClick={logoutButtonEventHandler}>로그아웃</button>
+                  <button onClick={myPageButtonEventHandler}>마이페이지</button>
+                </div>
+              ) : (
+                <button onClick={() => navigate('/login')}>로그인</button>
+              )}
+            </HeaderButtonDiv>
+            <form onSubmit={onSubmitEventHandler}>
+              <input value={TitleSearch} onChange={TitleSearchEventHandler} maxLength={30}></input>
+              <button type="submit">검색</button>
+            </form>
+          </Header>
+          <main>
+            <StSwiper
+              slidesPerView={4} //각 슬라이드의 표시 수를 지정
+              spaceBetween={10} //각 슬라이드 사이의 간격
+              loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+              pagination={{
+                clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
+              }}
+              navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
+              modules={[Pagination, Navigation]}
+            >
+              {review.map((book) => (
+                <StSwiperSlide key={book.itemId}>
+                  <StyledLink to={`/detail/${book.itemId}`}>
+                    <img src={book.coverSmallUrl} alt="대체이미지" />
+                    <p>{book.title}</p>
+                  </StyledLink>
+                  <p>
+                    {book.publisher}/{book.author}
+                  </p>
+                </StSwiperSlide>
+              ))}
+            </StSwiper>
+            <StSection>
+              <StP>{title}</StP>
+              <StUl></StUl>
+            </StSection>
+            <List />
+          </main>
+          <StFooter>
+            <p>2024년 02월 07일~ 14일</p>
+            <p>© bookHub</p>
+            <address>
+              <StFooterUl>
+                <li>
+                  <StyledLink to={'https://github.com/psisdn08'}>
+                    <p>김형</p>
+                  </StyledLink>
+                </li>
+                <li>
+                  <StyledLink to={'https://github.com/yuriyun88'}>
+                    <p>정윤아</p>
+                  </StyledLink>
+                </li>
+                <li>
+                  <StyledLink to={'https://github.com/Andante23'}>
+                    <p>안단테</p>
+                  </StyledLink>
+                </li>
+                <li>
+                  <StyledLink to={`https://github.com/LeeJunGoo`}>
+                    <p>이준구</p>
+                  </StyledLink>
+                </li>
+                <li>
+                  <StyledLink to={`https://github.com/gidalim`}>
+                    <p>박강토</p>
+                  </StyledLink>
+                </li>
+              </StFooterUl>
+            </address>
+          </StFooter>
+        </>)
+      }
+
     </>
   );
 }
@@ -259,6 +272,8 @@ const StFooter = styled.footer`
   text-align: center;
   color: white;
   font-size: 14px;
+
+
 `;
 
 const StFooterUl = styled.ul`
