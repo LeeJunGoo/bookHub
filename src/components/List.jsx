@@ -40,7 +40,7 @@ function List({ bookData }) {
 export default List;
 
 const ListWrapper = styled.li`
-  background-color: red;
+  background-color: #3e3434;
   display: flex;
 `;
 

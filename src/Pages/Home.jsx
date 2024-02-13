@@ -103,7 +103,6 @@ function Home() {
     setTitleSearch(e.target.value);
   };
 
-  console.log(titleSearch);
   //검색 버튼
   const onSubmitEventHandler = (e) => {
     e.preventDefault();
@@ -127,7 +126,8 @@ function Home() {
   return (
     <>
       <Header>
-        <HeaderTitle>BookHub</HeaderTitle>
+        <HeaderTitle onClick={() => window.location.reload()}>BookHub</HeaderTitle>
+
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -139,10 +139,10 @@ function Home() {
           )}
         </HeaderButtonDiv>
 
-        <form onSubmit={onSubmitEventHandler}>
+        <HeaderForm onSubmit={onSubmitEventHandler}>
           <input value={titleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
           <button type="onSubmit">검색</button>
-        </form>
+        </HeaderForm>
       </Header>
 
       <main>
@@ -221,14 +221,17 @@ const Header = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
   margin-bottom: 100px;
+  gap: 60px;
 `;
 
 const HeaderTitle = styled.h1`
-  padding: 40px 0px 0px 40px;
+  padding-top: 50px;
   font-size: 40px;
   font-family: Arial, Helvetica, sans-serif;
+
+  &:hover {
+  }
 `;
 
 const HeaderButtonDiv = styled.div`
@@ -236,12 +239,28 @@ const HeaderButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: end;
-  margin-right: 20px;
+  margin-right: 30px;
   gap: 5px;
 `;
 
+const HeaderForm = styled.form`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  input {
+    width: 35%;
+    height: 30px;
+  }
+
+  button {
+    width: 50px;
+  }
+`;
+
 const StSwiper = styled(Swiper)`
-  width: 1000px;
+  width: 100%;
   margin-top: 60px;
 `;
 
@@ -254,7 +273,12 @@ const StSwiperSlide = styled(SwiperSlide)`
 
 const StSection = styled.section`
   width: 100%;
+  display: flex;
+  flex-flow: wrap;
   padding: 50px;
+
+  p {
+  }
 `;
 
 const StP = styled.p`
