@@ -73,8 +73,8 @@ function DetailPages() {
         const userDocRef = doc(db, 'users', user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
 
-        console.log(userDocSnapshot.data());
-        console.log(userDocSnapshot.exists());
+        // console.log(userDocSnapshot.data());
+        // console.log(userDocSnapshot.exists());
 
         // user 정보가 존재할때
         if (userDocSnapshot.exists()) {
