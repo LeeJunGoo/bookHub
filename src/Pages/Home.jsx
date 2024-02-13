@@ -14,13 +14,14 @@ import { Pagination, Navigation } from 'swiper/modules';
 import '../styles/Carousel.css';
 
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 //swiper 패키지 설치
 
 function Home() {
   const navigate = useNavigate();
   const auth = getAuth();
+
   const [review, setReview] = useState([]); // 베스트 셀러 리스트 및 작성한 리뷰 책에 대한 리스트
   const [title, setTitle] = useState(''); // "베스트 셀러" or "내가 작성한 책의 리뷰"
 
@@ -28,47 +29,52 @@ function Home() {
   const [filteredResults, setFilteredResults] = useState([]); //검색 결과에 대한 리스트
 
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  console.log(currentUser);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);
-        const fetchReviewData = async () => {
-          if (user) {
-            const q = query(collection(db, 'users'), where('uid', '==', user.uid))
-            try {
-              const querySnapshot = await getDocs(q);
-              if (!querySnapshot.empty) {
-                const userData = querySnapshot.docs[0].data();
-                const reviews = userData.reviews || [];
-                if (reviews.length > 0) {
-                  const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
-                  setReview(orderData);
-                  setTitle('내가 남긴 리뷰의 책');
-                } else {
-                  setReview(bookData.filter(item => item.rank <= 10));
-                  setTitle('리뷰가 없는 경우');
-                  console.log('데이터가 없어요.')
-                }
-              }
-            } catch (error) {
-              console.error('데이터를 불러오는 데 실패했습니다.', error);
-            }
-          } else {
-            setReview(bookData.filter(item => item.rank <= 10));
-            setTitle('비로그인상태 베스트셀러');
-            console.log('비로그인 처리시 출력')
-          }
-        };
-        fetchReviewData();
       } else {
         setCurrentUser(null);
       }
-    })
-    setLoading(false);
+    });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    console.log(currentUser);
+    const fetchReviewData = async () => {
+      if (currentUser) {
+        const userDocRef = doc(collection(db, 'users'), currentUser.uid);
+
+        try {
+          const docSnap = await getDoc(userDocRef);
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            const reviews = userData.reviews || [];
+            if (reviews.length > 0) {
+              const orderData = reviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+              setReview(orderData);
+              setTitle('내가 남긴 리뷰의 책');
+            } else {
+              setReview(bookData.filter((item) => item.rank <= 10));
+              setTitle('리뷰가 없는 경우');
+              console.log('데이터가 없어요.');
+            }
+          }
+        } catch (error) {
+          console.error('데이터를 불러오는 데 실패했습니다.', error);
+        }
+      } else {
+        setReview(bookData.filter((item) => item.rank <= 10));
+        setTitle('비로그인상태 베스트셀러');
+      }
+    };
+
+    fetchReviewData();
+  }, [currentUser]);
 
   //로그인 및 로그아웃 버튼 핸들러
   const logoutButtonEventHandler = () => {
@@ -84,19 +90,20 @@ function Home() {
 
   const myPageButtonEventHandler = () => {
     if (currentUser) {
-      navigate(`/Mypage`);
+      navigate(`/Mypage/`);
     } else {
       if (window.confirm('흥흥!! 로그인이 안 됐어 바부야~ 로그인 할꺼지?')) {
         navigate(`/Login`);
       }
     }
   };
-  // 검색 기능 관련 메소드
-  const titleSearchEventHandler = (e) => {
-    e.preventDefault();
+
+  //검색 창의 onChange 메소드
+  const searchOnChangeEventHandler = (e) => {
     setTitleSearch(e.target.value);
   };
 
+  console.log(titleSearch);
   //검색 버튼
   const onSubmitEventHandler = (e) => {
     e.preventDefault();
@@ -117,21 +124,9 @@ function Home() {
     }
   };
 
-  if (loading) {
-    return <div>현재 상태는 로딩중일지도
-      {console.log('로딩중입니다')}
-    </div>
-  }
-
-  const homeBtn = () => {
-    navigate('/')
-  }
-
-
   return (
     <>
       <Header>
-        <HeaderTitle onClick={homeBtn}>BookHub</HeaderTitle>
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -142,9 +137,10 @@ function Home() {
             <button onClick={() => navigate('/login')}>로그인</button>
           )}
         </HeaderButtonDiv>
+        <HeaderTitle>BookHub</HeaderTitle>
 
         <form onSubmit={onSubmitEventHandler}>
-          <input value={titleSearch} onChange={titleSearchEventHandler} maxLength={30}></input>
+          <input value={titleSearch} onChange={searchOnChangeEventHandler} maxLength={30}></input>
           <button type="onSubmit">검색</button>
         </form>
       </Header>
@@ -166,19 +162,23 @@ function Home() {
               <StSwiperSlide key={book.itemId}>
                 <StyledLink to={`/detail/${book.itemId}`}>
                   <img src={book.coverSmallUrl} alt="대체이미지" />
-                  <p>{book.title}</p>
+                  <p>{book.title}<br/>
+                  </p>
                 </StyledLink>
+                <StyledAuthor>
+                {book.publisher}/{book.author}
 
                 <p>
-                  {book.publisher}/{book.author}
                 </p>
+                </StyledAuthor>
+              
               </StSwiperSlide>
             ))}
           </StSwiper>
         </StSection>
-        <StSection2>
+        <section>
           {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
-        </StSection2>
+        </section>
       </main>
 
       <StFooter>
@@ -221,28 +221,29 @@ function Home() {
 export default Home;
 
 const Header = styled.header`
-  
+  font-family: 'TTHakgyoansimSamulhamR';
+
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
   margin-bottom: 100px;
+  text-align: center;
+
+
 `;
 
-const HeaderTitle = styled.button`
+const HeaderTitle = styled.h1`
   font-family: 'TTHakgyoansimSamulhamR';
-  padding: 30px;
-  border-radius: 15px;
-  background-color: transparent;
-  border: transparent;
-  font-size: 40px;
-  font-weight: 400;
 
-  &:hover{
-    background-color: #6ea477;
-    transition: 0.5s;
-  }
+  padding: 40px 0px 0px 40px;
+  font-size: 40px;
+  text-align: center;
+  margin : auto;
+
+
+
 `;
 
 const HeaderButtonDiv = styled.div`
@@ -252,34 +253,51 @@ const HeaderButtonDiv = styled.div`
   justify-content: end;
   margin-right: 20px;
   gap: 5px;
+  font-family: 'TTHakgyoansimSamulhamR';
+  text-align: center;
+  margin: auto;
+
+
+
 `;
 
 const StSwiper = styled(Swiper)`
   width: 1000px;
-  margin-top: 60px;
+  margin-top: 30px;
+  background-color: #1dd1a1;
+
+
+
+
 `;
 
 const StSwiperSlide = styled(SwiperSlide)`
   text-align: center;
   p {
     margin-top: 10px;
+    margin-bottom: 5px;
   }
+  background-color: #1dd1a1;
+  padding-bottom: 20px;
+  
+
+
 `;
 
 const StSection = styled.section`
-  width: 100%;
+  width: 85%;
   padding: 50px;
-`;
+  background-color: #1dd1a1;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin: auto;
+  
 
-const StSection2 = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
+`;
 
 const StP = styled.p`
   font-size: 25px;
+
+
 `;
 
 const StyledLink = styled(Link)`
@@ -291,7 +309,35 @@ const StyledLink = styled(Link)`
       text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
     }
   }
+  margin: 0px 0px 0px 0px;
+  text-align: center;
+  padding-bottom: 20px;
+
+
+
+
 `;
+
+const StyledAuthor = styled(Link)`
+  color: #222f3e;
+  text-decoration: none;
+  font-size: small;
+
+  p {
+    &:hover {
+      text-decoration: underline; /* 선택된 상태에서는 밑줄을 나타낸다. */
+    }
+  }
+  margin: 0px 0px 0px 0px;
+  text-align: center;
+  padding-bottom: 20px;
+  ;
+
+
+
+
+`;
+
 
 const StFooter = styled.footer`
   width: 100%;
@@ -300,8 +346,6 @@ const StFooter = styled.footer`
   text-align: center;
   color: white;
   font-size: 14px;
-
-
 `;
 
 const StFooterUl = styled.ul`

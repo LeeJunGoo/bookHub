@@ -25,9 +25,9 @@ function List({ bookData }) {
               <p>{book.author}</p>
             </Author>
           </BookNameAndAuthur>
-          <Rate>
+          {/* <Rate>
             <p>{book.customerReviewRank}</p>
-          </Rate>
+          </Rate> */}
           <Outline>
             <Stp>{book.description}</Stp>
           </Outline>
@@ -36,6 +36,7 @@ function List({ bookData }) {
     </StUl>
   );
 }
+
 export default List;
 
 
@@ -47,16 +48,26 @@ const StUl = styled.ul`
   justify-content: center;
   width: 80%;
   gap: 20px;
+  font-family: 'RIDIBatang';
+  margin: auto;
+  
+  padding: 10%;
+  
+
 `
 
 
-const ListWrapper = styled.li`
+const ListWrapper = styled.li `
   width: 18%;
-  min-width: 355px;
+  min-width: 220px;
   gap: 20px;
-  background-color: #e3caca;
   display: flex;
   flex-direction: column;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin: auto;
+
+  color : #222f3e;
+
 `;
 
 
@@ -69,24 +80,71 @@ const Stp = styled.p`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-`
+  justify-content: center;
+  margin: auto;
 
 
-const BookCoverAndRanking = styled.div``;
 
-const BookCover = styled.div``;
 
-const Genre = styled.div``;
 
-const BookNameAndAuthur = styled.div``;
+`;
 
-const BookName = styled.div``;
 
-const Author = styled.div``;
+const BookCoverAndRanking = styled.div`
 
-const Rate = styled.div``;
+justify-content: center;
+margin: auto;
+
+`;
+
+const BookCover = styled.div`   
+  padding: 12px;
+  background-color: #f6e58d;
+  `;
+
+const Genre = styled.div`
+  font-size: small;
+  margin: auto;
+
+
+`;
+
+const BookNameAndAuthur = styled.div`
+
+  margin: auto;
+
+
+`;
+
+const BookName = styled.div`
+  font-weight: bold;
+  color: black;
+  font-size: medium;
+  line-height: 1.2;
+  text-align: center;
+  margin: 6px;
+
+`;
+
+const Author = styled.div`
+  font-weight: lighter;
+  font-size: small;
+  text-align: center;
+
+`;
+
+const Rate = styled.div`
+  margin: auto;
+`;
 
 const Outline = styled.div`
+
+  font-family: 'GowunBatang-Regular';
+  text-align: center;
+  margin: auto;
+  margin-bottom: 30px;
+
+
   width: 200px;
   height: 60px;
 `;
