@@ -1,13 +1,14 @@
 import React from 'react';
 import { bookData } from '../shared/mockData.js';
-import { bookData2 } from '../shared/bookData2.json';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
+function List() {
+  const navi = useNavigate();
 
-
-function bookList({ bookData2 }) {
   return (
     <section>
+<<<<<<< HEAD
       {bookData2.map((book) => (
         <>
           <div key={book.itemId}>
@@ -38,21 +39,55 @@ function bookList({ bookData2 }) {
             </ListWrapper>
           </div>
         </>
+=======
+      {bookData.map((book) => (
+        <div
+          key={book.itemId}
+          onClick={() => {
+            navi(`detail/${book.itemId}`);
+          }}
+        >
+          <ListWrapper>
+            <BookCoverAndRanking>
+              <BookCover>
+                <img src={book.coverLargeUrl} alt="커버이미지"></img>
+              </BookCover>
+              <Ranking>{book.rank}</Ranking>
+            </BookCoverAndRanking>
+            <Genre>
+              <p>{book.categoryName}</p>
+            </Genre>
+            <BookNameAndAuthur>
+              <BookName>
+                <p>{book.title}</p>
+              </BookName>
+              <Author>
+                <p>{book.author}</p>
+              </Author>
+            </BookNameAndAuthur>
+            <Rate>
+              <p>{book.customerReviewRank}</p>
+            </Rate>
+            <Outline>
+              <p>{book.description}</p>
+            </Outline>
+          </ListWrapper>
+        </div>
+>>>>>>> 9f0726e919386419dbc5dc1c690138bca4295eca
       ))}
     </section>
   );
 }
-export default bookList;
+export default List;
 
 const ListWrapper = styled.li`
-  background-color: red;
+  background-color: #eecbcb;
   display: flex;
 `;
 
 const BookCoverAndRanking = styled.div``;
 
 const BookCover = styled.div``;
-
 
 const Ranking = styled.div``;
 

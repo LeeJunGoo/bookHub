@@ -1,49 +1,89 @@
 import { useNavigate } from "react-router";
-import { userData } from "../shared/mockData";
 import styled from "styled-components";
+import { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 
-console.log(userData)
+// id : gang@dev.com
+// pwd : 123123
 
 function Login() {
 
   const navigate = useNavigate();
+  const auth = getAuth();
+
+  const [email, setUserEmail] = useState('');
+  const [password, setUserPwd] = useState('');
+
+  const loggedIn = async (e) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user
+        console.log(userCredential)
+        console.log(`로그인이 완료됐습니다 id: ${email}, Uid ${user.uid}`)
+        navigate(`/`)
+      })
+
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message
+        alert(`${errorMessage} 의 오류가 발생했습니다. 에러코드: ${errorCode}`)
+        navigate('/login')
+      })
+
+  }
+
+  const onUserEmailHandler = (e) => {
+    setUserEmail(e.target.value)
+  }
+
+  const onUserPwdHandler = (e) => {
+    setUserPwd(e.target.value)
+  }
 
   const goToJoinPage = () => {
     navigate('/join')
   }
 
+  const goToHome = () => {
+    navigate('/')
+  }
 
   return (
     <>
       <div>
-        <StHeader>로그인</StHeader>
+        <StHeader>로그인
+        </StHeader>
         <StMain>
-          <ul>
+          <StUl>
             <li>
-              <label>이메일</label>
               <input
                 type="text"
-                placeholder="이메일을 입력해주세요."
+                placeholder="이메일"
+                value={email}
+                onChange={(e) => onUserEmailHandler(e)}
               ></input>
             </li>
             <li>
-              <label>패스워드</label>
               <input
                 type="password"
-                placeholder="패스워드를 입력해주세요."
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => onUserPwdHandler(e)}
               ></input>
             </li>
-            <button>로그인!</button>
-          </ul>
+            <div>
+              <button onClick={(e) => loggedIn(e)}>로그인!</button>
+            </div>
+          </StUl>
           <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
+          <StBtn onClick={goToHome}>홈으로 가기</StBtn>
         </StMain>
       </div>
     </>)
 }
 
 export default Login;
-
-
 
 const StMain = styled.main`
   display: flex;
@@ -54,6 +94,16 @@ const StMain = styled.main`
   min-width: 400px;
 `
 
+const StUl = styled.ul`
+  display : flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 300px;
+  height: 200px;
+  border: 1px solid black;
+`
+
 const StHeader = styled.header`
   display: flex ;
   justify-content: center;
@@ -61,8 +111,6 @@ const StHeader = styled.header`
   height: 15vh;
   min-width: 400px;
 `
-
-
 
 const StBtn = styled.button`
   display: flex;
