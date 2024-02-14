@@ -67,8 +67,7 @@ function Join() {
     <>
       <StToHome onClick={goToHome}>홈으로</StToHome>
 
-      <StH2>회원가입</StH2>
-      <StSection>
+      <StSection2>
         <StUl>
           <li>
             <StPtag>이메일</StPtag>
@@ -92,7 +91,7 @@ function Join() {
             </div>
           </StDiv>
         </StUl>
-      </StSection>
+      </StSection2>
     </>
   );
 }
@@ -111,13 +110,36 @@ const StInput = styled.input`
   border-radius: 4px;
 `;
 
-const StSection = styled.section`
+const StSection1 = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 400px;
+`;
+
+const HeaderTitle = styled.button`
+  font-family: 'TTHakgyoansimSamulhamR';
+  margin: 40px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 50px;
+
+  &:hover {
+    background-color: #6ea477;
+    transition: 0.5s;
+  }
+`;
+
+const StSection2 = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100vw;
   min-height: 400px;
+  margin-bottom: 100px;
 `;
 
 const StPtag = styled.p`
