@@ -15,6 +15,14 @@ import {
 // id : gang@dev.com
 // pwd : 123123
 
+import gitHub from '../styles/gitHub.png';
+
+
+
+
+
+
+
 function Login() {
 
   const navigate = useNavigate();
@@ -135,7 +143,7 @@ function Login() {
   return (
     <>
       <div>
-        <StHeader>로그인
+        <StHeader>BookHub
         </StHeader>
         <StMain>
           <StUl>
@@ -155,14 +163,22 @@ function Login() {
                 onChange={(e) => onUserPwdHandler(e)}
               ></input>
             </StLi>
-            <div>
+            
               <StBtn onClick={(e) => loggedIn(e)}>로그인!</StBtn>
-            </div>
-            <button onClick={addGoogleAccount}>구글 로그인</button>
-            <button onClick={addGithubAccount}>깃허브 로그인</button>
+              <loginBtnWrapper>
+              <Altloginbutton1 onClick={addGoogleAccount}>  
+              <img src="https://www.google.com/images/hpp/ic_wahlberg_product_core_48.png8.png"/>
+              </Altloginbutton1>
+              <Altloginbutton2 onClick={addGithubAccount}>  <img src={gitHub} />
+              </Altloginbutton2>
+            </loginBtnWrapper>
+
           </StUl>
-          <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
-          <StBtn onClick={goToHome}>홈으로 가기</StBtn>
+          <StBtnWrapper>
+            <StBtn2 onClick={goToJoinPage}>회원가입하기</StBtn2><br/>
+            <StBtn3 onClick={goToHome}>홈으로 가기</StBtn3>
+
+          </StBtnWrapper>
         </StMain>
       </div>
     </>)
@@ -177,7 +193,8 @@ const StMain = styled.main`
   align-items: center;
   width: 100vw;
   min-width: 400px;
-`
+
+`;
 
 const StUl = styled.ul`
   position: relative;
@@ -191,7 +208,7 @@ const StUl = styled.ul`
   min-height: 400px;
   border: 1px solid black;
   gap: 40px;
-`
+`;
 
 const StLi = styled.li`
   display: flex;
@@ -207,26 +224,132 @@ const StLi = styled.li`
     min-width: 400px;
     min-height: 30px;
   }
-`
+`;
 
 const StHeader = styled.header`
   display: flex ;
   justify-content: center;
-  width: 100vw;
   height: 15vh;
   min-width: 400px;
-`
+  
+  font-family: 'TTHakgyoansimSamulhamR';
+  padding: 20px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 40px;
+  line-height:1.2;
+  margin-top : 10px;
+
+`;
+
+const loginBtnWrapper= styled.div`
+  display: flex;
+  flex-direction : row;
+  justify-content:center;
+  align-items: center;
+
+
+`;
+const Altloginbutton1 = styled.button`
+  justify-content:center;
+  align-items: center;
+  min-block-size: 1cm;
+  border-style: hidden;
+  border-radius: 10px;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  min-width: 0.5cm;
+
+
+`;
+
+
+const Altloginbutton2 = styled.button`
+  justify-content:center;
+  align-items: center;
+  min-block-size: 1cm;
+  border-style: hidden;
+  border-radius: 10px;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  min-width: 0.5cm;
+
+
+`;
+
+// const altloginBtn1 = styled.button`
+
+// `;
+
+// const altloginBtn2 = styled.button`
+
+// `;
+
 
 const StBtn = styled.button`
   display: flex;
+  flex-direction : row;
   justify-content:center;
   align-items: center;
-  width: 200px;
+  width: 130px;
   height: 50px;
-  font-size: 1.6rem;
-  background-color: #d5ceff;
-  border: 1px solid #452ec4;
+  font-size: 1.1rem;
+  background-color: #f6e58d;
+  border: 1px solid #f6e58d;
   border-radius: 10px;
-  color: #4730cc;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
 
-`
+
+`;
+
+const StBtnWrapper = styled.div`
+  display: flex;
+  flex-direction : row;
+  justify-content:center;
+  align-items: center;
+  margin : 30px 0px 30px 0px;
+
+
+`;
+
+
+const StBtn2 = styled.button`
+  display: flex;
+  flex-direction : row;
+  justify-content:center;
+  align-items: center;
+  width: 130px;
+  height: 50px;
+  font-size: 1.1rem;
+  background-color: #f6e58d;
+  border: 1px solid #f6e58d;
+  border-radius: 10px;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin : 10px 10px 10px 10px;
+
+
+`;
+
+
+
+
+const StBtn3 = styled.button`
+  display: flex;
+  flex-direction : row;
+  justify-content:center;
+  align-items: center;
+  width: 130px;
+  height: 50px;
+  font-size: 1.1rem;
+  background-color: #f6e58d;
+  border: 1px solid #f6e58d;
+  border-radius: 10px;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin : 10px 10px 10px 10px;
+
+
+`;
