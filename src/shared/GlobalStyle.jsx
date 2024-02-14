@@ -3,13 +3,15 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   
-
-	@font-face {
-    font-family: 'GoryeongStrawberry';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/GoryeongStrawberry.woff2') format('woff2');
+  @font-face {
+    font-family: 'GowunBatang-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
+
+
+
 
 @font-face {
     font-family: 'TTHakgyoansimSamulhamR';
@@ -19,6 +21,19 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 
+
+
+
+@font-face {
+    font-family: 'SOGANGUNIVERSITYTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/SOGANGUNIVERSITYTTF.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+  
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -74,7 +89,8 @@ textarea{
 
 body {
   box-sizing: border-box;
+  background-color: #f2f6e7;
 }
 
 
-`
+`;

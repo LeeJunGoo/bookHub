@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router'
 import styled from 'styled-components';
+import { bookData } from '../shared/mockData';
 import { useEffect, useState, useRef } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { collection, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
@@ -18,12 +19,17 @@ function MyPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [nickName, setNickName] = useState('');
+  const [email, setEmail] = useState('');
+  const [userEditForm, setUserEditForm] = useState(false);
+  const [userReviews, setUserReviews] = useState([]);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
+
         async function fetchDefaultImage() {
-          const defaultImageRef = ref(storage, 'profile.png');
+          const defaultImageRef = ref(storage, 'defaultProfile.png');
           try {
             return await getDownloadURL(defaultImageRef);
           } catch (error) {
@@ -54,6 +60,40 @@ function MyPage() {
     return () => unSubscribe();
   }, [])
 
+
+  useEffect(() => {
+    const fetchUserReviews = async () => {
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+
+      const q = query(collection(db, 'reviews'), where('uid', '==', currentUser.uid))
+      const querySnapshot = await getDocs(q)
+      const reviews = [];
+      querySnapshot.forEach(doc => {
+        const review = doc.data();
+
+        reviews.push(review)
+      })
+
+      const reviewsWithBookInfo = reviews.map(review => {
+        const book = bookData.find(book => book.itemId === Number(review.itemId))
+        return { ...review, book };
+      })
+      console.log(reviewsWithBookInfo)
+      setUserReviews(reviewsWithBookInfo)
+    }
+    fetchUserReviews();
+  }, [auth.currentUser])
+
+
+
+
+  const toggleEditForm = () => {
+    setNickName('')
+    setEmail('')
+    setUserEditForm(!userEditForm);
+  };
+
   const onChangeProfileImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -66,42 +106,74 @@ function MyPage() {
     }
   }
 
-  const uploadImage = async () => {
-    if (!selectedFile) {
-      alert('이미지를 선택해주세요');
-      return;
+  const userDetailUpdateHandler = async () => {
+
+    const uploadImage = async () => {
+      if (!selectedFile) {
+        alert('이미지를 선택해주세요');
+        return;
+      }
+      const timestamp = new Date().getTime();
+      const originalFileName = `profileImg/${auth.currentUser.uid}/${timestamp}.jpg`
+      const storageRef = ref(storage, originalFileName);
+      try {
+        await uploadBytes(storageRef, selectedFile);
+        const downloadURL = await getDownloadURL(storageRef);
+        setImageUrl(downloadURL);
+
+
+        const q = query(collection(db, 'users'), where('uid', '==', auth.currentUser.uid))
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+
+          const userDocRef = querySnapshot.docs[0].ref
+          await updateDoc(userDocRef, {
+            profileImageUrl: downloadURL,
+          });
+          alert('이미지 업로드에 성공하였습니다!')
+
+        } else {
+          alert('이미지가 존재하지 않아요')
+        }
+      } catch (error) {
+        console.error('이미지 업로드에 실패했어요', error)
+      }
     }
 
-    const timestamp = new Date().getTime();
-    const originalFileName = `profileImg/${auth.currentUser.uid}/${timestamp}.jpg`
-    const storageRef = ref(storage, originalFileName);
-    try {
-      await uploadBytes(storageRef, selectedFile);
-      const downloadURL = await getDownloadURL(storageRef);
+    const updateUserData = async () => {
+      if (!auth.currentUser) return;
 
-      const q = query(collection(db, 'users'), where('uid', '==', auth.currentUser.uid))
+      const q = query(collection(db, 'users'), where('uid', '==', auth.currentUser.uid));
       const querySnapshot = await getDocs(q);
-      const userDocRef = querySnapshot.docs[0].ref
-      await updateDoc(userDocRef, {
-        profileImageUrl: downloadURL,
-      });
+      if (!querySnapshot.empty) {
+        const userDocRef = querySnapshot.docs[0].ref;
+        try {
+          await updateDoc(userDocRef, {
+            userNickName: nickName,
+            userEmail: email,
+          });
+          setUserDetails({ ...userDetails, userNickName: nickName, userEmail: email });
+          alert('업데이트 완료!');
+        } catch (error) {
+          console.error('업데이트에 실패했어요', error);
+        }
+      } else {
+        console.log('문서를 찾을 수 없어요');
+      }
 
-      alert('이미지 업로드에 성공하였습니다!')
-      setImageUrl(downloadURL);
-      setSelectedFile(null)
-      setPreviewUrl(null)
-    } catch (error) {
-      console.error('이미지 업로드에 실패했어요', error)
-    }
+    };
+    await uploadImage();
+    await updateUserData();
+    toggleEditForm();
   }
 
-  const goToLogin = () => {
+  const LoggedOut = () => {
     signOut(auth).then(() => {
       navigate('/login')
-      alert('로그아웃에 성공하였습니다.')
+      alert('로그아웃에 성공했어요!.')
 
     }).catch((error) => {
-      console.error('로그아웃에 실패함', error)
+      console.error('로그아웃에 실패했어요..', error)
     })
   }
 
@@ -111,7 +183,6 @@ function MyPage() {
 
   if (loading) {
     return <div>현재 상태는 로딩중일지도
-      {console.log('로딩중입니다')}
     </div>
   }
 
@@ -123,20 +194,33 @@ function MyPage() {
           <StUl>
             <StLi>프로필
               {imageUrl && <StImg src={imageUrl} alt='Profile' />}
-              <div>
-                {previewUrl && <StImg src={previewUrl} alt="Profile Preview" />}
-                <input type='file' onChange={onChangeProfileImage} ref={fileInputRef} />
-                <button onClick={uploadImage}>확인버튼</button>
-              </div>
+              <p>닉네임 : {userDetails ? userDetails.userNickName : 'Loading...'}</p>
+              <p>이메일 : {userDetails ? userDetails.userEmail : 'Loading...'}</p>
             </StLi>
             {userDetails ? (
               <StDiv3>
-                <span>
-                  닉네임 :{userDetails.userNickName}
-                </span>
-                <span>
-                  이메일 : {userDetails.userEmail}
-                </span>
+                <button onClick={toggleEditForm}>프로필 수정하기</button>
+                {userEditForm && (
+                  <>
+                    <div>
+                      {previewUrl && <StImg src={previewUrl} alt="Profile Preview" />}
+                      <input type='file' onChange={onChangeProfileImage} ref={fileInputRef} />
+                    </div>
+                    <input
+                      type='text'
+                      placeholder='닉네임'
+                      value={nickName}
+                      onChange={(e) => setNickName(e.target.value)}
+                    />
+                    <input
+                      type='email'
+                      placeholder='이메일'
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <button onClick={userDetailUpdateHandler}>확인버튼</button>
+                  </>
+                )}
               </StDiv3>
             ) : (
               <span>사용자 정보가 전달되지 않았어요</span>
@@ -150,15 +234,26 @@ function MyPage() {
             내가 작성한 리뷰
           </label>
           <StUl2>
-            <li>영화1</li>
-            <li>영화2</li>
-            <li>영화3</li>
-            <li>영화4</li>
-            <li>영화5</li>
+            {userReviews.map((review, index) => {
+              return (
+                <ListWrapper key={index}>
+                  {review.book ? (
+                    <div>
+                      <img src={review.book.coverLargeUrl} alt='default_image' />
+                      <p>책 제목 : {review.book.title}</p>
+                    </div>
+                  ) : (
+                    <BookName>해당하는 책의 정보가 존재하지 않아요.</BookName>
+                  )}
+                  <li>리뷰 제목 : {review.title}</li>
+                  <li>리뷰 내용 : {review.text}</li>
+                </ListWrapper>
+              )
+            })}
           </StUl2>
         </StDiv2>
       </StSection2>
-      <button onClick={goToLogin}> 로그아웃 </button>
+      <button onClick={LoggedOut}> 로그아웃 </button>
     </StMain>
   )
 }
@@ -173,7 +268,7 @@ const StMain = styled.main`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 800px;
+  height: 100%;
   padding: 50px;
 `
 
@@ -195,6 +290,8 @@ const StSection2 = styled.section`
   width: 80%;
   height: 60%;
   border: 1px solid black;
+  margin-top: 100px;
+
 `
 
 
@@ -251,5 +348,29 @@ const StImg = styled.img`
   width: 120px; 
   height: 120px;
   object-fit: cover;
+  border-radius: 50%;
   
 `
+
+const BookName = styled.div`
+  font-weight: bold;
+  color: black;
+  font-size: medium;
+  line-height: 1.2;
+  text-align: center;
+  margin: 6px;
+
+`;
+
+const ListWrapper = styled.li`
+  width: 18%;
+  min-width: 220px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin: auto;
+
+  color : #222f3e;
+
+`;
