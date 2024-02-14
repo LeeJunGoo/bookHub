@@ -41,27 +41,27 @@ function DetailPages() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      setIsLoggedIn(!!user);
-      if (user) {
-        const userRef = doc(db, 'users', user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          setUserInfo({
-            nickName: userData.userNickName || '익명',
-            profileImg: userData.profileImageUrl || 'null'
-          });
-        } else {
-          setUserInfo({ nickName: '', profileImg: '' });
-        }
-      } else {
-        setUserInfo({ nickName: '', profileImg: '' });
-      }
-    });
-    return () => unsubscribe();
-  });
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
+  //     setIsLoggedIn(!!user);
+  //     if (user) {
+  //       const userRef = doc(db, 'users', user.uid);
+  //       const userSnap = await getDoc(userRef);
+  //       if (userSnap.exists()) {
+  //         const userData = userSnap.data();
+  //         setUserInfo({
+  //           nickName: userData.userNickName || '익명',
+  //           profileImg: userData.profileImageUrl || 'null'
+  //         });
+  //       } else {
+  //         setUserInfo({ nickName: '', profileImg: '' });
+  //       }
+  //     } else {
+  //       setUserInfo({ nickName: '', profileImg: '' });
+  //     }
+  //   });
+  //   return () => unsubscribe();
+  // });
 
   const addReView = async (e) => {
     e.preventDefault();
