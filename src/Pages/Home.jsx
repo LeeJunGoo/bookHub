@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { bookData } from '../shared/mockData';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import List from '../components/List';
+import gitHubImage from '../styles/gitHub.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 import '../styles/Carousel.css';
-import gitHubImage from '../styles/gitHub.png';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc, collection, query, getDocs, where } from 'firebase/firestore';
@@ -25,19 +25,19 @@ function Home() {
 
   const [titleSearch, setTitleSearch] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
-
+  const searchRef = useRef('');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
-        fetchReviewData(user.uid)
+        fetchReviewData(user.uid);
       } else {
         setCurrentUser(null);
         setReview(bookData.filter((item) => item.rank <= 10));
-        setTitle('비로그인상태 베스트셀러');
+        setTitle('베스트셀러');
         setLoading(false);
       }
     });
@@ -52,14 +52,16 @@ function Home() {
         const userData = querySnapshot.docs[0].data();
         const reviewIds = userData.reviews || [];
 
-        const reviewsPromises = reviewIds.map(reviewId => getDoc(doc(db, 'reviews', reviewId)));
+        const reviewsPromises = reviewIds.map((reviewId) => getDoc(doc(db, 'reviews', reviewId)));
         const reviewsSnapshots = await Promise.all(reviewsPromises);
-        const reviewsData = reviewsSnapshots.map(snap => snap.data());
+        const reviewsData = reviewsSnapshots.map((snap) => snap.data());
 
-        const booksFromReviews = reviewsData.map(review => {
-          const book = bookData.find(book => book.itemId === Number(review.itemId));
-          return book ? { ...book, reviewDate: review.date } : undefined;
-        }).filter(book => book !== undefined);
+        const booksFromReviews = reviewsData
+          .map((review) => {
+            const book = bookData.find((book) => book.itemId === Number(review.itemId));
+            return book ? { ...book, reviewDate: review.date } : undefined;
+          })
+          .filter((book) => book !== undefined);
 
         if (booksFromReviews.length > 0) {
           const orderData = booksFromReviews.sort((a, b) => new Date(a.reviewDate) - new Date(b.reviewDate));
@@ -67,7 +69,7 @@ function Home() {
           setTitle('내가 남긴 리뷰의 책');
         } else {
           setReview(bookData.filter((item) => item.rank <= 10));
-          setTitle('어서오세요');
+          setTitle('베스트셀러');
         }
       }
     } catch (error) {
@@ -76,7 +78,6 @@ function Home() {
       setLoading(false);
     }
   };
-
 
   const logoutButtonEventHandler = () => {
     signOut(auth)
@@ -106,21 +107,20 @@ function Home() {
     e.preventDefault();
 
     if (titleSearch !== '') {
-
       const searchData = bookData.filter((item) => {
         return item.title.trim().includes(titleSearch.trim());
       });
 
       if (searchData.length === 0) {
         alert('검색한 결과가 없습니다.');
+      } else {
+        setFilteredResults(searchData);
+        searchRef.current.scrollIntoView({ behavior: 'smooth' });
       }
-
-      setFilteredResults(searchData);
     } else {
       alert('검색을 해주세요');
     }
   };
-
 
   if (loading) {
     return (
@@ -187,7 +187,7 @@ function Home() {
                   spaceBetween: 36
                 },
                 760: {
-                  slidesPerView: 3,
+                  slidesPerView: 4,
                   spaceBetween: 57
                 }
               }}
@@ -207,7 +207,9 @@ function Home() {
             </StSwiper>
           </StDiv1>
         </StSection>
-        {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
+        <section ref={searchRef}>
+          {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
+        </section>
       </main>
 
       <StFooter>
@@ -412,9 +414,4 @@ const StFigure = styled.figure`
     font-weight: 700;
     font-family: 'GowunBatang-Regular';
   }
-`;
-
-
-
-
-
+`

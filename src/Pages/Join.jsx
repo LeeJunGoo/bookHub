@@ -64,78 +64,109 @@ function Join() {
 
   return (
     <>
-      <StToHome onClick={goToHome}>홈으로</StToHome>
+      <StSection2>
+        <SectionTitle onClick={() => goToHome()}>BookHub</SectionTitle>
 
-      <StH2>회원가입</StH2>
-      <StSection>
-        <StUl>
-          <li>
-            <StPtag>이메일</StPtag>
-            <StInput type="email" placeholder="이메일" value={email} onChange={onEmailHandler}></StInput>
-          </li>
-          <li>
-            <StPtag>패스워드</StPtag>
-            <StInput type="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></StInput>
-          </li>
-          <li>
-            <StPtag>닉네임</StPtag>
-            <StInput type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></StInput>
-          </li>
+        <StForm>
+          <StList>
+            <StInputName>
+              <StInputLabel>이메일</StInputLabel>
+              <StInput type="email" placeholder="이메일" value={email} onChange={onEmailHandler}></StInput>
+            </StInputName>
+          </StList>
+          <StList>
+            <StInputName>
+              <StInputLabel>비밀번호</StInputLabel>
+              <StInput type="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></StInput>
+            </StInputName>
+          </StList>
+          <StList>
+            <StInputName>
+              <StInputLabel>닉네임</StInputLabel>
+              <StInput type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></StInput>
+            </StInputName>
+          </StList>
           <StDiv>
-            <StDiv2>
-              <StButtonJoin onClick={newSign}>회원가입하기</StButtonJoin>
-              <StButtonLogin onClick={goToLogin}>로그인 하기</StButtonLogin>
-            </StDiv2>
+            <StButtonJoin onClick={newSign}>회원가입하기</StButtonJoin>
+            <StButtonHome onClick={goToLogin}>로그인 하기</StButtonHome>
           </StDiv>
-        </StUl>
-      </StSection>
+        </StForm>
+      </StSection2>
     </>
   );
 }
 
 export default Join;
 
-const StH2 = styled.h2`
-  display: flex;
-  justify-content: center;
-  font-size: 40px;
-  font-family: 'SOGANGUNIVERSITYTTF';
-`;
-const StInput = styled.input`
-  padding: 10px;
-  border-color: #141513;
-  border-radius: 4px;
+const SectionTitle = styled.h1`
+  font-family: 'TTHakgyoansimSamulhamR';
+  margin: 40px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 50px;
+
+  &:hover {
+    background-color: #6ea477;
+    transition: 0.5s;
+  }
 `;
 
-const StSection = styled.section`
+const StInput = styled.input`
+  border-color: #141513;
+  border-radius: 4px;
+  width: 358px;
+  height: 46px;
+`;
+
+const StInputLabel = styled.p`
+  margin-left: 1px;
+  margin-bottom: 10px;
+`;
+
+const StList = styled.div`
+  margin-right: 50px;
+`;
+
+const StSection2 = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100vw;
   min-height: 400px;
+  margin-bottom: 100px;
 `;
 
-const StPtag = styled.p`
+const StInputName = styled.label`
   padding-bottom: 10px;
   font-weight: 900;
   font-family: 'SOGANGUNIVERSITYTTF';
 `;
 
-const StUl = styled.ul`
+const StForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   width: 300px;
   height: 400px;
-  border: 1px solid black;
+  border-radius: 10px;
+
   margin: 10px;
+  position: absolute;
+  top: 150px;
+  width: 700px;
+  height: 700px;
 `;
 
 const StDiv = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 50px;
 `;
 
 const StDiv2 = styled.div`
@@ -157,38 +188,48 @@ const StButtonLogin = styled.button`
   font-family: 'SOGANGUNIVERSITYTTF';
 
   &:hover {
-    background-color: #eded08;
-    border-color: #eded08;
-  }
+  cursor: pointer;
+  background-color: #f9d803;
+  border-color: #f9d803;
+}
+`;
+
+const StButtonHome = styled.button`
+padding: 10px 15px 12px;
+height: 48px;
+font-size: 16px;
+line-height: 24px;
+border-radius: 5px;
+width: 368px;
+height: 48px;
+border-color: #f6e58d;
+color: #141514;
+background-color: #f6e58d;
+font-family: 'SOGANGUNIVERSITYTTF';
+
+  &:hover {
+  cursor: pointer;
+  background-color: #f9d803;
+  border-color: #f9d803;
+}
 `;
 
 const StButtonJoin = styled.button`
-  margin: 10px;
-  border-radius: 10px;
-  padding: 10px;
+padding: 10px 15px 12px;
+height: 48px;
+font-size: 16px;
+line-height: 24px;
+border-radius: 5px;
+width: 368px;
+height: 48px;
+border-color: #f6e58d;
+color: #141514;
+background-color: #f6e58d;
+font-family: 'SOGANGUNIVERSITYTTF';
+
+  &:hover {
   cursor: pointer;
-  font-family: 'SOGANGUNIVERSITYTTF';
-  border-color: #c9c902;
-  color: #ffffff;
-  background-color: #c9c902;
-
-  &:hover {
-    background-color: #eded08;
-    border-color: #eded08;
-  }
-`;
-
-const StToHome = styled.button`
-  padding: 10px;
-  border-radius: 4px;
-  margin-top: 10px;
-  margin-left: 40px;
-  border-color: #c9c902;
-  color: #ffffff;
-  background-color: #c9c902;
-  font-family: 'SOGANGUNIVERSITYTTF';
-  &:hover {
-    background-color: #eded08;
-    border-color: #eded08;
-  }
+  background-color: #f9d803;
+  border-color: #f9d803;
+}
 `;
