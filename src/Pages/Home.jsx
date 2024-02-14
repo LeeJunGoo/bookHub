@@ -9,7 +9,9 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
+import '../styles/gitHub.png';
 import '../styles/Carousel.css';
+import gitHubImage from '../styles/gitHub.png';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc, collection, query, getDocs, where } from 'firebase/firestore';
@@ -66,7 +68,7 @@ function Home() {
           setTitle('내가 남긴 리뷰의 책');
         } else {
           setReview(bookData.filter((item) => item.rank <= 10));
-          setTitle('리뷰가 없는 경우');
+          setTitle('어서오세요');
         }
       }
     } catch (error) {
@@ -159,30 +161,52 @@ function Home() {
 
       <main>
         <StSection>
-          <StP>{title}</StP>
-          <StSwiper
-            slidesPerView={3}
-            spaceBetween={5}
-            loop={true}
-            autoplay={{ delay: 2000, disableOnInteraction: false }}
-            pagination={{
-              clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
-            }}
-            navigation={true}
-            modules={[Pagination, Navigation, Autoplay]}
-          >
-            {review.map((book) => (
-              <StSwiperSlide key={book.itemId}>
-                <StyledLink to={`/detail/${book.itemId}`}>
-                  <img src={book.coverSmallUrl} alt="대체이미지" />
-                  <p>{book.title}</p>
-                </StyledLink>
-                <p>
-                  {book.publisher}/{book.author}
-                </p>
-              </StSwiperSlide>
-            ))}
-          </StSwiper>
+          <StDiv2>
+            <StP>{title}</StP>
+          </StDiv2>
+
+          <StDiv1>
+            <StSwiper
+              loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+              autoplay={{ delay: 2000, disableOnInteraction: false }}
+              pagination={{
+                clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
+              }}
+              navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
+              modules={[Pagination, Navigation, Autoplay]}
+              breakpoints={{
+                260: {
+                  slidesPerView: 1, //각 슬라이드의 표시 수를 지정
+                  spaceBetween: 29 //각 슬라이드 사이의 간격
+                },
+                360: {
+                  slidesPerView: 2,
+                  spaceBetween: 90
+                },
+                660: {
+                  slidesPerView: 3,
+                  spaceBetween: 36
+                },
+                760: {
+                  slidesPerView: 3,
+                  spaceBetween: 57
+                }
+              }}
+            >
+              {review.map((book) => (
+                <StSwiperSlide key={book.itemId}>
+                  <StyledLink to={`/detail/${book.itemId}`}>
+                    <img src={book.coverSmallUrl} alt="대체이미지" />
+                    <p>{book.title}</p>
+                  </StyledLink>
+
+                  <p>
+                    {book.publisher}/{book.author}
+                  </p>
+                </StSwiperSlide>
+              ))}
+            </StSwiper>
+          </StDiv1>
         </StSection>
         {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
       </main>
@@ -194,27 +218,42 @@ function Home() {
           <StFooterUl>
             <li>
               <StyledLink to={'https://github.com/psisdn08'}>
-                <p>김형</p>
+                <StFigure>
+                  <p>김형</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={'https://github.com/yuriyun88'}>
-                <p>정윤아</p>
+                <StFigure>
+                  <p>정윤아</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={'https://github.com/Andante23'}>
-                <p>안단테</p>
+                <StFigure>
+                  <p>안단테</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={`https://github.com/LeeJunGoo`}>
-                <p>이준구</p>
+                <StFigure>
+                  <p>이준구</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={`https://github.com/gidalim`}>
-                <p>박강토</p>
+                <StFigure>
+                  <p>박강토</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
           </StFooterUl>
@@ -241,8 +280,7 @@ const HeaderTitle = styled.button`
   border-radius: 15px;
   background-color: transparent;
   border: transparent;
-  font-size: 40px;
-  line-height:1.2;
+  font-size: 50px;
 
   &:hover {
     background-color: #6ea477;
@@ -255,8 +293,9 @@ const HeaderButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: end;
-  margin-right: 30px;
+  margin-right: 70px;
   button {
+    font-size: 15px;
     font-family: 'TTHakgyoansimSamulhamR';
     background-color: transparent;
     border: transparent;
@@ -286,20 +325,10 @@ const HeaderForm = styled.form`
     width: 50px;
     border: 2px solid black;
     border-radius: 6px;
-  }
-`;
 
-const StSwiper = styled(Swiper)`
-  //width: 50% 줄 시에 swiper 작동 에러 발생
-  width: 1200px;
-  height: 250px;
-  padding: 50px 30px;
-`;
-
-const StSwiperSlide = styled(SwiperSlide)`
-  text-align: center;
-  p {
-    margin-top: 10px;
+    &:hover {
+      background-color: #6ea477;
+    }
   }
 `;
 
@@ -308,13 +337,26 @@ const StSection = styled.section`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   box-shadow: 1px 0 1px #333;
-  margin-bottom: 100px;
+`;
+const StP = styled.p`
+  font-family: 'SOGANGUNIVERSITYTTF';
+  font-size: 30px;
+  margin-top: 30px;
 `;
 
+const StSwiper = styled(Swiper)`
+  width: 100%;
+  height: 280px;
+  padding: 50px 30px;
+`;
 
-const StP = styled.p`
-  font-size: 25px;
+const StSwiperSlide = styled(SwiperSlide)`
+  text-align: center;
+  p {
+    margin-top: 10px;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -345,3 +387,35 @@ const StFooterUl = styled.ul`
   margin: 10px 0;
   font-size: 18px;
 `;
+
+const StDiv1 = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StDiv2 = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+`;
+
+const StFigure = styled.figure`
+  img {
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+  }
+
+  p {
+    font-weight: 700;
+    font-family: 'GowunBatang-Regular';
+  }
+`;
+
+
+
+
+

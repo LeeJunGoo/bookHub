@@ -31,6 +31,13 @@ export const GlobalStyle = createGlobalStyle`
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'SOGANGUNIVERSITYTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/SOGANGUNIVERSITYTTF.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 
 
   
