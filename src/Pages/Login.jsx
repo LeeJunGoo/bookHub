@@ -30,6 +30,10 @@ function Login() {
     signInWithRedirect(auth, googleProvider);
   }
 
+  const addGithubAccount = async () => {
+    signInWithRedirect(auth, githubProvider);
+  }
+
   useEffect(() => {
     getRedirectResult(auth)
       .then(async (result) => {
@@ -38,7 +42,6 @@ function Login() {
           const providerId = result.providerId;
           const userRef = doc(db, 'users', user.uid)
           const docSnap = await getDoc(userRef)
-
           if (docSnap.exists()) {
             await updateDoc(userRef, {
               lastLogin: new Date(),
@@ -69,11 +72,6 @@ function Login() {
     setIsLoading(false)
   }, [])
 
-
-  const addGithubAccount = async () => {
-    signInWithRedirect(auth, githubProvider);
-
-  }
 
   useEffect(() => {
     getRedirectResult(auth)

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { bookData } from '../shared/mockData';
 import { useEffect, useState, useRef } from 'react';
 import { db } from '../firebase';
-import { collection, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
