@@ -65,32 +65,30 @@ function Join() {
 
   return (
     <>
-      <StSection1>
-        <HeaderTitle onClick={goToHome}>bookHub</HeaderTitle>
-        <StH2>회원가입</StH2>
-      </StSection1>
+      <StToHome onClick={goToHome}>홈으로</StToHome>
 
       <StSection2>
         <StUl>
           <li>
-            <label>이메일</label>
-            <input type="email" placeholder="이메일" value={email} onChange={onEmailHandler}></input>
+            <StPtag>이메일</StPtag>
+            <StInput type="email" placeholder="이메일" value={email} onChange={onEmailHandler}></StInput>
           </li>
           <li>
-            <label>패스워드</label>
-            <input type="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></input>
+            <StPtag>패스워드</StPtag>
+            <StInput type="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}></StInput>
           </li>
           <li>
-            <label>닉네임</label>
-            <input type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></input>
+            <StPtag>닉네임</StPtag>
+            <StInput type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></StInput>
           </li>
           <StDiv>
             <div>
-              <button onClick={newSign}>회원가입하기</button>
+              <StButtonJoin onClick={newSign}>회원가입하기</StButtonJoin>
             </div>
-            <span>
-              <button onClick={goToLogin}>로그인 하기</button>
-            </span>
+
+            <div>
+              <StButtonLogin onClick={goToLogin}>로그인 하기</StButtonLogin>
+            </div>
           </StDiv>
         </StUl>
       </StSection2>
@@ -105,6 +103,11 @@ const StH2 = styled.h2`
   justify-content: center;
   font-size: 40px;
   font-family: 'SOGANGUNIVERSITYTTF';
+`;
+const StInput = styled.input`
+  padding: 10px;
+  border-color: #141513;
+  border-radius: 4px;
 `;
 
 const StSection1 = styled.section`
@@ -139,6 +142,12 @@ const StSection2 = styled.section`
   margin-bottom: 100px;
 `;
 
+const StPtag = styled.p`
+  padding-bottom: 10px;
+  font-weight: 900;
+  font-family: 'SOGANGUNIVERSITYTTF';
+`;
+
 const StUl = styled.ul`
   display: flex;
   flex-direction: column;
@@ -147,9 +156,58 @@ const StUl = styled.ul`
   width: 300px;
   height: 400px;
   border: 1px solid black;
+  margin: 10px;
 `;
 
 const StDiv = styled.div`
   display: flex;
   gap: 15px;
+`;
+
+const StButtonLogin = styled.button`
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+
+  border-color: #c9c902;
+  color: #ffffff;
+  background-color: #c9c902;
+  font-family: 'SOGANGUNIVERSITYTTF';
+
+  &:hover {
+    background-color: #eded08;
+    border-color: #eded08;
+  }
+`;
+
+const StButtonJoin = styled.button`
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  border-color: #c9c902;
+  color: #ffffff;
+  background-color: #c9c902;
+
+  &:hover {
+    background-color: #eded08;
+    border-color: #eded08;
+  }
+`;
+
+const StToHome = styled.button`
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-left: 40px;
+  border-color: #c9c902;
+  color: #ffffff;
+  background-color: #c9c902;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  &:hover {
+    background-color: #eded08;
+    border-color: #eded08;
+  }
 `;
