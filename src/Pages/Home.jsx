@@ -134,6 +134,7 @@ function Home() {
     <>
       <Header>
         <HeaderTitle onClick={() => window.location.reload()}>BookHub</HeaderTitle>
+
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -144,6 +145,7 @@ function Home() {
             <button onClick={() => navigate('/login')}>로그인</button>
           )}
         </HeaderButtonDiv>
+
         <HeaderForm onSubmit={onSubmitEventHandler}>
           <input
             value={titleSearch}
@@ -154,6 +156,7 @@ function Home() {
           <button type="onSubmit">검색</button>
         </HeaderForm>
       </Header>
+
       <main>
         <StSection>
           <StP>{title}</StP>
@@ -163,6 +166,7 @@ function Home() {
             loop={true}
             autoplay={{ delay: 2000, disableOnInteraction: false }}
             pagination={{
+              clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
             }}
             navigation={true}
             modules={[Pagination, Navigation, Autoplay]}
@@ -182,6 +186,7 @@ function Home() {
         </StSection>
         {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
       </main>
+
       <StFooter>
         <p>2024년 02월 07일~ 14일</p>
         <p>© bookHub</p>
