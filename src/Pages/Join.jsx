@@ -7,7 +7,6 @@ import { db } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { join } from '../shared/redux/modules/userDataController';
 
-
 function Join() {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -25,14 +24,16 @@ function Join() {
       await addDoc(collection(db, 'users'), {
         uid: user.uid,
         userNickName: nickName,
-        userEmail: email,
+        userEmail: email
       });
 
-      dispatch(join({
-        uid: user.uid,
-        email,
-        nickName,
-      }))
+      dispatch(
+        join({
+          uid: user.uid,
+          email,
+          nickName
+        })
+      );
 
       alert(`${nickName} 님 안녕하세요!`);
       navigate('/login');
@@ -42,9 +43,6 @@ function Join() {
       alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`);
     }
   };
-
-
-
 
   const onEmailHandler = (e) => {
     setEmail(e.target.value);
@@ -62,15 +60,17 @@ function Join() {
     navigate('/');
   };
   const goToLogin = () => {
-    navigate('/login')
-  }
+    navigate('/login');
+  };
 
   return (
     <>
-      <button onClick={goToHome}>홈으로</button>
+      <StSection1>
+        <HeaderTitle onClick={goToHome}>bookHub</HeaderTitle>
+        <StH2>회원가입</StH2>
+      </StSection1>
 
-      <StH2>회원가입</StH2>
-      <StSection>
+      <StSection2>
         <StUl>
           <li>
             <label>이메일</label>
@@ -84,17 +84,16 @@ function Join() {
             <label>닉네임</label>
             <input type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></input>
           </li>
-          <div>
-            <button onClick={newSign}>회원가입하기</button>
-          </div>
           <StDiv>
+            <div>
+              <button onClick={newSign}>회원가입하기</button>
+            </div>
             <span>
               <button onClick={goToLogin}>로그인 하기</button>
             </span>
-
           </StDiv>
         </StUl>
-      </StSection>
+      </StSection2>
     </>
   );
 }
@@ -104,15 +103,40 @@ export default Join;
 const StH2 = styled.h2`
   display: flex;
   justify-content: center;
+  font-size: 40px;
+  font-family: 'SOGANGUNIVERSITYTTF';
 `;
 
-const StSection = styled.section`
+const StSection1 = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 400px;
+`;
+
+const HeaderTitle = styled.button`
+  font-family: 'TTHakgyoansimSamulhamR';
+  margin: 40px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 50px;
+
+  &:hover {
+    background-color: #6ea477;
+    transition: 0.5s;
+  }
+`;
+
+const StSection2 = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100vw;
   min-height: 400px;
+  margin-bottom: 100px;
 `;
 
 const StUl = styled.ul`

@@ -4,6 +4,8 @@ import { bookData } from '../shared/mockData';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import List from '../components/List';
+import gitHubImage from '../styles/gitHub.png';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -35,7 +37,7 @@ function Home() {
       } else {
         setCurrentUser(null);
         setReview(bookData.filter((item) => item.rank <= 10));
-        setTitle('비로그인상태 베스트셀러');
+        setTitle('베스트셀러');
         setLoading(false);
       }
     });
@@ -67,7 +69,7 @@ function Home() {
           setTitle('내가 남긴 리뷰의 책');
         } else {
           setReview(bookData.filter((item) => item.rank <= 10));
-          setTitle('리뷰가 없는 경우');
+          setTitle('베스트 셀러');
         }
       }
     } catch (error) {
@@ -157,9 +159,11 @@ function Home() {
 
       <main>
         <StSection>
-          <StP>{title}</StP>
+          <StDiv2>
+            <StP>{title}</StP>
+          </StDiv2>
 
-          <StDiv>
+          <StDiv1>
             <StSwiper
               loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
               autoplay={{ delay: 2000, disableOnInteraction: false }}
@@ -200,7 +204,7 @@ function Home() {
                 </StSwiperSlide>
               ))}
             </StSwiper>
-          </StDiv>
+          </StDiv1>
         </StSection>
         {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
       </main>
@@ -212,30 +216,42 @@ function Home() {
           <StFooterUl>
             <li>
               <StyledLink to={'https://github.com/psisdn08'}>
-                <p>김형</p>
-                <figure>
-                  <img src=".src/Pages/github.png"></img>
-                </figure>
+                <StFigure>
+                  <p>김형</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={'https://github.com/yuriyun88'}>
-                <p>정윤아</p>
+                <StFigure>
+                  <p>정윤아</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={'https://github.com/Andante23'}>
-                <p>안단테</p>
+                <StFigure>
+                  <p>안단테</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={`https://github.com/LeeJunGoo`}>
-                <p>이준구</p>
+                <StFigure>
+                  <p>이준구</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
             <li>
               <StyledLink to={`https://github.com/gidalim`}>
-                <p>박강토</p>
+                <StFigure>
+                  <p>박강토</p>
+                  <img src={gitHubImage}></img>
+                </StFigure>
               </StyledLink>
             </li>
           </StFooterUl>
@@ -307,6 +323,10 @@ const HeaderForm = styled.form`
     width: 50px;
     border: 2px solid black;
     border-radius: 6px;
+
+    &:hover {
+      background-color: #6ea477;
+    }
   }
 `;
 
@@ -317,7 +337,11 @@ const StSection = styled.section`
   flex-direction: column;
   align-items: center;
   box-shadow: 1px 0 1px #333;
-  margin-bottom: 100px;
+`;
+const StP = styled.p`
+  font-family: 'SOGANGUNIVERSITYTTF';
+  font-size: 30px;
+  margin-top: 30px;
 `;
 
 const StSwiper = styled(Swiper)`
@@ -331,10 +355,6 @@ const StSwiperSlide = styled(SwiperSlide)`
   p {
     margin-top: 10px;
   }
-`;
-
-const StP = styled.p`
-  font-size: 25px;
 `;
 
 const StyledLink = styled(Link)`
@@ -366,9 +386,29 @@ const StFooterUl = styled.ul`
   font-size: 18px;
 `;
 
-const StDiv = styled.div`
+const StDiv1 = styled.div`
   width: 80%;
   display: flex;
   flex-direction: row;
   align-items: center;
+`;
+
+const StDiv2 = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+`;
+
+const StFigure = styled.figure`
+  img {
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+  }
+
+  p {
+    font-weight: 700;
+    font-family: 'GowunBatang-Regular';
+  }
 `;
