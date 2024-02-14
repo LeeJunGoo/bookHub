@@ -94,7 +94,6 @@ function Join() {
 
           </StDiv>
         </StUl>
-        <ol></ol>
       </StSection>
     </>
   );
