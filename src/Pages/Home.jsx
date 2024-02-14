@@ -154,34 +154,50 @@ function Home() {
       <main>
         <StSection>
           <StP>{title}</StP>
-          <StSwiper
-            slidesPerView={3} //각 슬라이드의 표시 수를 지정
-            spaceBetween={5} //각 슬라이드 사이의 간격
-            loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
-            autoplay={{ delay: 2000, disableOnInteraction: false }}
-            pagination={{
-              clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
-            }}
-            navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
-            modules={[Pagination, Navigation, Autoplay]}
-          >
-            {review.map((book) => (
-              <StSwiperSlide key={book.itemId}>
-                <StyledLink to={`/detail/${book.itemId}`}>
-                  <img src={book.coverSmallUrl} alt="대체이미지" />
-                  <p>{book.title}</p>
-                </StyledLink>
+          <StDiv>
+            <StSwiper
+              loop={true} //슬라이드를 루프하여 계속 반복되도록 설정
+              autoplay={{ delay: 2000, disableOnInteraction: false }}
+              pagination={{
+                clickable: true //사용자가 페이지를 클릭하여 슬라이드를 이동
+              }}
+              navigation={true} // 슬라이드 이전 및 다음 버튼을 활성화
+              modules={[Pagination, Navigation, Autoplay]}
+              breakpoints={{
+                260: {
+                  slidesPerView: 1, //각 슬라이드의 표시 수를 지정
+                  spaceBetween: 29 //각 슬라이드 사이의 간격
+                },
+                360: {
+                  slidesPerView: 2,
+                  spaceBetween: 90
+                },
+                660: {
+                  slidesPerView: 3,
+                  spaceBetween: 36
+                },
+                760: {
+                  slidesPerView: 5,
+                  spaceBetween: 57
+                }
+              }}
+            >
+              {review.map((book) => (
+                <StSwiperSlide key={book.itemId}>
+                  <StyledLink to={`/detail/${book.itemId}`}>
+                    <img src={book.coverSmallUrl} alt="대체이미지" />
+                    <p>{book.title}</p>
+                  </StyledLink>
 
-                <p>
-                  {book.publisher}/{book.author}
-                </p>
-              </StSwiperSlide>
-            ))}
-          </StSwiper>
+                  <p>
+                    {book.publisher}/{book.author}
+                  </p>
+                </StSwiperSlide>
+              ))}
+            </StSwiper>
+          </StDiv>
         </StSection>
-        <StSection2>
-          {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
-        </StSection2>
+        {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
       </main>
 
       <StFooter>
@@ -192,6 +208,9 @@ function Home() {
             <li>
               <StyledLink to={'https://github.com/psisdn08'}>
                 <p>김형</p>
+                <figure>
+                  <img src=".src/Pages/github.png"></img>
+                </figure>
               </StyledLink>
             </li>
             <li>
@@ -238,7 +257,7 @@ const HeaderTitle = styled.button`
   border-radius: 15px;
   background-color: transparent;
   border: transparent;
-  font-size: 40px;
+  font-size: 50px;
 
   &:hover {
     background-color: #6ea477;
@@ -251,9 +270,10 @@ const HeaderButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: end;
-  margin-right: 30px;
+  margin-right: 70px;
   button {
     font-family: TTHakgyoansimSamulhamR;
+    font-size: 15px;
     background-color: transparent;
     border: transparent;
     margin-right: 10px;
@@ -285,10 +305,19 @@ const HeaderForm = styled.form`
   }
 `;
 
+const StSection = styled.section`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 1px 0 1px #333;
+  margin-bottom: 100px;
+`;
+
 const StSwiper = styled(Swiper)`
-  //width: 50% 줄 시에 swiper 작동 에러 발생
-  width: 1200px;
-  height: 250px;
+  width: 100%;
+  height: 280px;
   padding: 50px 30px;
 `;
 
@@ -297,22 +326,6 @@ const StSwiperSlide = styled(SwiperSlide)`
   p {
     margin-top: 10px;
   }
-`;
-
-const StSection = styled.section`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 1px 0 1px #333;
-  margin-bottom: 100px;
-`;
-
-const StSection2 = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const StP = styled.p`
@@ -346,4 +359,11 @@ const StFooterUl = styled.ul`
   gap: 50px;
   margin: 10px 0;
   font-size: 18px;
+`;
+
+const StDiv = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
