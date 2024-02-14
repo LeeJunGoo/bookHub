@@ -2,7 +2,7 @@
 
 .swiper-button-prev,
 .swiper-button-next {
-  background-color: #9f5555;
+  background-color: #99bc85;
   opacity: 0.4; /* 불투명도 */
   height: 50px;
   width: 50px;
@@ -20,7 +20,7 @@
   width: 12px;
   height: 12px;
   background: transparent;
-  border: 1px solid pink;
+  border: 1px solid rgb(153, 188, 133);
   opacity: 1;
   bottom: -30px;
 }
@@ -28,7 +28,7 @@
   width: 40px;
   transition: width 0.5s;
   border-radius: 5px;
-  background: pink;
+  background: rgb(153, 188, 133);
   border: 1px solid transparent;
 }
 
