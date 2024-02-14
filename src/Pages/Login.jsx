@@ -29,6 +29,10 @@ function Login() {
     signInWithRedirect(auth, googleProvider);
   };
 
+  const addGithubAccount = async () => {
+    signInWithRedirect(auth, githubProvider);
+  };
+
   useEffect(() => {
     getRedirectResult(auth)
       .then(async (result) => {
@@ -74,10 +78,6 @@ function Login() {
       });
     setIsLoading(false);
   }, []);
-
-  const addGithubAccount = async () => {
-    signInWithRedirect(auth, githubProvider);
-  };
 
   useEffect(() => {
     getRedirectResult(auth)
