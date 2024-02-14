@@ -38,7 +38,6 @@ function Join() {
       alert(`${nickName} 님 안녕하세요!`);
       navigate('/login');
     } catch (error) {
-      const errorcode = error.code;
       const errorMessage = error.message;
       alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`);
     }
@@ -83,13 +82,10 @@ function Join() {
             <StInput type="text" placeholder="닉네임" value={nickName} onChange={onNickNameHandler}></StInput>
           </li>
           <StDiv>
-            <div>
+            <StDiv2>
               <StButtonJoin onClick={newSign}>회원가입하기</StButtonJoin>
-            </div>
-
-            <div>
               <StButtonLogin onClick={goToLogin}>로그인 하기</StButtonLogin>
-            </div>
+            </StDiv2>
           </StDiv>
         </StUl>
       </StSection>
@@ -141,6 +137,13 @@ const StDiv = styled.div`
   display: flex;
   gap: 15px;
 `;
+
+const StDiv2 = styled.div`
+  display: flex;
+  min-width: 450px;
+  flex-direction: row;
+  justify-content: space-between;
+`
 
 const StButtonLogin = styled.button`
   margin: 10px;

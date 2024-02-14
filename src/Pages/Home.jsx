@@ -9,7 +9,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
-import '../styles/gitHub.png';
 import '../styles/Carousel.css';
 import gitHubImage from '../styles/gitHub.png';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
@@ -220,7 +219,7 @@ function Home() {
               <StyledLink to={'https://github.com/psisdn08'}>
                 <StFigure>
                   <p>김형</p>
-                  <img src={gitHubImage}></img>
+                  <img src={gitHubImage} alt='null' />
                 </StFigure>
               </StyledLink>
             </li>
@@ -228,7 +227,7 @@ function Home() {
               <StyledLink to={'https://github.com/yuriyun88'}>
                 <StFigure>
                   <p>정윤아</p>
-                  <img src={gitHubImage}></img>
+                  <img src={gitHubImage} alt='null' />
                 </StFigure>
               </StyledLink>
             </li>
@@ -236,7 +235,7 @@ function Home() {
               <StyledLink to={'https://github.com/Andante23'}>
                 <StFigure>
                   <p>안단테</p>
-                  <img src={gitHubImage}></img>
+                  <img src={gitHubImage} alt='null' />
                 </StFigure>
               </StyledLink>
             </li>
@@ -244,7 +243,7 @@ function Home() {
               <StyledLink to={`https://github.com/LeeJunGoo`}>
                 <StFigure>
                   <p>이준구</p>
-                  <img src={gitHubImage}></img>
+                  <img src={gitHubImage} alt='null' />
                 </StFigure>
               </StyledLink>
             </li>
@@ -252,7 +251,7 @@ function Home() {
               <StyledLink to={`https://github.com/gidalim`}>
                 <StFigure>
                   <p>박강토</p>
-                  <img src={gitHubImage}></img>
+                  <img src={gitHubImage} alt='null' />
                 </StFigure>
               </StyledLink>
             </li>

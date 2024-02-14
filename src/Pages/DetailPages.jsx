@@ -85,7 +85,6 @@ function DetailPages() {
           createdAt: Date.now(),
           itemId: id,
           text: reviewText,
-          title: reviewTitle,
           uid: user.uid,
           userNickName: userData.userNickName,
           userProfileImg: userData.profileImageUrl
@@ -247,8 +246,8 @@ function DetailPages() {
         <StDiv3>
           {isLoggedIn === true ? (
             <form
-              onSubmit={(event) => {
-                addReView(event);
+              onSubmit={(e) => {
+                addReView(e);
               }}
             >
               <StImg2 src={userInfo.profileImg} alt="Profile" />
@@ -256,7 +255,7 @@ function DetailPages() {
               <textarea
                 type="text"
                 value={newReviewText}
-                onChange={(event) => setNewReviewText(event.target.value)}
+                onChange={(e) => setNewReviewText(e.target.value)}
                 placeholder="리뷰"
               />
               <button type="submit">추가하기</button>

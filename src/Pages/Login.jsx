@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { addDoc, collection, getDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import gitHubImage from '../styles/gitHub.png';
+import google from '../styles/google.svg'
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -11,7 +13,7 @@ import {
   signInWithRedirect,
   GoogleAuthProvider,
   GithubAuthProvider
-} from '@firebase/auth';
+} from 'firebase/auth';
 
 // id : gang@dev.com
 // pwd : 123123
@@ -152,14 +154,20 @@ function Login() {
                 onChange={(e) => onUserPwdHandler(e)}
               ></input>
             </StLi>
-            <div>
-              <StBtn onClick={(e) => loggedIn(e)}>로그인!</StBtn>
-            </div>
-            <button onClick={addGoogleAccount}>구글 로그인</button>
-            <button onClick={addGithubAccount}>깃허브 로그인</button>
+            <StDiv2>
+              <StBtn onClick={(e) => loggedIn(e)}> 이메일로 로그인!</StBtn>
+              <StBtn2 bg={'#69a0f8'} onClick={addGoogleAccount}>
+                <StImg src={google} alt='null' />구글 로그인
+              </StBtn2>
+              <StBtn2 bg={'#cfabff'} onClick={addGithubAccount}>
+                <StImg src={gitHubImage} alt='null' />깃허브 로그인
+              </StBtn2>
+            </StDiv2>
+            <StDiv3>
+              <StBtn3 onClick={goToJoinPage}>회원가입하기</StBtn3>
+              <StBtn3 onClick={goToHome}>홈으로 가기</StBtn3>
+            </StDiv3>
           </StUl>
-          <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
-          <StBtn onClick={goToHome}>홈으로 가기</StBtn>
         </StMain>
       </div>
     </>
@@ -169,11 +177,13 @@ function Login() {
 export default Login;
 
 const StMain = styled.main`
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
+  height: 100%;
   min-width: 400px;
 `;
 
@@ -183,31 +193,37 @@ const StUl = styled.ul`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60%;
-  height: 20%;
-  min-width: 410px;
+  width: 40%;
+  height: 60%;
+  min-width: 430px;
+  max-width: 720px;
   min-height: 400px;
-  border: 1px solid black;
+  border: 1px solid #846b17a9;
   gap: 40px;
-`;
+  border-radius: 15px;
+  background-color: #f9fce1;
+`
 
 const StLi = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 45%;
-  height: 15%;
   gap: 30px;
 
   input {
     gap: 30px;
     min-width: 400px;
-    min-height: 30px;
+    min-height: 35px;
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #e4c83b;;
   }
 `;
 
 const StHeader = styled.header`
+  position: absolute;
+  top: 15%;
   display: flex;
   justify-content: center;
   width: 100vw;
@@ -215,18 +231,90 @@ const StHeader = styled.header`
   min-width: 400px;
 `;
 
+const StDiv2 = styled.div`
+  display: flex;
+  min-width: 400px;
+  gap:30px;
+  flex-direction: column;
+  justify-content: space-between;
+`
+
 const StBtn = styled.button`
   display: flex;
   flex-direction : row;
   justify-content:center;
   align-items: center;
-  width: 130px;
-  width: 130px;
-  height: 50px;
+  width: 400px;
+  height: 40px;
   font-size: 1.1rem;
   background-color: #F6E58D;
   border: 1px solid #F6E58D;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #313131;
   font-family: 'SOGANGUNIVERSITYTTF';
+
+
+  &:hover {
+    background-color: #1d1c19;
+    color: #cbcbcb;
+    transition: 0.5s;
+  }
   `
+
+
+const StBtn2 = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 40px;
+  padding: 5px;
+  border: transparent;
+  border-radius: 5px;
+  background-color: ${(props) => props.bg || '#ece6f1'};
+  font-family: 'SOGANGUNIVERSITYTTF' ;
+  font-size: 1.1rem;
+
+
+`
+
+
+const StDiv3 = styled.div`
+  display: flex;
+  gap: 80px;
+  padding: 20px;
+`
+
+const StBtn3 = styled.button`
+  display: flex;
+  flex-direction : row;
+  justify-content:center;
+  align-items: center;
+  width: 150px;
+  height: 40px;
+  font-size: 1.1rem;
+  background-color: #F6E58D;
+  border: 1px solid #F6E58D;
+  padding: 5px;
+  border-radius: 5px;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
+
+
+  &:hover {
+    background-color: #1d1c19;
+    color: #cbcbcb;
+    transition: 0.5s;
+  }
+  
+
+
+  
+`
+
+const StImg = styled.img`
+width: 25px;
+height: 25px;
+margin-right: 15px;
+object-fit: contain;
+`

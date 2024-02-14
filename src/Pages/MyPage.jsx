@@ -158,7 +158,7 @@ function MyPage() {
           console.error('업데이트에 실패했어요', error);
         }
       } else {
-        console.log('문서를 찾을 수 없어요');
+        alert('문서를 찾을 수 없어요');
       }
 
     };

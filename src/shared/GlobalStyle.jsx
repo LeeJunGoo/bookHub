@@ -83,7 +83,9 @@ table {
 // 47번줄까지가 reset css입니다. 
 
 
-
+*{
+  box-sizing: border-box;
+}
 
 textarea{
   resize: none;
