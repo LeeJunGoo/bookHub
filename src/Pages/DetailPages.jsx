@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { query, getDocs, collection, doc, deleteDoc, updateDoc, addDoc, getDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import {
+  query,
+  getDocs,
+  collection,
+  doc,
+  deleteDoc,
+  updateDoc,
+  addDoc,
+  getDoc,
+  arrayUnion,
+  arrayRemove
+} from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { bookData } from '../shared/mockData';
 import styled from 'styled-components';
 
 function DetailPages() {
-
   const navigate = useNavigate();
   const { id } = useParams();
   const [reviewText, setReviewText] = useState('');
@@ -16,11 +26,10 @@ function DetailPages() {
   const [editReview, setEditReview] = useState(false);
   const [currentReviewId, setCurrentReviewId] = useState(null);
   const [newReviewText, setNewReviewText] = useState('');
-  const [userInfo, setUserInfo] = useState(
-    {
-      nickName: '',
-      profileImg: '',
-    });
+  const [userInfo, setUserInfo] = useState({
+    nickName: '',
+    profileImg: ''
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +41,6 @@ function DetailPages() {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     const checkAuthState = async () => {
       const user = auth.currentUser
@@ -41,20 +49,22 @@ function DetailPages() {
         const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
-          const userData = userSnap.data()
+          const userData = userSnap.data();
           setUserInfo({
             nickName: userData.userNickName || '익명',
-            profileImg: userData.profileImageUrl || 'null',
+            profileImg: userData.profileImageUrl || 'null'
           });
         } else {
-          setUserInfo({ nickName: '', profileImg: '', });
+          setUserInfo({ nickName: '', profileImg: '' });
         }
       } else {
-        setUserInfo({ nickName: '', profileImg: '', });
+        setUserInfo({ nickName: '', profileImg: '' });
       }
+
     };
     checkAuthState()
   }, [])
+
 
 
 
@@ -68,7 +78,7 @@ function DetailPages() {
 
     try {
       const userDocRef = doc(db, 'users', user.uid);
-      const userDocSnap = await getDoc(userDocRef)
+      const userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         const reviewDataToAdd = {
@@ -81,21 +91,19 @@ function DetailPages() {
           userProfileImg: userData.profileImageUrl
         };
 
-
-        const reviewRef = await addDoc(collection(db, 'reviews'), reviewDataToAdd)
+        const reviewRef = await addDoc(collection(db, 'reviews'), reviewDataToAdd);
 
         const userRef = doc(db, 'users', user.uid);
         await updateDoc(userRef, {
           reviews: arrayUnion(reviewRef.id)
-        })
+        });
 
-
-        setReviewData(prevState => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
+        setReviewData((prevState) => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
         setNewReviewText('');
         setReviewTitle('');
         alert('리뷰를 등록했어요!');
       } else {
-        alert('사용자를 찾을 수 없어요..')
+        alert('사용자를 찾을 수 없어요..');
       }
     } catch (error) {
       console.error('Error adding review:', error);
@@ -104,7 +112,6 @@ function DetailPages() {
   };
 
   const deleteReview = async (reviewId) => {
-
     const user = auth.currentUser;
     if (!user) return;
 
@@ -114,7 +121,6 @@ function DetailPages() {
       await updateDoc(userRef, {
         reviews: arrayRemove(reviewId)
       });
-
     } catch (error) {
       console.error('리뷰 삭제 중 오류 발생:', error);
       window.alert('리뷰를 삭제하는 동안 오류가 발생했습니다.');
@@ -128,7 +134,6 @@ function DetailPages() {
     }
   };
 
-
   const onChangeReview = async (id) => {
     if (!id) return;
 
@@ -136,31 +141,28 @@ function DetailPages() {
       const reviewDocRef = doc(db, 'reviews', id);
 
       await updateDoc(reviewDocRef, {
-        text: reviewText,
+        text: reviewText
       });
-      setReviewData(currentData =>
-        currentData.map(review =>
-          review.id === id ? { ...review, text: reviewText } : review
-        )
+      setReviewData((currentData) =>
+        currentData.map((review) => (review.id === id ? { ...review, text: reviewText } : review))
       );
-      alert('리뷰 수정을 완료했어요!')
-      setEditReview(false)
-      setCurrentReviewId(null)
-
+      alert('리뷰 수정을 완료했어요!');
+      setEditReview(false);
+      setCurrentReviewId(null);
     } catch (error) {
-      console.error('리뷰 수정에 실패했어요.', error)
-      alert('리뷰 업데이트 중 오류가 발생했습니다.')
+      console.error('리뷰 수정에 실패했어요.', error);
+      alert('리뷰 업데이트 중 오류가 발생했습니다.');
     }
-  }
+  };
 
   const goToHome = () => {
-    navigate('/')
-  }
+    navigate('/');
+  };
 
   const handleEditClick = (id, text) => {
-    setCurrentReviewId(id)
+    setCurrentReviewId(id);
     setReviewText(text);
-  }
+  };
 
   return (
     <>
@@ -185,28 +187,36 @@ function DetailPages() {
         {isLoggedIn === true ? (
           <>
             {reviewData
-              .filter(data => data.itemId === id)
-              .map(data => (
+              .filter((data) => data.itemId === id)
+              .map((data) => (
                 <StDiv4 key={data.id}>
                   {currentReviewId === data.id ? (
                     <>
-                      <textarea
-                        value={reviewText}
-                        onChange={(e) => setReviewText(e.target.value)}
-                      />
+                      <textarea value={reviewText} onChange={(e) => setReviewText(e.target.value)} />
                       <button onClick={() => onChangeReview(data.id)}>수정 완료</button>
-                      <button onClick={() => { setEditReview(false); setCurrentReviewId(null); }}>취소</button>
+                      <button
+                        onClick={() => {
+                          setEditReview(false);
+                          setCurrentReviewId(null);
+                        }}
+                      >
+                        취소
+                      </button>
                     </>
                   ) : (
                     <>
                       <StDiv5>
-                        <StImg2
-                          src={data.userProfileImg || 'defaultProfileImagePath'}
-                          alt='profile' />
+                        <StImg2 src={data.userProfileImg || 'defaultProfileImagePath'} alt="profile" />
                         <p>{data.userNickName || '익명'}</p>
                       </StDiv5>
                       <p>리뷰내용 : {data.text}</p>
-                      <button onClick={() => { handleEditClick(data.id, data.text); }}>수정하기</button>
+                      <button
+                        onClick={() => {
+                          handleEditClick(data.id, data.text);
+                        }}
+                      >
+                        수정하기
+                      </button>
                       <button onClick={() => handleDeleteReview(data.id)}>삭제하기</button>
                     </>
                   )}
@@ -219,6 +229,7 @@ function DetailPages() {
               .filter((data) => data.itemId === id)
               .map((data) => (
                 <StDiv4 key={data.userId}>
+
                   <StDiv5>
                     <StImg2
                       src={data.userProfileImg || 'defaultProfileImagePath'}
@@ -226,6 +237,7 @@ function DetailPages() {
                     <p>{data.userNickName || '익명'}</p>
                   </StDiv5>
                   <p>리뷰내용 : {data.text}</p>
+
                 </StDiv4>
               ))}
           </>
@@ -259,14 +271,13 @@ function DetailPages() {
 }
 export default DetailPages;
 
-
 const StSection = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
   margin-bottom: 150px;
-`
+`;
 
 const StDiv = styled.div`
   display: flex;
@@ -276,23 +287,22 @@ const StDiv = styled.div`
   width: 80%;
   max-width: 1600px;
   min-width: 700px;
-  gap : 50px;
+  gap: 50px;
   padding: 50px;
-`
+`;
 
 const StImg2 = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-`
+`;
 
 const StImg = styled.img`
   width: 220px;
   min-width: 220px;
   height: 320px;
-  
-`
+`;
 
 const StDiv2 = styled.div`
   display: flex;
@@ -302,28 +312,26 @@ const StDiv2 = styled.div`
   width: 80%;
   gap: 100px;
 
-  p{
-    gap :15px;
+  p {
+    gap: 15px;
     line-height: 1.3;
     font-size: 20px;
   }
-`
+`;
 
 const StSpan = styled.span`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-`
-
+`;
 
 const StSection3 = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-`
+`;
 
 const StDiv3 = styled.div`
   display: flex;
@@ -334,14 +342,11 @@ const StDiv3 = styled.div`
   padding: 50px;
   border: 1px solid black;
 
-
-  form{
+  form {
     display: flex;
     width: 80%;
     gap: 40px;
-    ;
-
-    input{
+    input {
       width: 200px;
       height: 40px;
       font-size: 1rem;
@@ -352,8 +357,7 @@ const StDiv3 = styled.div`
       font-size: 1rem;
     }
   }
-
-`
+`;
 
 const StSection2 = styled.section`
   display: flex;
@@ -365,11 +369,11 @@ const StSection2 = styled.section`
   height: 20%;
   margin-bottom: 150px;
 
-  div{
+  div {
     display: flex;
     flex-direction: row;
   }
-`
+`;
 
 const StDiv4 = styled.div`
   display: flex;
@@ -378,16 +382,16 @@ const StDiv4 = styled.div`
   justify-content: center;
   width: 700px;
 
-  p{
-    gap :15px;
+  p {
+    gap: 15px;
     line-height: 1.3;
     font-size: 20px;
   }
-`
+`;
 
 const StDiv5 = styled.div`
   display: flex;
   flex-direction: row;
   gap: 30px;
   align-items: center;
-`
+`;
