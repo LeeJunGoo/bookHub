@@ -236,18 +236,18 @@ function MyPage() {
           <StUl2>
             {userReviews.map((review, index) => {
               return (
-                <div key={index}>
+                <ListWrapper key={index}>
                   {review.book ? (
                     <div>
                       <img src={review.book.coverLargeUrl} alt='default_image' />
                       <p>책 제목 : {review.book.title}</p>
                     </div>
                   ) : (
-                    <p>해당하는 책의 정보가 존재하지 않아요.</p>
+                    <BookName>해당하는 책의 정보가 존재하지 않아요.</BookName>
                   )}
                   <li>리뷰 제목 : {review.title}</li>
                   <li>리뷰 내용 : {review.text}</li>
-                </div>
+                </ListWrapper>
               )
             })}
           </StUl2>
@@ -351,3 +351,26 @@ const StImg = styled.img`
   border-radius: 50%;
   
 `
+
+const BookName = styled.div`
+  font-weight: bold;
+  color: black;
+  font-size: medium;
+  line-height: 1.2;
+  text-align: center;
+  margin: 6px;
+
+`;
+
+const ListWrapper = styled.li`
+  width: 18%;
+  min-width: 220px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'SOGANGUNIVERSITYTTF';
+  margin: auto;
+
+  color : #222f3e;
+
+`;
