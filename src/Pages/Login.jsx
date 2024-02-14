@@ -1,3 +1,4 @@
+
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
@@ -14,14 +15,6 @@ import {
 
 // id : gang@dev.com
 // pwd : 123123
-
-import gitHub from '../styles/gitHub.png';
-
-
-
-
-
-
 
 function Login() {
   const navigate = useNavigate();
@@ -146,8 +139,7 @@ function Login() {
   return (
     <>
       <div>
-        <StHeader>BookHub
-        </StHeader>
+        <StHeader>로그인</StHeader>
         <StMain>
           <StUl>
             <StLi>
@@ -161,22 +153,14 @@ function Login() {
                 onChange={(e) => onUserPwdHandler(e)}
               ></input>
             </StLi>
-            
+            <div>
               <StBtn onClick={(e) => loggedIn(e)}>로그인!</StBtn>
-              <loginBtnWrapper>
-              <Altloginbutton1 onClick={addGoogleAccount}>  
-              <img src="https://www.google.com/images/hpp/ic_wahlberg_product_core_48.png8.png"/>
-              </Altloginbutton1>
-              <Altloginbutton2 onClick={addGithubAccount}>  <img src={gitHub} />
-              </Altloginbutton2>
-            </loginBtnWrapper>
-
+            </div>
+            <button onClick={addGoogleAccount}>구글 로그인</button>
+            <button onClick={addGithubAccount}>깃허브 로그인</button>
           </StUl>
-          <StBtnWrapper>
-            <StBtn2 onClick={goToJoinPage}>회원가입하기</StBtn2><br/>
-            <StBtn3 onClick={goToHome}>홈으로 가기</StBtn3>
-
-          </StBtnWrapper>
+          <StBtn onClick={goToJoinPage}>회원가입하기</StBtn>
+          <StBtn onClick={goToHome}>홈으로 가기</StBtn>
         </StMain>
       </div>
     </>
@@ -227,68 +211,15 @@ const StLi = styled.li`
 const StHeader = styled.header`
   display: flex;
   justify-content: center;
+  width: 100vw;
   height: 15vh;
   min-width: 400px;
-  
-  font-family: 'TTHakgyoansimSamulhamR';
-  padding: 20px;
-  border-radius: 15px;
-  background-color: transparent;
-  border: transparent;
-  font-size: 40px;
-  line-height:1.2;
-  margin-top : 10px;
-
 `;
-
-const loginBtnWrapper= styled.div`
-  display: flex;
-  flex-direction : row;
-  justify-content:center;
-  align-items: center;
-
-
-`;
-const Altloginbutton1 = styled.button`
-  justify-content:center;
-  align-items: center;
-  min-block-size: 1cm;
-  border-style: hidden;
-  border-radius: 10px;
-  color: #313131;
-  font-family: 'SOGANGUNIVERSITYTTF';
-  min-width: 0.5cm;
-
-
-`;
-
-
-const Altloginbutton2 = styled.button`
-  justify-content:center;
-  align-items: center;
-  min-block-size: 1cm;
-  border-style: hidden;
-  border-radius: 10px;
-  color: #313131;
-  font-family: 'SOGANGUNIVERSITYTTF';
-  min-width: 0.5cm;
-
-
-`;
-
-// const altloginBtn1 = styled.button`
-
-// `;
-
-// const altloginBtn2 = styled.button`
-
-// `;
-
 
 const StBtn = styled.button`
   display: flex;
-  flex-direction : row;
-  justify-content:center;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
   width: 130px;
   height: 50px;
@@ -298,56 +229,4 @@ const StBtn = styled.button`
   border-radius: 10px;
   color: #313131;
   font-family: 'SOGANGUNIVERSITYTTF';
-
-
-`;
-
-const StBtnWrapper = styled.div`
-  display: flex;
-  flex-direction : row;
-  justify-content:center;
-  align-items: center;
-  margin : 30px 0px 30px 0px;
-
-
-`;
-
-
-const StBtn2 = styled.button`
-  display: flex;
-  flex-direction : row;
-  justify-content:center;
-  align-items: center;
-  width: 130px;
-  height: 50px;
-  font-size: 1.1rem;
-  background-color: #f6e58d;
-  border: 1px solid #f6e58d;
-  border-radius: 10px;
-  color: #313131;
-  font-family: 'SOGANGUNIVERSITYTTF';
-  margin : 10px 10px 10px 10px;
-
-
-`;
-
-
-
-
-const StBtn3 = styled.button`
-  display: flex;
-  flex-direction : row;
-  justify-content:center;
-  align-items: center;
-  width: 130px;
-  height: 50px;
-  font-size: 1.1rem;
-  background-color: #f6e58d;
-  border: 1px solid #f6e58d;
-  border-radius: 10px;
-  color: #313131;
-  font-family: 'SOGANGUNIVERSITYTTF';
-  margin : 10px 10px 10px 10px;
-
-
 `;
