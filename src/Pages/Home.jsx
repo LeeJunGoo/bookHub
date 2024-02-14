@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { bookData } from '../shared/mockData';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,6 +28,7 @@ function Home() {
   const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
+  const searchRef = useRef('');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -113,9 +114,10 @@ function Home() {
 
       if (searchData.length === 0) {
         alert('검색한 결과가 없습니다.');
+      } else {
+        setFilteredResults(searchData);
+        searchRef.current.scrollIntoView({ behavior: 'smooth' });
       }
-
-      setFilteredResults(searchData);
     } else {
       alert('검색을 해주세요');
     }
@@ -186,7 +188,7 @@ function Home() {
                   spaceBetween: 36
                 },
                 760: {
-                  slidesPerView: 5,
+                  slidesPerView: 4,
                   spaceBetween: 57
                 }
               }}
@@ -206,7 +208,9 @@ function Home() {
             </StSwiper>
           </StDiv1>
         </StSection>
-        {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
+        <section ref={searchRef}>
+          {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
+        </section>
       </main>
 
       <StFooter>
