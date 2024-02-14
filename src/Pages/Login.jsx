@@ -72,22 +72,27 @@ function Login() {
 
   const addGithubAccount = async () => {
     signInWithRedirect(auth, githubProvider);
-    getRedirectResult(auth)
-      .then(async (result) => {
-        const user = result.user;
-        await addDoc(collection(db, 'users'), {
-          uid: user.uid,
-          userNickName: user.displayName,
-          userEmail: user.email,
-          etc: 'Github 으로 로그인 한 회원입니다.'
-        });
-        alert(`깃허브를 통해 찾아주셔서 반갑습니다!`)
-        navigate('/')
-      }).catch((error) => {
-        alert('에러남', error)
-      })
+
   }
 
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (result) {
+          const user = result.user;
+          await addDoc(collection(db, 'users'), {
+            uid: user.uid,
+            userNickName: user.displayName,
+            userEmail: user.email,
+            etc: 'Github 으로 로그인 한 회원입니다.'
+          });
+          alert(`깃허브를 통해 찾아주셔서 반갑습니다!`)
+          navigate('/')
+        }
+      }).catch((error) => {
+        alert('오류가 발생했습니다', error)
+      })
+  }, [])
 
   const loggedIn = async (e) => {
     e.preventDefault();

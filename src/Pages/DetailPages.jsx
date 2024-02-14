@@ -240,7 +240,7 @@ function DetailPages() {
               <textarea
                 type="text"
                 value={newReviewText}
-                onChange={(event) => setReviewText(event.target.value)}
+                onChange={(event) => setNewReviewText(event.target.value)}
                 placeholder="리뷰"
               />
               <button type="submit">추가하기</button>
@@ -261,6 +261,7 @@ const StSection = styled.section`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  margin-bottom: 150px;
 `
 
 const StDiv = styled.div`
@@ -317,6 +318,7 @@ const StSection3 = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
 `
 
 const StDiv3 = styled.div`
@@ -351,15 +353,18 @@ const StDiv3 = styled.div`
 
 const StSection2 = styled.section`
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 80%;
-  max-width: 1600px;
-  min-width: 700px;
-  gap : 30px;
-  padding: 50px;
-  margin-top: 80px;
+  gap: 60px;
+  width: 100%;
+  height: 20%;
+  margin-bottom: 150px;
+
+  div{
+    display: flex;
+    flex-direction: row;
+  }
 `
 
 const StDiv4 = styled.div`
@@ -367,6 +372,7 @@ const StDiv4 = styled.div`
   width: 100%;
   gap: 20px;
   justify-content: center;
+  width: 700px;
 
   p{
     gap :15px;
