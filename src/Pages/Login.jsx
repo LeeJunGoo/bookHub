@@ -1,3 +1,4 @@
+
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
@@ -27,6 +28,10 @@ function Login() {
 
   const addGoogleAccount = async () => {
     signInWithRedirect(auth, googleProvider);
+  };
+
+  const addGithubAccount = async () => {
+    signInWithRedirect(auth, githubProvider);
   };
 
   useEffect(() => {
@@ -74,10 +79,6 @@ function Login() {
       });
     setIsLoading(false);
   }, []);
-
-  const addGithubAccount = async () => {
-    signInWithRedirect(auth, githubProvider);
-  };
 
   useEffect(() => {
     getRedirectResult(auth)
@@ -217,13 +218,15 @@ const StHeader = styled.header`
 
 const StBtn = styled.button`
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 200px;
+  width: 130px;
   height: 50px;
-  font-size: 1.6rem;
-  background-color: #d5ceff;
-  border: 1px solid #452ec4;
+  font-size: 1.1rem;
+  background-color: #f6e58d;
+  border: 1px solid #f6e58d;
   border-radius: 10px;
-  color: #4730cc;
+  color: #313131;
+  font-family: 'SOGANGUNIVERSITYTTF';
 `;

@@ -41,27 +41,32 @@ function DetailPages() {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
-  //     setIsLoggedIn(!!user);
-  //     if (user) {
-  //       const userRef = doc(db, 'users', user.uid);
-  //       const userSnap = await getDoc(userRef);
-  //       if (userSnap.exists()) {
-  //         const userData = userSnap.data();
-  //         setUserInfo({
-  //           nickName: userData.userNickName || '익명',
-  //           profileImg: userData.profileImageUrl || 'null'
-  //         });
-  //       } else {
-  //         setUserInfo({ nickName: '', profileImg: '' });
-  //       }
-  //     } else {
-  //       setUserInfo({ nickName: '', profileImg: '' });
-  //     }
-  //   });
-  //   return () => unsubscribe();
-  // });
+  useEffect(() => {
+    const checkAuthState = async () => {
+      const user = auth.currentUser
+      setIsLoggedIn(!!user);
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          setUserInfo({
+            nickName: userData.userNickName || '익명',
+            profileImg: userData.profileImageUrl || 'null'
+          });
+        } else {
+          setUserInfo({ nickName: '', profileImg: '' });
+        }
+      } else {
+        setUserInfo({ nickName: '', profileImg: '' });
+      }
+
+    };
+    checkAuthState()
+  }, [])
+
+
+
 
   const addReView = async (e) => {
     e.preventDefault();
@@ -224,8 +229,15 @@ function DetailPages() {
               .filter((data) => data.itemId === id)
               .map((data) => (
                 <StDiv4 key={data.userId}>
-                  <p>{data.title}</p>
-                  <p>{data.text}</p>
+
+                  <StDiv5>
+                    <StImg2
+                      src={data.userProfileImg || 'defaultProfileImagePath'}
+                      alt='profile' />
+                    <p>{data.userNickName || '익명'}</p>
+                  </StDiv5>
+                  <p>리뷰내용 : {data.text}</p>
+
                 </StDiv4>
               ))}
           </>
@@ -383,3 +395,15 @@ const StDiv5 = styled.div`
   gap: 30px;
   align-items: center;
 `;
+
+
+
+
+
+
+
+
+
+
+
+
