@@ -1,7 +1,9 @@
+/* !important : 다른 스타일보다 이 스타일이 우선하여 적용 */
+
 .swiper-button-prev,
 .swiper-button-next {
-  background-color: #fff;
-  opacity: 0.6;
+  background-color: #9f5555;
+  opacity: 0.4; /* 불투명도 */
   height: 50px;
   width: 50px;
   border-radius: 50px;
@@ -10,10 +12,26 @@
 
 .swiper-button-prev:after,
 .swiper-button-next:after {
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important; /*글꼴 크기*/
 }
 
-.swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal {
-  margin-top: 40px;
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border: 1px solid pink;
+  opacity: 1;
+  bottom: -30px;
+}
+.swiper-pagination-bullet-active {
+  width: 40px;
+  transition: width 0.5s;
+  border-radius: 5px;
+  background: pink;
+  border: 1px solid transparent;
+}
+
+.swiper-wrapper {
+  width: 200px;
 }

@@ -40,7 +40,6 @@ function Join() {
       const errorcode = error.code;
       const errorMessage = error.message;
       alert(`${errorMessage}과 같은 오류가 발생하였습니다. 올바른 패스워드를 입력해주세요.`);
-      console.log('오류코드', errorcode);
     }
   };
 
@@ -62,6 +61,9 @@ function Join() {
   const goToHome = () => {
     navigate('/');
   };
+  const goToLogin = () => {
+    navigate('/login')
+  }
 
   return (
     <>
@@ -87,11 +89,9 @@ function Join() {
           </div>
           <StDiv>
             <span>
-              <button>깃허브 가입</button>
+              <button onClick={goToLogin}>로그인 하기</button>
             </span>
-            <span>
-              <button>구글 가입</button>
-            </span>
+
           </StDiv>
         </StUl>
         <ol></ol>
