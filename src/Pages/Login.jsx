@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { addDoc, collection, getDoc, doc, setDoc, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import {
   getAuth,
@@ -84,8 +84,7 @@ function Login() {
         alert(`깃허브를 통해 찾아주셔서 반갑습니다!`)
         navigate('/')
       }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        alert('에러남', error)
       })
   }
 

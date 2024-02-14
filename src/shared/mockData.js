@@ -1,23 +1,3 @@
-export const userData = [
-  {
-    uid: '0',
-    profile: '',
-    userNickName: 'iron1',
-    userEmail: 'andatne1104@naver.com',
-    userPwd: 'sudal123',
-    isLoggedIn: false,
-    reviews: []
-  },
-  {
-    uid: 'XOianB6sCXZyfl7qF29Ck6PBRNx',
-    profile: '',
-    userNickName: 'iron2',
-    userEmail: 'naver123@gmail.com',
-    userPwd: 'su32231',
-    isLoggedIn: true,
-    reviews: []
-  }
-];
 
 export const bookData = [
   {
