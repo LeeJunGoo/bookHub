@@ -20,7 +20,6 @@ function DetailPages() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [reviewText, setReviewText] = useState('');
-  const [reviewTitle, setReviewTitle] = useState('');
   const [reviewData, setReviewData] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [editReview, setEditReview] = useState(false);
@@ -89,17 +88,17 @@ function DetailPages() {
           userNickName: userData.userNickName,
           userProfileImg: userData.profileImageUrl
         };
-
         const reviewRef = await addDoc(collection(db, 'reviews'), reviewDataToAdd);
-
         const userRef = doc(db, 'users', user.uid);
         await updateDoc(userRef, {
           reviews: arrayUnion(reviewRef.id)
         });
 
+
         setReviewData((prevState) => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
+
+        // setNewReviewText(setReviewData((prevState) => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }])) 문제 해결해야함
         setNewReviewText('');
-        setReviewTitle('');
         alert('리뷰를 등록했어요!');
       } else {
         alert('사용자를 찾을 수 없어요..');
@@ -228,7 +227,6 @@ function DetailPages() {
               .filter((data) => data.itemId === id)
               .map((data) => (
                 <StDiv4 key={data.userId}>
-
                   <StDiv5>
                     <StImg2
                       src={data.userProfileImg || 'defaultProfileImagePath'}
@@ -236,7 +234,6 @@ function DetailPages() {
                     <p>{data.userNickName || '익명'}</p>
                   </StDiv5>
                   <p>리뷰내용 : {data.text}</p>
-
                 </StDiv4>
               ))}
           </>
@@ -248,8 +245,7 @@ function DetailPages() {
             <form
               onSubmit={(e) => {
                 addReView(e);
-              }}
-            >
+              }}>
               <StImg2 src={userInfo.profileImg} alt="Profile" />
               <p>{userInfo.nickName}</p>
               <textarea
