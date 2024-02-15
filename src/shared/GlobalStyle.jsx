@@ -86,6 +86,10 @@ table {
   box-sizing: border-box;
 }
 
+button{
+  cursor: pointer;
+}
+
 textarea{
   resize: none;
 }
