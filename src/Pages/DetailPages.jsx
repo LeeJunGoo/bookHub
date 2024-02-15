@@ -70,34 +70,34 @@ function DetailPages() {
   const addReView = async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
-    if (!user) {
-      window.alert('로그인해주세요.');
+
+    if (!newReviewText.trim()) {
+      window.alert('리뷰 내용을 입력해주세요.');
       return;
     }
 
     try {
       const userDocRef = doc(db, 'users', user.uid);
       const userDocSnap = await getDoc(userDocRef);
+
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         const reviewDataToAdd = {
           createdAt: Date.now(),
           itemId: id,
-          text: reviewText,
+          text: newReviewText,
           uid: user.uid,
           userNickName: userData.userNickName,
-          userProfileImg: userData.profileImageUrl
+          userProfileImg: userData.profileImageUrl,
         };
-        const reviewRef = await addDoc(collection(db, 'reviews'), reviewDataToAdd);
+        const reviewRef = await addDoc(collection(db, 'reviews'), { ...reviewDataToAdd });
         const userRef = doc(db, 'users', user.uid);
         await updateDoc(userRef, {
           reviews: arrayUnion(reviewRef.id)
         });
 
 
-        setReviewData((prevState) => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
-
-        // setNewReviewText(setReviewData((prevState) => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }])) 문제 해결해야함
+        setReviewData(prevState => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
         setNewReviewText('');
         alert('리뷰를 등록했어요!');
       } else {
@@ -128,7 +128,7 @@ function DetailPages() {
   const handleDeleteReview = async (reviewId) => {
     if (window.confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
       await deleteReview(reviewId);
-      navigate('/');
+      setReviewData(reviewData.filter(review => review.id !== reviewId));
     }
   };
 
@@ -164,7 +164,7 @@ function DetailPages() {
 
   return (
     <>
-      <button onClick={goToHome}>홈버튼</button>
+      <HeaderTitle onClick={goToHome}>BookHub</HeaderTitle>
       <StSection>
         {bookData
           .filter((data) => data.itemId === Number(id))
@@ -203,11 +203,11 @@ function DetailPages() {
                     </>
                   ) : (
                     <>
-                      <StDiv5>
+                      <StFigure>
                         <StImg2 src={data.userProfileImg || 'defaultProfileImagePath'} alt="profile" />
                         <p>{data.userNickName || '익명'}</p>
-                      </StDiv5>
-                      <p>리뷰내용 : {data.text}</p>
+                      </StFigure>
+                      <p> {data.text}</p>
                       <button
                         onClick={() => {
                           handleEditClick(data.id, data.text);
@@ -227,13 +227,13 @@ function DetailPages() {
               .filter((data) => data.itemId === id)
               .map((data) => (
                 <StDiv4 key={data.userId}>
-                  <StDiv5>
+                  <StFigure>
                     <StImg2
                       src={data.userProfileImg || 'defaultProfileImagePath'}
                       alt='profile' />
                     <p>{data.userNickName || '익명'}</p>
-                  </StDiv5>
-                  <p>리뷰내용 : {data.text}</p>
+                  </StFigure>
+                  <p> {data.text}</p>
                 </StDiv4>
               ))}
           </>
@@ -252,7 +252,8 @@ function DetailPages() {
                 type="text"
                 value={newReviewText}
                 onChange={(e) => setNewReviewText(e.target.value)}
-                placeholder="리뷰"
+                placeholder="짧은 리뷰는 20자 내외로 작성이 가능해요"
+                maxLength={'20'}
               />
               <button type="submit">추가하기</button>
             </form>
@@ -266,129 +267,188 @@ function DetailPages() {
 }
 export default DetailPages;
 
+
+const HeaderTitle = styled.button`
+  font-family: 'TTHakgyoansimSamulhamR';
+  margin: 40px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 50px;
+    
+  &:hover{
+      border-radius: 15px;
+      background-color: #6ea477;
+      transition: 0.5s;
+    }
+  
+
+`
+
 const StSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 150px;
-`;
-
-const StDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  width: 80%;
-  max-width: 1600px;
-  min-width: 700px;
-  gap: 50px;
-  padding: 50px;
-`;
-
-const StImg2 = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const StImg = styled.img`
-  width: 220px;
-  min-width: 220px;
-  height: 320px;
-`;
-
-const StDiv2 = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  gap: 100px;
-
-  p {
-    gap: 15px;
-    line-height: 1.3;
-    font-size: 20px;
-  }
-`;
-
-const StSpan = styled.span`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const StSection3 = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StDiv3 = styled.div`
-  display: flex;
-  width: 60%;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-  padding: 50px;
-  border: 1px solid black;
-
-  form {
-    display: flex;
-    width: 80%;
-    gap: 40px;
-    input {
-      width: 200px;
-      height: 40px;
-      font-size: 1rem;
-    }
-    textarea {
-      width: 700px;
-      height: 40px;
-      font-size: 1rem;
-    }
-  }
+display: flex;
+flex-direction: column;
+width: 100% ;
+align-items: center;
+margin-bottom: 100px;
+background-color: azure;
 `;
 
 const StSection2 = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
-  width: 100%;
-  height: 20%;
-  margin-bottom: 150px;
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+gap: 60px;
+width: 100% ;
+margin-bottom: 100px;
+background-color: #e56e6e;
 
-  div {
-    display: flex;
-    flex-direction: row;
-  }
 `;
 
-const StDiv4 = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 20px;
-  justify-content: center;
-  width: 700px;
+const StSection3 = styled.section`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100% ;
+height: 200px;
+background-color: #8a8a22;
+padding: 50px;
+`;
+
+
+const StDiv = styled.div`
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+align-items: center;
+width: 80% ;
+max-width: 1600px;
+min-width: 700px;
+gap: 50px;
+padding: 50px;
+`;
+
+const StImg2 = styled.img`
+width: 60px;
+height: 60px;
+border-radius: 50% ;
+object-fit: cover;
+`;
+
+const StImg = styled.img`
+width: 220px;
+min-width: 220px;
+height: 320px;
+`;
+
+const StDiv2 = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 80%;
+gap: 100px;
 
   p {
-    gap: 15px;
-    line-height: 1.3;
-    font-size: 20px;
-  }
+  gap: 15px;
+  line-height: 1.3;
+  font-size: 20px;
+}
 `;
 
-const StDiv5 = styled.div`
+const StSpan = styled.span`
+display: flex;
+flex-direction: row;
+justify-content: space - between;
+width: 100% ;
+`;
+
+
+
+const StDiv3 = styled.div`
+display: flex;
+width: 80% ;
+justify-content: center;
+align-items: center;
+height: 200px;
+padding: 50px;
+border: 1px solid black;
+border-radius: 15px;
+
+  form {
   display: flex;
-  flex-direction: row;
-  gap: 30px;
+  width: 80% ;
+  gap: 40px;
+
+    textarea {
+    width: 700px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+`;
+
+
+const StDiv4 = styled.div`
+display: flex;
+width: 100% ;
+gap: 20px;
+justify-content: center;
+align-items: center;
+border: 2px solid #431b6e;;
+border-radius: 10px;
+background-color: #f8e5cd;
+width: 950px;
+height: 100px;
+padding: 20px;
+
+  figure{
+    
+    
+
+    p{
+    width: 80px;
+    display: flex;
+    font-size: 25px;
+
+  }
+}
+
+  p {
+  width: 90%;
+  line-height: 1.3;
+  font-size: 2rem;
+  font-family: 'NPSfontBold';
+  overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+  button{
+  display: flex;
+  justify-content: center;
   align-items: center;
+  min-width: 70px;
+  height: 40px;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 2px solid #d6984d;
+  background-color: #ffbb69;
+}
+`;
+
+const StFigure = styled.figure`
+display: flex;
+flex-direction: row;
+gap: 30px;
+align-items: center;
 `;
 
 

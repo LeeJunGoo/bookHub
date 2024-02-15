@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
@@ -105,7 +104,8 @@ function Login() {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        alert(`환영합니다!`);
+        const user = auth.currentUser;
+        alert(`${user.displayName}님, 환영합니다!`);
         navigate(`/`);
       })
 

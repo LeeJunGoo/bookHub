@@ -4,7 +4,6 @@ import { bookData } from '../shared/mockData';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import List from '../components/List';
-import gitHubImage from '../styles/gitHub.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -135,7 +134,6 @@ function Home() {
     <>
       <Header>
         <HeaderTitle onClick={() => window.location.reload()}>BookHub</HeaderTitle>
-
         <HeaderButtonDiv>
           {currentUser ? (
             <div>
@@ -211,55 +209,6 @@ function Home() {
           {filteredResults.length !== 0 ? <List bookData={filteredResults} /> : <List bookData={bookData} />}
         </section>
       </main>
-
-      <StFooter>
-        <p>2024년 02월 07일~ 14일</p>
-        <p>© bookHub</p>
-        <address>
-          <StFooterUl>
-            <li>
-              <StyledLink to={'https://github.com/psisdn08'}>
-                <StFigure>
-                  <p>김형</p>
-                  <img src={gitHubImage} alt='null' />
-                </StFigure>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={'https://github.com/yuriyun88'}>
-                <StFigure>
-                  <p>정윤아</p>
-                  <img src={gitHubImage} alt='null' />
-                </StFigure>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={'https://github.com/Andante23'}>
-                <StFigure>
-                  <p>안단테</p>
-                  <img src={gitHubImage} alt='null' />
-                </StFigure>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={`https://github.com/LeeJunGoo`}>
-                <StFigure>
-                  <p>이준구</p>
-                  <img src={gitHubImage} alt='null' />
-                </StFigure>
-              </StyledLink>
-            </li>
-            <li>
-              <StyledLink to={`https://github.com/gidalim`}>
-                <StFigure>
-                  <p>박강토</p>
-                  <img src={gitHubImage} alt='null' />
-                </StFigure>
-              </StyledLink>
-            </li>
-          </StFooterUl>
-        </address>
-      </StFooter>
     </>
   );
 }
@@ -371,23 +320,23 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const StFooter = styled.footer`
-  width: 100%;
-  padding: 30px 0 30px;
-  background-color: #888;
-  text-align: center;
-  color: white;
-  font-size: 14px;
-`;
+// const StFooter = styled.footer`
+//   width: 100%;
+//   padding: 30px 0 30px;
+//   background-color: #888;
+//   text-align: center;
+//   color: white;
+//   font-size: 14px;
+// `;
 
-const StFooterUl = styled.ul`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 50px;
-  margin: 10px 0;
-  font-size: 18px;
-`;
+// const StFooterUl = styled.ul`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   gap: 50px;
+//   margin: 10px 0;
+//   font-size: 18px;
+// `;
 
 const StDiv1 = styled.div`
   width: 80%;
@@ -403,15 +352,15 @@ const StDiv2 = styled.div`
   align-items: start;
 `;
 
-const StFigure = styled.figure`
-  img {
-    margin-top: 5px;
-    width: 30px;
-    height: 30px;
-  }
+// const StFigure = styled.figure`
+//   img {
+//     margin-top: 5px;
+//     width: 30px;
+//     height: 30px;
+//   }
 
-  p {
-    font-weight: 700;
-    font-family: 'GowunBatang-Regular';
-  }
-`
+//   p {
+//     font-weight: 700;
+//     font-family: 'GowunBatang-Regular';
+//   }
+// `

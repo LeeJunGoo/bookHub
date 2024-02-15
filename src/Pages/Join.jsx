@@ -88,7 +88,7 @@ function Join() {
           </StList>
           <StDiv>
             <StButtonJoin onClick={newSign}>회원가입하기</StButtonJoin>
-            <StButtonHome onClick={goToLogin}>로그인 하기</StButtonHome>
+            <StButtonJoin onClick={goToLogin}>로그인 하기</StButtonJoin>
           </StDiv>
         </StForm>
       </StSection2>

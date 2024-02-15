@@ -4,6 +4,7 @@ import DetailPages from '../Pages/DetailPages'
 import Login from '../Pages/Login'
 import Join from '../Pages/Join'
 import MyPage from '../Pages/MyPage'
+import { Footer } from '../components/Footer'
 
 
 export const Router = () => {
@@ -16,6 +17,7 @@ export const Router = () => {
         <Route path='/join' element={<Join />} />
         <Route path='/myPage/' element={<MyPage />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }

@@ -245,8 +245,8 @@ function MyPage() {
                   ) : (
                     <BookName>해당하는 책의 정보가 존재하지 않아요.</BookName>
                   )}
-                  <li>리뷰 제목 : {review.title}</li>
-                  <li>리뷰 내용 : {review.text}</li>
+                  <li>남긴 리뷰 내용</li>
+                  <li>{review.text}</li>
                 </ListWrapper>
               )
             })}
