@@ -6,11 +6,13 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { join } from '../shared/redux/modules/userDataController';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 function Join() {
   const navigate = useNavigate();
   const auth = getAuth();
   const dispatch = useDispatch();
+  const storage = getStorage();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,13 +20,19 @@ function Join() {
 
   const newSign = async (e) => {
     e.preventDefault();
+    const defaultImageRef = ref(storage, 'defaultProfile.png')
+    console.log(defaultImageRef)
+
     try {
+      const profileImage = await getDownloadURL(defaultImageRef);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
       await addDoc(collection(db, 'users'), {
         uid: user.uid,
         userNickName: nickName,
-        userEmail: email
+        userEmail: email,
+        profileImageUrl: profileImage,
       });
 
       dispatch(

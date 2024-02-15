@@ -264,6 +264,7 @@ const HeaderForm = styled.form`
   display: flex;
   justify-content: center;
   gap: 5px;
+  cursor: pointer;
 
   input {
     width: 35%;

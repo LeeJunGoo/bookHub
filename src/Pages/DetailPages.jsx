@@ -10,7 +10,8 @@ import {
   addDoc,
   getDoc,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
+  where
 } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { bookData } from '../shared/mockData';
@@ -47,6 +48,7 @@ function DetailPages() {
       if (user) {
         const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
+        console.log(userSnap)
         if (userSnap.exists()) {
           const userData = userSnap.data();
           setUserInfo({
@@ -65,8 +67,6 @@ function DetailPages() {
   }, [])
 
 
-
-
   const addReView = async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -75,6 +75,7 @@ function DetailPages() {
       window.alert('리뷰 내용을 입력해주세요.');
       return;
     }
+
 
     try {
       const userDocRef = doc(db, 'users', user.uid);
@@ -90,15 +91,18 @@ function DetailPages() {
           userNickName: userData.userNickName,
           userProfileImg: userData.profileImageUrl,
         };
+
         const reviewRef = await addDoc(collection(db, 'reviews'), { ...reviewDataToAdd });
         const userRef = doc(db, 'users', user.uid);
         await updateDoc(userRef, {
           reviews: arrayUnion(reviewRef.id)
         });
 
+
         setReviewData(prevState => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
         setNewReviewText('');
         alert('리뷰를 등록했어요!');
+
       } else {
         alert('사용자를 찾을 수 없어요..');
       }
@@ -160,6 +164,7 @@ function DetailPages() {
     setCurrentReviewId(id);
     setReviewText(text);
   };
+
 
   return (
     <>
@@ -291,7 +296,6 @@ flex-direction: column;
 width: 100% ;
 align-items: center;
 margin-bottom: 100px;
-background-color: azure;
 `;
 
 const StSection2 = styled.section`
@@ -303,7 +307,6 @@ align-items: center;
 gap: 60px;
 width: 100% ;
 margin-bottom: 100px;
-background-color: #e56e6e;
 
 `;
 
@@ -314,7 +317,6 @@ justify-content: center;
 align-items: center;
 width: 100% ;
 height: 200px;
-background-color: #8a8a22;
 padding: 50px;
 `;
 
@@ -329,6 +331,8 @@ max-width: 1600px;
 min-width: 700px;
 gap: 50px;
 padding: 50px;
+background-color: rgba(255, 255, 242, 0.801);
+border-radius: 10px;
 `;
 
 const StImg2 = styled.img`
@@ -350,6 +354,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 width: 80%;
+min-width: 700px;
 gap: 100px;
 
   p {
@@ -362,7 +367,7 @@ gap: 100px;
 const StSpan = styled.span`
 display: flex;
 flex-direction: row;
-justify-content: space - between;
+justify-content: space-between;
 width: 100% ;
 `;
 
@@ -370,7 +375,8 @@ width: 100% ;
 
 const StDiv3 = styled.div`
 display: flex;
-width: 80% ;
+width: 100% ;
+min-width: 700px;
 justify-content: center;
 align-items: center;
 height: 200px;
@@ -380,13 +386,44 @@ border-radius: 15px;
 
   form {
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 80% ;
   gap: 40px;
 
+    img{
+      min-width: 60px;
+      min-height: 60px;
+    }
+    p{
+      min-width: 50px;
+  }
+
     textarea {
     width: 700px;
+    min-width: 330px;
     height: 40px;
     font-size: 1rem;
+  }
+
+  button{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 70px;
+  height: 40px;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid #d6984d;
+  background-color: #ffbb69;
+  cursor: pointer;
+  
+  &:hover{
+    background-color: #ff991c;
+    color: #0e0e0f;
+    transition: 0.3s;
+  }
+
   }
 }
 `;
@@ -398,7 +435,6 @@ width: 100% ;
 gap: 20px;
 justify-content: center;
 align-items: center;
-border: 2px solid #431b6e;;
 border-radius: 10px;
 background-color: #f8e5cd;
 width: 950px;
@@ -438,7 +474,7 @@ padding: 20px;
   height: 40px;
   min-height: 40px;
   border-radius: 10px;
-  border: 2px solid #d6984d;
+  border: 1px solid #d6984d;
   background-color: #ffbb69;
   cursor: pointer;
   

@@ -104,8 +104,7 @@ function Login() {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        const user = auth.currentUser;
-        alert(`${user.userNickName}님, 환영합니다!`);
+        alert(` 환영합니다!`);
         navigate(`/`);
       })
 
@@ -157,10 +156,10 @@ function Login() {
           </StLi>
           <StDiv2>
             <StBtn onClick={(e) => loggedIn(e)}> 이메일로 로그인!</StBtn>
-            <StBtn2 bg={'#69a0f8'} onClick={addGoogleAccount}>
+            <StBtn2 $bg={'#69a0f8'} onClick={addGoogleAccount}>
               <StImg src={google} alt='null' />구글 로그인
             </StBtn2>
-            <StBtn2 bg={'#cfabff'} onClick={addGithubAccount}>
+            <StBtn2 $bg={'#cfabff'} onClick={addGithubAccount}>
               <StImg src={gitHubImage} alt='null' />깃허브 로그인
             </StBtn2>
           </StDiv2>
@@ -287,7 +286,7 @@ const StBtn2 = styled.button`
   padding: 5px;
   border: transparent;
   border-radius: 5px;
-  background-color: ${(props) => props.bg || '#ece6f1'};
+  background-color: ${(props) => props.$bg || '#ece6f1'};
   font-family: 'SOGANGUNIVERSITYTTF' ;
   font-size: 1.1rem;
 
