@@ -37,6 +37,7 @@ function MyPage() {
             return '';
           }
         }
+
         const fetchUserData = async (userId) => {
           const q = query(collection(db, 'users'), where('uid', '==', userId))
           const querySnapshot = await getDocs(q);
@@ -56,7 +57,6 @@ function MyPage() {
       }
     });
     setLoading(false)
-
     return () => unSubscribe();
   }, [])
 
@@ -131,7 +131,6 @@ function MyPage() {
             profileImageUrl: downloadURL,
           });
           alert('이미지 업로드에 성공하였습니다!')
-
         } else {
           alert('이미지가 존재하지 않아요')
         }
@@ -234,22 +233,25 @@ function MyPage() {
             내가 작성한 리뷰
           </label>
           <StUl2>
-            {userReviews.map((review, index) => {
-              return (
-                <ListWrapper key={index}>
-                  {review.book ? (
-                    <div>
-                      <img src={review.book.coverLargeUrl} alt='default_image' />
-                      <p>책 제목 : {review.book.title}</p>
-                    </div>
-                  ) : (
-                    <BookName>해당하는 책의 정보가 존재하지 않아요.</BookName>
-                  )}
-                  <li>남긴 리뷰 내용</li>
-                  <li>{review.text}</li>
-                </ListWrapper>
-              )
-            })}
+            {userReviews.length > 0 ? (
+              userReviews.map((review, index) => {
+                return (
+                  <ListWrapper key={index}>
+                    {review.book ? (
+                      <div>
+                        <img src={review.book.coverLargeUrl} alt='default_image' />
+                        <p>책 제목 : {review.book.title}</p>
+                      </div>
+                    ) : (
+                      <BookName>해당하는 책의 정보가 존재하지 않아요.</BookName>
+                    )}
+                    <li>남긴 리뷰 내용</li>
+                    <li>{review.text}</li>
+                  </ListWrapper>
+                )
+              })
+            ) : (<p>작성 한 리뷰가 없어요.</p>)
+            }
           </StUl2>
         </StDiv2>
       </StSection2>

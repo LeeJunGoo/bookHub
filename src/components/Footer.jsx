@@ -60,6 +60,7 @@ export const Footer = () => {
 
 
 
+
 const StyledLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -72,6 +73,7 @@ const StyledLink = styled(Link)`
 `;
 
 
+
 const StFooter = styled.footer`
   width: 100%;
   padding: 30px 0 30px;
@@ -79,6 +81,8 @@ const StFooter = styled.footer`
   text-align: center;
   color: white;
   font-size: 14px;
+  margin-top: auto;
+  
 `;
 
 const StFooterUl = styled.ul`

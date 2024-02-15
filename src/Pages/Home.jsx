@@ -185,7 +185,7 @@ function Home() {
                   spaceBetween: 36
                 },
                 760: {
-                  slidesPerView: 4,
+                  slidesPerView: 3,
                   spaceBetween: 57
                 }
               }}
@@ -236,7 +236,7 @@ const HeaderTitle = styled.button`
     background-color: #6ea477;
     transition: 0.5s;
   }
-`;
+`
 
 const HeaderButtonDiv = styled.div`
   width: 100%;
@@ -244,6 +244,7 @@ const HeaderButtonDiv = styled.div`
   flex-direction: row;
   justify-content: end;
   margin-right: 70px;
+
   button {
     font-size: 15px;
     font-family: 'TTHakgyoansimSamulhamR';
@@ -275,7 +276,6 @@ const HeaderForm = styled.form`
     width: 50px;
     border: 2px solid black;
     border-radius: 6px;
-
     &:hover {
       background-color: #6ea477;
     }

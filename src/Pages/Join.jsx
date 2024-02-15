@@ -64,9 +64,10 @@ function Join() {
 
   return (
     <>
-      <StSection2>
+      <StHeader>
         <SectionTitle onClick={() => goToHome()}>BookHub</SectionTitle>
-
+      </StHeader>
+      <StSection2>
         <StForm>
           <StList>
             <StInputName>
@@ -88,7 +89,7 @@ function Join() {
           </StList>
           <StDiv>
             <StButtonJoin onClick={newSign}>회원가입하기</StButtonJoin>
-            <StButtonJoin onClick={goToLogin}>로그인 하기</StButtonJoin>
+            <StButtonLogin onClick={goToLogin}>로그인 하기</StButtonLogin>
           </StDiv>
         </StForm>
       </StSection2>
@@ -98,7 +99,15 @@ function Join() {
 
 export default Join;
 
-const SectionTitle = styled.h1`
+
+const StHeader = styled.header`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+`
+
+const SectionTitle = styled.button`
   font-family: 'TTHakgyoansimSamulhamR';
   margin: 40px;
   padding: 20px;
@@ -116,8 +125,8 @@ const SectionTitle = styled.h1`
 const StInput = styled.input`
   border-color: #141513;
   border-radius: 4px;
-  width: 358px;
-  height: 46px;
+  width: 400px;
+  height: 45px;
 `;
 
 const StInputLabel = styled.p`
@@ -154,8 +163,7 @@ const StForm = styled.form`
   border-radius: 10px;
 
   margin: 10px;
-  position: absolute;
-  top: 150px;
+  position: relative;
   width: 700px;
   height: 700px;
 `;
@@ -169,23 +177,20 @@ const StDiv = styled.div`
   margin-right: 50px;
 `;
 
-const StDiv2 = styled.div`
-  display: flex;
-  min-width: 450px;
-  flex-direction: row;
-  justify-content: space-between;
-`
+
 
 const StButtonLogin = styled.button`
   margin: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
-  cursor: pointer;
-
-  border-color: #c9c902;
-  color: #ffffff;
-  background-color: #c9c902;
+  width: 400px;
+  height: 48px;
+  font-size: 1rem;
+  border-color: #f6e58d;
+  color: #141514;
+  background-color: #f6e58d;;
   font-family: 'SOGANGUNIVERSITYTTF';
+  cursor: pointer;
 
   &:hover {
   cursor: pointer;
@@ -194,33 +199,14 @@ const StButtonLogin = styled.button`
 }
 `;
 
-const StButtonHome = styled.button`
-padding: 10px 15px 12px;
-height: 48px;
-font-size: 16px;
-line-height: 24px;
-border-radius: 5px;
-width: 368px;
-height: 48px;
-border-color: #f6e58d;
-color: #141514;
-background-color: #f6e58d;
-font-family: 'SOGANGUNIVERSITYTTF';
-
-  &:hover {
-  cursor: pointer;
-  background-color: #f9d803;
-  border-color: #f9d803;
-}
-`;
 
 const StButtonJoin = styled.button`
 padding: 10px 15px 12px;
 height: 48px;
-font-size: 16px;
+font-size: 1rem;
 line-height: 24px;
 border-radius: 5px;
-width: 368px;
+width: 400px;
 height: 48px;
 border-color: #f6e58d;
 color: #141514;

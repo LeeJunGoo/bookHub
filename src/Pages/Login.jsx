@@ -105,7 +105,7 @@ function Login() {
     await signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         const user = auth.currentUser;
-        alert(`${user.displayName}님, 환영합니다!`);
+        alert(`${user.userNickName}님, 환영합니다!`);
         navigate(`/`);
       })
 
@@ -139,52 +139,75 @@ function Login() {
 
   return (
     <>
-      <div>
-        <StHeader>로그인</StHeader>
-        <StMain>
-          <StUl>
-            <StLi>
-              <input type="text" placeholder="이메일" value={email} onChange={(e) => onUserEmailHandler(e)}></input>
-            </StLi>
-            <StLi>
-              <input
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={(e) => onUserPwdHandler(e)}
-              ></input>
-            </StLi>
-            <StDiv2>
-              <StBtn onClick={(e) => loggedIn(e)}> 이메일로 로그인!</StBtn>
-              <StBtn2 bg={'#69a0f8'} onClick={addGoogleAccount}>
-                <StImg src={google} alt='null' />구글 로그인
-              </StBtn2>
-              <StBtn2 bg={'#cfabff'} onClick={addGithubAccount}>
-                <StImg src={gitHubImage} alt='null' />깃허브 로그인
-              </StBtn2>
-            </StDiv2>
-            <StDiv3>
-              <StBtn3 onClick={goToJoinPage}>회원가입하기</StBtn3>
-              <StBtn3 onClick={goToHome}>홈으로 가기</StBtn3>
-            </StDiv3>
-          </StUl>
-        </StMain>
-      </div>
+      <StHeader>
+        <HeaderTitle onClick={goToHome}>BookHub</HeaderTitle>
+      </StHeader>
+      <StMain>
+        <StUl>
+          <StLi>
+            <input type="text" placeholder="이메일" value={email} onChange={(e) => onUserEmailHandler(e)}></input>
+          </StLi>
+          <StLi>
+            <input
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={(e) => onUserPwdHandler(e)}
+            ></input>
+          </StLi>
+          <StDiv2>
+            <StBtn onClick={(e) => loggedIn(e)}> 이메일로 로그인!</StBtn>
+            <StBtn2 bg={'#69a0f8'} onClick={addGoogleAccount}>
+              <StImg src={google} alt='null' />구글 로그인
+            </StBtn2>
+            <StBtn2 bg={'#cfabff'} onClick={addGithubAccount}>
+              <StImg src={gitHubImage} alt='null' />깃허브 로그인
+            </StBtn2>
+          </StDiv2>
+          <StDiv3>
+            <StBtn3 onClick={goToJoinPage}>회원가입하기</StBtn3>
+            <StBtn3 onClick={goToHome}>홈으로 가기</StBtn3>
+          </StDiv3>
+        </StUl>
+      </StMain>
     </>
   );
 }
 
 export default Login;
 
+
+const StHeader = styled.header`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const HeaderTitle = styled.button`
+  font-family: 'TTHakgyoansimSamulhamR';
+  margin: 40px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 50px;
+
+  &:hover {
+    background-color: #6ea477;
+    transition: 0.5s;
+  }
+`
+
+
 const StMain = styled.main`
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100%;
   min-width: 400px;
+  margin-bottom: 200px;
 `;
 
 const StUl = styled.ul`
@@ -201,6 +224,7 @@ const StUl = styled.ul`
   border: 1px solid #846b17a9;
   gap: 40px;
   border-radius: 15px;
+  padding: 20px;
   background-color: #f9fce1;
 `
 
@@ -221,15 +245,7 @@ const StLi = styled.li`
   }
 `;
 
-const StHeader = styled.header`
-  position: absolute;
-  top: 15%;
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  height: 15vh;
-  min-width: 400px;
-`;
+
 
 const StDiv2 = styled.div`
   display: flex;

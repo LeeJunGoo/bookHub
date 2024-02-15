@@ -96,7 +96,6 @@ function DetailPages() {
           reviews: arrayUnion(reviewRef.id)
         });
 
-
         setReviewData(prevState => [...prevState, { ...reviewDataToAdd, id: reviewRef.id }]);
         setNewReviewText('');
         alert('리뷰를 등록했어요!');
@@ -441,6 +440,13 @@ padding: 20px;
   border-radius: 10px;
   border: 2px solid #d6984d;
   background-color: #ffbb69;
+  cursor: pointer;
+  
+  &:hover{
+    background-color: #ff991c;
+    color: #0e0e0f;
+    transition: 0.3s;
+  }
 }
 `;
 
